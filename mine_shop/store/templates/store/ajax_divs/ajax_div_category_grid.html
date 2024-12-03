@@ -1,0 +1,163 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+<script>{% include "siteajax/init_csrf.js" %}</script>
+
+
+<script>
+
+function get_current_page() {
+    return $('#div_category_grid').attr('value');
+}
+
+function get_current_page_for_list(pages_count, add_count) {
+    const p = $('#div_category_list').attr('value');
+    add_count = Number(add_count)
+    let newp = Number(p)+add_count;
+    if(newp == 1){
+        newp += 1;
+    }
+    document.getElementById("div_category_list").setAttribute("value", newp);
+    if (pages_count == newp-1 || pages_count == '0'){
+        var select = document.getElementById("list_next_page_button");
+        select.hidden = true;
+    }
+    return p
+}
+
+</script>
+
+
+<div id="class-tab-content" class="tab-content">
+                                    <div id="grid-view" class="products-grid fade tab-pane{% if grid_active %} in active{% endif %}">
+
+                                        <div id="div_category_grid"
+                                                value="1"
+                                                hx-post="{% url 'store:show_paginator' %}"
+                                                hx-trigger="load"
+                                                hx-vals='js:{current_page: get_current_page(), per_page: {{ div_per_page }}, pages_count: {{ pages_count }} , filtered_products: {{ div_filtered_products }}, tab: 0}'
+                                        >
+                                            ---
+                                        </div>
+
+                                            <div class="pagination-holder">
+                                            <div class="row">
+
+                                                <div class="col-xs-12 col-sm-12" align="center">
+                                                    <ul class="pagination pagination-sm">
+
+                                                        <button hx-post="{% url 'store:show_paginator' %}"
+                                                                        hx-trigger="click"
+                                                                        hx-target="#div_category_grid"
+                                                                        hx-vals='js:{current_page: {{ 1 }}, per_page: {{ div_per_page }}, pages_count: {{ pages_count }} , filtered_products: {{ div_filtered_products }}, tab: 0, next_page: 0}'
+                                                                        hx-swap="outerHTML"
+                                                                        id="buttonf"
+                                                                        style="height:40px;width:40px"
+                                                        >
+                                                             <i class="fa fa-flag-o"></i>
+                                                        </button>
+
+                                                        <button hx-post="{% url 'store:show_paginator' %}"
+                                                                        hx-trigger="click"
+                                                                        hx-target="#div_category_grid"
+                                                                        hx-vals='js:{current_page: get_current_page(), per_page: {{ div_per_page }}, pages_count: {{ pages_count }} , filtered_products: {{ div_filtered_products }}, tab: 0, next_page: -2}'
+                                                                        hx-swap="outerHTML"
+                                                                        id="button_2"
+                                                                        style="height:40px;width:40px"
+                                                        >
+                                                            <i class="fa fa-fast-backward"></i>
+                                                        </button>
+
+                                                        <button hx-post="{% url 'store:show_paginator' %}"
+                                                                        hx-trigger="click"
+                                                                        hx-target="#div_category_grid"
+                                                                        hx-vals='js:{current_page: get_current_page(), per_page: {{ div_per_page }}, pages_count: {{ pages_count }} , filtered_products: {{ div_filtered_products }}, tab: 0, next_page: -1}'
+                                                                        hx-swap="outerHTML"
+                                                                        id="button_1"
+                                                                        style="height:40px;width:40px"
+                                                        >
+                                                            <i class="fa fa-step-backward"></i>
+                                                        </button>
+
+                                                        <button id="button0" style="height:40px;width:40px" disabled
+                                                        >
+                                                            {{ div_current_page }}
+                                                        </button>
+
+                                                        <button hx-post="{% url 'store:show_paginator' %}"
+                                                                        hx-trigger="click"
+                                                                        hx-target="#div_category_grid"
+                                                                        hx-vals='js:{current_page: get_current_page(), per_page: {{ div_per_page }}, pages_count: {{ pages_count }} , filtered_products: {{ div_filtered_products }}, tab: 0, next_page: 1}'
+                                                                        hx-swap="outerHTML"
+                                                                        id="button1"
+                                                                        style="height:40px;width:40px"
+                                                        >
+                                                            <i class="fa fa-step-forward"></i>
+                                                        </button>
+
+                                                        <button hx-post="{% url 'store:show_paginator' %}"
+                                                                        hx-trigger="click"
+                                                                        hx-target="#div_category_grid"
+                                                                        hx-vals='js:{current_page: get_current_page(), per_page: {{ div_per_page }}, pages_count: {{ pages_count }} , filtered_products: {{ div_filtered_products }}, tab: 0, next_page: 2}'
+                                                                        hx-swap="outerHTML"
+                                                                        id="button2"
+                                                                        style="height:40px;width:40px"
+                                                        >
+                                                            <i class="fa fa-fast-forward"></i>
+                                                        </button>
+
+                                                        <button hx-post="{% url 'store:show_paginator' %}"
+                                                                        hx-trigger="click"
+                                                                        hx-target="#div_category_grid"
+                                                                        hx-vals='js:{current_page: {{ pages_count }}, per_page: {{ div_per_page }}, pages_count: {{ pages_count }} , filtered_products: {{ div_filtered_products }}, tab: 0, next_page: 0}'
+                                                                        hx-swap="outerHTML"
+                                                                        id="buttonl"
+                                                                        style="height:40px;width:40px"
+                                                        >
+                                                            <i class="fa fa-flag-checkered"></i>
+                                                        </button>
+
+                                                    </ul>
+                                                </div>
+
+
+                                            </div><!-- /.row -->
+                                        </div><!-- /.pagination-holder -->
+
+
+                                    </div><!-- /.products-grid #grid-view -->
+
+
+
+                                    <div id="list-view" class="products-grid fade tab-pane{% if not grid_active %} in active{% endif %}">
+
+                                        <div id="div_category_list"
+                                                value="1"
+                                                hx-post="{% url 'store:show_paginator' %}"
+                                                hx-trigger="load"
+                                                hx-vals='js:{current_page: get_current_page_for_list({{ pages_count }}, 0), per_page: {{ div_per_page }}, pages_count: {{ pages_count }} , filtered_products: {{ div_filtered_products }}, tab: 1}'
+                                        >
+                                            ---
+                                        </div>
+
+                                        <div></div>
+
+
+                                        <div class="loadmore-holder text-center"
+                                                            hx-post="{% url 'store:show_paginator' %}"
+                                                            hx-trigger="click"
+                                                            hx-target="#div_category_list"
+                                                            hx-vals='js:{current_page: get_current_page_for_list({{ pages_count }},  1), per_page: {{ div_per_page }}, pages_count: {{ pages_count }} , filtered_products: {{ div_filtered_products }}, tab: 1, next_page: 1}'
+                                                            hx-swap="beforeend"
+                                                            id="list_next_page_button">
+                                            <a class="btn-loadmore">
+                                                <i class="fa fa-plus"></i>
+                                                {{ 'adcg_show_more'|from_key }}
+                                            </a>
+                                        </div>
+
+
+                                    </div><!-- /.products-grid #list-view -->
+
+                                </div>

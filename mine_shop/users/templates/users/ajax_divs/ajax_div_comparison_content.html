@@ -1,0 +1,181 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+<div class="main-content" id="comparison-main-content">
+
+                {% if wc_updated %}
+                    <div id = 'wish-compare-holder-updater'
+                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                            hx-post
+                            hx-target="#wishlist-compare-holder"
+                            hx-trigger="load">
+                    </div>
+                {% endif %}
+
+
+                <div class="container">
+                    <div class="inner-xs">
+                        <div class="page-header">
+                            <h2 class="page-title">
+                                {{ 'rp_adcc_compare_positions'|from_key }}
+                            </h2>
+                        </div>
+                    </div><!-- /.section-page-title -->
+                    {% if products %}
+                        <div class="table-responsive inner-bottom-xs inner-top-xs">
+
+                        <table class="table table-bordered table-striped compare-list">
+                            <thead>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    {% for product in products|slice:":4" %}
+                                        <td class="text-center">
+
+                                            <div class="image-wrap">
+                                                <div class="remove-comparison-button" id="comparison-item-delete-{{ forloop.counter }}"
+                                                                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                hx-post=""
+                                                                hx-trigger="click"
+                                                                hx-target="#comparison-main-content"
+                                                                hx-vals='js:{product_id: {{ product.id }} }'
+                                                >
+                                                    <a>
+                                                        <button class="fa fa-times-circle"/>
+                                                    </a>
+                                                </div>
+
+
+                                                <a href="{{ product.images.first.image.url }}">
+                                                    <img width="220" height="154" alt="" class="attachment-yith-woocompare-image" src="{{ product.images.first.image.url }}">
+                                                </a>
+
+                                            </div>
+
+                                            <p><strong><a href="{% url 'store:detail' product.slug %}">{{ product.title|truncatechars:40}}</a></strong></p>
+
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+
+                                <tr class="tr-add-to-cart">
+                                    <td>&nbsp;</td>
+                                    {% for product in products|slice:":4" %}
+                                        <td class="text-center">
+
+                                            <div class="add-cart-button" id="add-cart-button1{{ forloop.counter }}"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#basket"
+                                                    hx-vals='js:{product_id: {{ product.id }} }'
+                                                >
+                                                    <a>
+                                                         <script>
+                                                             function change_add_to_cart_button(el, old_text, new_text){
+                                                                el.className += ' inverse';
+                                                                el.textContent = new_text;
+                                                                setTimeout(() => {
+                                                                    el.className = 'le-button';
+                                                                    el.textContent = old_text;
+                                                                }, 200);
+                                                            }
+
+                                                        </script>
+                                                        <button class="le-button{% if not product.is_available %} inverse{% endif %}"
+                                                                onclick="change_add_to_cart_button(this, '{{ 'to_basket'|from_key }}', '{{ 'added'|from_key }}')" {% if not product.is_available %}disabled{% endif %}>
+                                                            {% if not product.is_available %}
+                                                                {{ 'not_available'|from_key }}
+                                                            {% else %}
+                                                                {{ 'to_basket'|from_key }}
+                                                            {% endif %}
+                                                        </button>
+                                                    </a>
+                                                </div>
+
+                                        </td>
+
+                                    {% endfor %}
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                 <tr class="comparison-item price">
+                                        <th>{{ 'sale'|from_key }}</th>
+                                        {% for product in products|slice:":4" %}
+                                            <td class="comparison-item-cell odd product_39" align="center">
+                                                <div class="label-discount {% if product.is_on_sale %}green{% else %}blue{% endif %}">{{ product.get_discont_display }}</div>
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+
+                                <tr class="comparison-item description">
+                                    <th>{{ 'sp_description'|from_key }}</th>
+                                    {% for product in products|slice:":4" %}
+                                        <td class="comparison-item-cell odd product_39" title="{{ product.description }}">
+                                            <p>{{ product.description|truncatechars:220}}</p>
+                                        </td>
+                                    {% endfor %}
+
+                                </tr>
+
+                                <tr class="comparison-item stock">
+                                    <th>{{ 'sp_availability'|from_key }}</th>
+                                    {% for product in products|slice:":4" %}
+                                        <td class="comparison-item-cell odd product" align="center">
+                                            <div class="label-discount {% if product.is_available %}green{% else %}red{% endif %}">{{ product.get_available_display }}</div>
+                                        </td>
+                                    {% endfor %}
+
+                                </tr>
+
+                                <tr class="price repeated">
+                                    <th align="left">{{ 'price'|from_key }}</th>
+                                    {% for product in products|slice:":4" %}
+                                        <td class="even product" align="center">
+                                                <div class="price">
+                                                    <span class="amount"><small>{{ currency  }} {{ product.price }}</small></span>
+                                                    {% if product.is_on_sale %}
+                                                        <span class="price-prev"><small><s>{{ currency }} {{ product.start_price }}</s></small></span>
+                                                    {% endif %}
+                                                </div>
+
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+
+                                <tr class="tr-add-to-wishlist">
+                                    <th>{{ 'wishlist'|from_key }}</th>
+                                    {% for product in products|slice:":4" %}
+                                        <td class="text-center">
+
+                                            <div class="wish-compare" id="wish-compare" name="wish-compare" value="n"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#wishlist-compare-holder"
+                                                    hx-vals='js:{product_id: {{ product.id }}, value: get_element_value() }'
+                                        >
+                                                <a class="btn-add-to-wishlist" id="btn-add-to-wishlist" value="w"
+                                                    onmouseover="cursor_pointer(this)"
+                                                    onclick="click_to_tool_button(this, 'Добавлено', 'fa fa-heart', 'wish-compare', 'w')" value="to">
+                                                        {{ 'c_add'|from_key }}
+                                                </a>
+                                        </div>
+
+                                        </td>
+
+                                    {% endfor %}
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div><!-- /.table-responsive -->
+                    {% else %}
+                        {{ 'rp_adcc_comparison_empty'|from_key }}
+                    {% endif %}
+
+                </div><!-- /.container -->
+            </div>

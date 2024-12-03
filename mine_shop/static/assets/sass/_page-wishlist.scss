@@ -1,0 +1,77 @@
+/*===================================================================================*/
+/*  Wishlist Page
+/*===================================================================================*/
+
+.page-wishlist {
+	.items-holder{
+        margin: 14px 0 0 0;
+
+        .close-btn{
+            display:inline-block;
+            position:absolute;
+            right: 1%;
+            top: 39%;
+            
+            &:after{
+                color:$black;
+                content:'\f00d';
+                font-family: fontawesome;
+
+            }
+        }
+
+        .remove{
+            display: inline-block;
+            position: absolute;
+            right: 1%;
+            top: 32%;
+            font-size: 20px;
+            color: #81807f;
+        }
+
+        .remove-item{
+            font-size: 20px;
+            color: #81807f;
+        }
+        
+        .cart-item{
+            border-bottom: 1px solid darken($second-color,10%);
+            padding: 27px 0 24px;
+            
+            &:first-child{
+                padding-top: 0;
+            }
+            
+            &:last-child{
+                border-bottom: 0;
+            }
+            
+            .title{
+                margin-bottom: 6px;
+                
+                a{
+                    line-height: 15px;
+                    font-size: 16px;
+                    text-transform: capitalize;
+                    font-weight: 700;
+                    color: $blue;
+                }
+            }
+            
+            .brand{
+                font-size: 10px;
+                margin-top: 5px;
+                @extend .uppercase;
+            }
+            
+            .quantity{
+                /*margin: 11px 0 0 30px;*/
+            }
+            
+            .price{
+                font-weight: 700;
+                font-size: 18px;
+            }
+        }
+    }
+}

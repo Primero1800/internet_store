@@ -1,0 +1,217 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+{% load store_tags_rating %}
+
+{% if not top_sales or not top_views or not top_rated%}
+    {% load store_tags_sale_information %}
+    {% if not top_sales %}
+        {% add_top_sales_to_context as top_sales %}
+    {% endif %}
+    {% if not top_views %}
+        {% add_top_views_to_context as top_views %}
+    {% endif%}
+    {% if not top_rated %}
+        {% add_top_rated_to_context as top_rated %}
+    {% endif%}
+{% endif %}
+
+{% if not rubrics %}
+    {% load store_tags_rubrics %}
+{% endif %}
+    {% add_random_rubrics_to_context 7 as random_rubrics %}
+
+
+ <footer id="footer" class="color-bg">
+                <div class="container">
+                    <div class="row no-margin widgets-row">
+                        <div class="col-xs-12  col-sm-4 no-margin-left">
+                            <!-- ============================================================= FEATURED PRODUCTS ============================================================= -->
+                            <div class="widget">
+                                <h2>{{ 'most_viewed'|from_key }}</h2>
+                                <div class="body">
+                                    <ul>
+                                        {% with top_views.products|slice:'0:3' as products %}
+                                            {% for product in products %}
+                                                <li>
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-9 no-margin">
+                                                            <a href="{% url 'store:detail' product.slug %}">{{ product.title|truncatechars:30 }}</a>
+                                                            <div class="price">
+                                                                <div class="price-current">{{ currency }}{{ product.price }}</div>
+                                                                {% if product.is_on_sale %}
+                                                                    <div class="price-prev">{{ currency }}{{ product.start_price }}</div>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-xs-12 col-sm-3 no-margin">
+                                                            <a href="#" class="thumb-holder">
+                                                                <img alt="" src="{% static 'assets/images/blank.gif' %}" data-echo="{{ product.images.first.image.url }}" width="67" height="67" />
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </ul>
+                                </div><!-- /.body -->
+                            </div> <!-- /.widget -->
+                            <!-- ============================================================= FEATURED PRODUCTS : END ============================================================= -->
+                        </div><!-- /.col -->
+
+                        <div class="col-xs-12 col-sm-4 ">
+                            <!-- ============================================================= ON SALE PRODUCTS ============================================================= -->
+                            <div class="widget">
+                                <h2>{{ 'top_sales'|from_key }}</h2>
+                                <div class="body">
+                                    <ul>
+                                        {% with top_sales.products|slice:'0:3' as products %}
+                                            {% for product in products %}
+                                                <li>
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-9 no-margin">
+                                                            <a href="{% url 'store:detail' product.slug %}">{{ product.title|truncatechars:30 }}</a>
+                                                            <div class="price">
+                                                                <div class="price-current">{{ currency }}{{ product.price }}</div>
+                                                                {% if product.is_on_sale %}
+                                                                    <div class="price-prev">{{ currency }}{{ product.start_price }}</div>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-xs-12 col-sm-3 no-margin">
+                                                            <a href="#" class="thumb-holder">
+                                                                <img alt="" src="{% static 'assets/images/blank.gif' %}" data-echo="{{ product.images.first.image.url }}" width="67" height="67" />
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </ul>
+                                </div><!-- /.body -->
+                            </div> <!-- /.widget -->
+                            <!-- ============================================================= ON SALE PRODUCTS : END ============================================================= -->
+                        </div><!-- /.col -->
+
+                        <div class="col-xs-12 col-sm-4 ">
+                            <!-- ============================================================= TOP RATED PRODUCTS ============================================================= -->
+                            <div class="widget">
+                                <h2>{{ 'top_rated'|from_key }}</h2>
+                                <div class="body">
+                                    <ul>
+                                        {% with top_rated.products|slice:'0:3' as products %}
+                                            {% for product in products %}
+                                                <li>
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-9 no-margin">
+                                                            <a href="{% url 'store:detail' product.slug %}">{{ product.title|truncatechars:30 }}</a>
+                                                            <div class="price">
+                                                                <div class="price-current">{{ currency }}{{ product.price }}<br>{{ product.sale_information|verbose_name:"rating" }}: {{ product.sale_information.rating }}</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-xs-12 col-sm-3 no-margin">
+                                                            <a href="#" class="thumb-holder">
+                                                                <img alt="" src="{% static 'assets/images/blank.gif' %}" data-echo="{{ product.images.first.image.url }}" width="67" height="67" />
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </ul>
+                                </div><!-- /.body -->
+                            </div> <!-- /.widget -->
+                            <!-- ============================================================= TOP RATED PRODUCTS : END ============================================================= -->
+                        </div><!-- /.col -->
+                    </div><!-- /.widgets-row-->
+                </div><!-- /.container -->
+
+
+                <div class="link-list-row">
+                    <div class="container no-padding">
+                        <div class="col-xs-12 col-md-4 ">
+                            <!-- ============================================================= CONTACT INFO ============================================================= -->
+                            <div class="contact-info">
+
+                                    {% include 'store/divs/div_logo.html'%}
+
+                                <br><br>
+                                <p class="regular-bold">{{ 'p_author_contacts'|from_key }}</p>
+
+                                <p>
+                                   {{ store.address}} ({{ store.phonenumber}})
+                                </p>
+
+                                <div class="social-icons">
+                                    <p class="regular-bold">{{ 'df_find_us_in_sn'|from_key }}</p>
+                                    <ul>
+                                        <li><a class="fa fa-facebook"></a></li>
+                                        <li><a class="fa fa-twitter"></a></li>
+                                        <li><a class="fa fa-pinterest"></a></li>
+                                        <li><a class="fa fa-linkedin"></a></li>
+                                        <li><a class="fa fa-stumbleupon"></a></li>
+                                        <li><a class="fa fa-dribbble"></a></li>
+                                        <li><a class="fa fa-vk"></a></li>
+                                    </ul>
+                                </div><!-- /.social-icons -->
+
+                            </div>
+                            <!-- ============================================================= CONTACT INFO : END ============================================================= -->
+                        </div>
+
+                        <div class="col-xs-12 col-md-8 no-margin">
+                            <!-- ============================================================= LINKS FOOTER ============================================================= -->
+                            <div class="link-widget">
+                                <div class="widget">
+                                    <h3>{{ 'df_find_it_fast'|from_key }}</h3>
+
+                                    <ul>
+                                        {% for rubric in random_rubrics.rubrics %}
+                                            <li><a href="{% url 'store:rubric' rubric.slug %}" title="{{ rubric.title }}">{{ rubric.title|truncatechars:22 }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div><!-- /.widget -->
+                            </div><!-- /.link-widget -->
+
+                            <div class="link-widget">
+                                <div class="widget">
+                                    <h3>{{ 'popular'|from_key }}</h3>
+                                    <ul>
+                                        <li><a href="{% url 'store:all' %}">{{ 'all_products'|from_key }}</a></li>
+                                        <li><a href="{% url 'store:all' to_filter='n' %}">{{ 'new_arrivals'|from_key }}</a></li>
+                                        <li><a href="{% url 'store:discont' discont=5 %}">{{ 'on_sale'|from_key }}</a></li>
+                                        <li><a href="{% url 'store:popular' 's' %}">{{ 'top_sales'|from_key }}</a></li>
+                                        <li><a href="{% url 'store:popular' 'b' %}">{{ 'bestsellers'|from_key }}</a></li>
+                                        <li><a href="{% url 'store:popular' 'r' %}">{{ 'top_rated'|from_key }}</a></li>
+                                        <li><a href="{% url 'store:popular' 'v' %}">{{ 'most_viewed'|from_key }}</a></li>
+                                    </ul>
+                                </div><!-- /.widget -->
+                            </div><!-- /.link-widget -->
+
+                            <div class="link-widget">
+                                <div class="widget">
+                                    <h3>{{ 'information'|from_key }}</h3>
+                                    <ul>
+                                        <li><a href="{% url 'posts:information' %}">{{ 'p_info_title'|from_key }}</a></li>
+                                        <li><a href="{% url 'posts:index' %}">{{ 'forum'|from_key }}</a></li>
+                                        <li><a href="{% url 'cart:cart' %}">{{ 'cart'|from_key }}</a></li>
+                                        <li><a href="{% url 'orders:index' %}">{{ 'to_order'|from_key }}</a></li>
+                                        <li><a href="{% url 'orders:history' %}">{{ 'orders_history'|from_key }}</a></li>
+                                        <li><a href="{% url 'users:wishlist' %}">{{ 'wishlist'|from_key }}</a></li>
+                                        <li><a href="{% url 'users:comparison' %}">{{ 'comparison'|from_key }}</a></li>
+                                    </ul>
+                                </div><!-- /.widget -->
+                            </div><!-- /.link-widget -->
+                            <!-- ============================================================= LINKS FOOTER : END ============================================================= -->
+                        </div>
+                    </div><!-- /.container -->
+                </div><!-- /.link-list-row -->
+
+            </footer><!-- /#footer -->

@@ -1,0 +1,27 @@
+/*===================================================================================*/
+/*  404 Page
+/*===================================================================================*/
+
+.info-404{
+	h2{
+		font-size: 200px;
+		font-weight: 700 !important;
+		line-height: 200px;
+	}
+	
+	.sub-form-row {
+		input{
+			border: 1px solid #e0e0e0;
+			padding: 18px;
+			color: #3d3d3d;
+			width: 82%;
+			border-radius: 5px 0 0 5px;
+		}
+
+		.le-button{
+			border-radius: 0 5px 5px 0;
+			padding: 19px 31px 20px 31px;
+			margin: 0 0 0 -5px;
+		}
+	}
+}

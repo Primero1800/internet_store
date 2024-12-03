@@ -1,0 +1,220 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+
+                    {% for order in orders %}
+                            <div class="accordion-group">
+                                    <div class="accordion-heading">
+
+
+                                            <div class="row">
+
+                                            <a class="accordion-toggle collapsed" data-toggle="collapse"  href="#collapse_products_{{ forloop.counter }}">
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                    <small>
+                                                        {{ order.time_placed|date:'d.m.Y H:i:s' }}
+                                                    </small>
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                    <small>
+                                                        {{ order.id }}
+                                                    </small>
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                        {% if order.status == 0 %}
+                                                            <div class="label-discount blue">
+                                                                <small>{{ 'status_0'|from_key }}</small>
+                                                            </div>
+                                                        {% elif order.status == 1 %}
+                                                            <div class="label-discount green">
+                                                                <small>{{ 'status_1'|from_key }}</small>
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="label-discount red">
+                                                                <small>{{ 'status_2'|from_key }}</small>
+                                                            </div>
+                                                        {% endif %}
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                    <small>
+                                                        {{ order.time_delivered|date:'d.m.Y H:i:s' }}
+                                                    </small>
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                    <small>
+                                                        {{ order.total_price }} <br>{{ currency }}
+                                                    </small>
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                        {% if order.payment_conditions == 0 %}
+                                                            <div class="label-discount red"><small>{{ 'payment_conditions_0'|from_key }}</small></div>
+                                                        {% elif order.payment_conditions == 1 %}
+                                                            <div class="label-discount green"><small>{{ 'payment_conditions_1'|from_key }}</small></div>
+                                                        {% else %}
+                                                            <div class="label-discount blue">
+                                                                <small>
+                                                                    {% if order.payment_conditions == 2 %}
+                                                                        {{ 'payment_conditions_2'|from_key }}
+                                                                    {% else %}
+                                                                        {{ 'payment_conditions_3'|from_key }}
+                                                                    {% endif %}
+                                                                </small>
+                                                            </div>
+                                                        {% endif %}
+                                               </div>
+                                            </a>
+
+                                                <a class="accordion-toggle collapsed" data-toggle="collapse"  href="#collapse_person_{{ forloop.counter }}">
+                                                    <div class="col-xs-12 col-sm-2" align="left" title="{{ order.address }}">
+                                                        <small>
+                                                            {{ order.address.city }} <br>{{ order.address.address }}
+                                                        </small>
+                                                   </div>
+
+                                                    <div class="col-xs-12 col-sm-1" align="left" title="{{ order.person }}">
+                                                        <small>
+                                                            {{ order.person.name }}
+                                                        </small>
+                                                   </div>
+
+                                                    <div class="col-xs-12 col-sm-1" align="left">
+                                                        {% if order.user %}
+                                                            <small>
+                                                                {{ order.user }}
+                                                            </small>
+                                                        {% endif %}
+                                                    </div>
+
+                                                </a>
+
+
+
+                                                <div class="col-xs-12 col-sm-2" align="right">
+                                                    {% if order.status == 0%}
+                                                        <form action="{% url 'orders:cancel_order' %}" method="post">
+                                                            {% csrf_token %}
+                                                            <input name="order_id" value="{{ order.id }}" hidden>
+                                                            <input name="admin" value="" hidden>
+                                                            <button type="submit" class="le-button"><small>{{ 'A_button_cancel_order'|from_key }}</small></button>
+                                                        </form>
+                                                    {% endif %}
+
+
+                                               </div>
+
+                                            </div>
+
+                                    </div>
+
+                                    <div id="collapse_products_{{ forloop.counter }}" class="accordion-body collapse">
+
+                                        <div class="accordion-inner">
+                                            <ul>
+                                                <br>
+                                                {% for product in order.products %}
+                                                    <li>
+                                                        <div class="row no-margin order-item">
+                                                            <div class="col-xs-12 col-sm-1 no-margin">
+                                                                <div class="ribbon green"><span>{{ forloop.counter }}</span></div>
+                                                            </div>
+
+                                                            <div class="col-xs-12 col-sm-3 no-margin">
+                                                                <a href="{% url 'store:detail' product.slug %}" class="qty" title="{{ product.title }}"><small>{{ product.title|truncatechars:60 }}</small></a>
+                                                            </div>
+
+                                                            <div class="col-xs-12 col-sm-1 no-margin">
+                                                                <a href="{{ product.image_url }}">
+                                                                    <img src="{{ product.image_url }}" width="90" height="67"/>
+                                                                </a>
+                                                            </div>
+
+                                                            <div class="col-xs-12 col-sm-1 no-margin">
+                                                                <small>
+                                                                    {{ product.quantity }}{{ 'orders_pcs'|from_key }}. X <br>{{ product.price }} {{ currency }}
+                                                                </small>
+                                                            </div>
+
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="collapse_person_{{ forloop.counter }}" class="accordion-body collapse">
+
+                                        <div class="accordion-inner">
+                                            <ul>
+                                                <br>
+                                                    <li>
+                                                        <div class="row no-margin order-item inlines">
+                                                            <div class="col-xs-12 col-sm-6 no-margin">
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-2 no-margin">
+                                                                <label>
+                                                                    {{ order.person.name }}
+                                                                    {% if order.person.surname %}
+                                                                        {{ order.person.surname }}
+                                                                    {% endif %}
+                                                                    {% if order.person.company_name %}
+                                                                        <br>{{ order.person.company_name }}
+                                                                    {% endif %}
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-2 no-margin">
+                                                                <label>
+                                                                    {{ order.address.city }} {{ order.address.address }}
+                                                                    <br>{{ order.address.phonenumber }}
+                                                                    {% if order.address.email %}
+                                                                        <br>{{ order.address.email }}
+                                                                    {% endif %}
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-2" align="right">
+                                                                {% if order.status == 0 %}
+                                                                    <form action="{% url 'orders:deliver_order' %}" method="post">
+                                                                        {% csrf_token %}
+                                                                        <input name="order_id" value="{{ order.id }}" hidden>
+                                                                        <input name="admin" value="" hidden>
+                                                                        <input name="delivery" value="" hidden>
+                                                                        <button type="submit" class="le-button inverse"><small>{{ 'A_button_deliver_order'|from_key }}</small></button>
+                                                                    </form>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                            </div>
+
+                            <hr class="solid">
+                    {% endfor %}
+
+                                        {% if has_next %}
+                                            <div id="target_admin_orders_{{ last_order_id }}">
+
+
+                                                <div class="loadmore-holder text-center" id="admin_orders_{{ last_order_id }}"
+                                                                hx-post
+                                                                hx-trigger="click"
+                                                                hx-target="#target_admin_orders_{{ last_order_id }}"
+                                                                hx-vals='js:{last_order_id: {{ last_order_id }}}'
+                                                >
+                                                    <a class="btn-loadmore">
+                                                        <i class="fa fa-plus"></i>
+                                                            {{ 'adcg_show_more'|from_key }}
+                                                    </a>
+                                                </div>
+
+                                            </div>
+
+                                       {% endif %}

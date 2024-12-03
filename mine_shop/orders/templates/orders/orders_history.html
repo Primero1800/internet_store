@@ -1,0 +1,339 @@
+{% load static %}
+
+
+{% load cart_tags_cart %}
+{% load orders_tags_phone_numbers %}
+
+{% load mine_shop_tags_constants %}
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="keywords" content="">
+        <meta name="robots" content="all">
+
+        <title>{{ store_title }}.  {{ 'O_H_title'|from_key}}</title>
+
+        {% include 'store/settings/BC_Cu_Fo_Ic.html' %}
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <!-- ============================================================= TOP NAVIGATION ============================================================= -->
+            {% include 'store/divs/div_top_navigation.html' %}
+            <!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+            <!-- ============================================================= HEADER ============================================================= -->
+            <header class="no-padding-bottom header-alt">
+                {% include 'store/divs/div_header.html'%}
+
+                <!-- ========================================= NAVIGATION ========================================= -->
+                {% include 'store/divs/div_horizontal_navigation.html' %}
+                <!-- ========================================= NAVIGATION : END ========================================= -->
+
+            </header>
+            <!-- ============================================================= HEADER : END ============================================================= -->
+
+            <!-- ========================================= CONTENT ========================================= -->
+            <section id="checkout-history-page">
+                <div class="container">
+
+                    {% if new_order %}
+                            <div class="page-header">
+                                <h2 class="section-title" align="left"><small>{{ 'O_H_order_created'|from_key }}:</small></h2>
+                            </div>
+
+                        {% with new_order as order %}
+                            <div class="accordion-group">
+                                    <div class="accordion-heading">
+                                        <a class="accordion-toggle collapsed" data-toggle="collapse"  href="#collapse00">
+                                            <div class="row">
+
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                    <b>{{ forloop.counter }}</b>
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                    id {{ order.id }}
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                        {% if order.status == 0 %}
+                                                            <div class="label-discount blue">
+                                                                <small>{{ 'status_0'|from_key }}</small>
+                                                            </div>
+                                                        {% elif order.status == 1 %}
+                                                            <div class="label-discount green">
+                                                                <small>{{ 'status_1'|from_key }}</small>
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="label-discount red">
+                                                                <small>{{ 'status_2'|from_key }}</small>
+                                                            </div>
+                                                        {% endif %}
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-2" align="left">
+                                                    {{ order.time_placed|date:'d.m.Y H:i:s' }}
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-2" align="left">
+                                                        {% if order.payment_conditions == 0 %}
+                                                            <div class="label-discount red"><small>{{ 'O_H_payment_conditions_0'|from_key }}</small></div>
+                                                        {% elif order.payment_conditions == 1 %}
+                                                            <div class="label-discount green"><small>{{ 'O_H_payment_conditions_1'|from_key }}</small></div>
+                                                        {% elif order.payment_conditions == 2 %}
+                                                            <div class="label-discount blue"><small>{{ 'O_H_payment_conditions_2'|from_key }}</small></div>
+                                                        {% else %}
+                                                            <div class="label-discount blue"><small>{{ 'O_H_payment_conditions_3'|from_key }}</small></div>
+                                                        {% endif %}
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-3" align="left" title="{{ order.address.address}} {{ order.address.city }}">
+                                                    {{ order.address.city }} {{ order.address.address|truncatechars:60 }}
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="right" title="{{ order.address.address}} {{ order.address.city }}">
+                                                    <div class="label-discount green"><label>{{ order.total_price }} {{ currency }}</label></div>
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="right">
+                                                    <i class="fa fa-arrow-down"></i>
+                                               </div>
+
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <div id="collapse00" class="accordion-body collapse">
+
+                                        <div class="accordion-inner">
+                                            <ul>
+                                                <br>
+                                                {% for product in order.products %}
+                                                    <li>
+                                                        <div class="row no-margin order-item">
+                                                            <div class="col-xs-12 col-sm-1 no-margin">
+                                                                <div class="ribbon green"><span>{{ forloop.counter }}</span></div>
+                                                            </div>
+
+                                                            <div class="col-xs-12 col-sm-6 no-margin">
+                                                                <a href="{% url 'store:detail' product.slug %}" class="qty" title="{{ product.title }}"><h5>{{ product.title|truncatechars:60 }}</h5></a>
+                                                            </div>
+
+                                                            <div class="col-xs-12 col-sm-1 no-margin">
+                                                                <a href="{{ product.image_url }}">
+                                                                    <img src="{{ product.image_url }}" width="90" height="67"/>
+                                                                </a>
+                                                            </div>
+
+                                                            <div class="col-xs-12 col-sm-2 no-margin">
+                                                                {{ product.quantity }}шт. X {{ product.price }} {{ currency }}
+                                                            </div>
+
+                                                            <div class="col-xs-12 col-sm-2 no-margin">
+                                                            </div>
+
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+
+                                                    {% if order.status != 2 %}
+                                                        <br>
+                                                        <li>
+                                                            <div class="row no-margin order-buttons">
+                                                                <div class="col-xs-12 col-sm-8 no-margin">
+                                                                </div>
+                                                                <div class="col-xs-12 col-sm-2 no-margin">
+                                                                </div>
+                                                                <div class="col-xs-12 col-sm-2 no-margin">
+                                                                    <form action="{% url 'orders:cancel_order' %}" method="post">
+                                                                        {% csrf_token %}
+                                                                        <input name="order_id" value="{{ order.id }}" hidden>
+                                                                        <button type="submit" class="le-button">{{ 'button_cancel_order'|from_key }}</button>
+                                                                    </form>
+                                                                </div>
+
+                                                            </div>
+                                                        </li>
+                                                    {% endif %}
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                            </div>
+                            <br>
+                        {% endwith %}
+
+                    {% endif %}
+
+                    {% if user.is_authenticated %}
+
+                            <div class="page-header">
+                                <h2 class="section-title" align="left"><small>{{ 'O_H_user_orders_history'|from_key }} {{ user }}:</small></h2>
+                            </div>
+
+
+                        {% for order in orders %}
+                            <div class="accordion-group">
+                                    <div class="accordion-heading">
+                                        <a class="accordion-toggle collapsed" data-toggle="collapse"  href="#collapse{{ forloop.counter }}">
+                                            <div class="row">
+
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                    <b>{{ forloop.counter }}</b>
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                    id {{ order.id }}
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                        {% if order.status == 0 %}
+                                                            <div class="label-discount blue">
+                                                                <small>{{ 'status_0'|from_key }}</small>
+                                                            </div>
+                                                        {% elif order.status == 1 %}
+                                                            <div class="label-discount green">
+                                                                <small>{{ 'status_1'|from_key }}</small>
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="label-discount red">
+                                                                <small>{{ 'status_2'|from_key }}</small>
+                                                            </div>
+                                                        {% endif %}
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                    {{ order.time_placed|date:'d.m.Y H:i:s' }}
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-2" align="center">
+                                                        {% if order.payment_conditions == 0 %}
+                                                            <div class="label-discount red"><small>{{ 'O_H_payment_conditions_0'|from_key }}</small></div>
+                                                        {% elif order.payment_conditions == 1 %}
+                                                            <div class="label-discount green"><small>{{ 'O_H_payment_conditions_1'|from_key }}</small></div>
+                                                        {% elif order.payment_conditions == 2 %}
+                                                            <div class="label-discount blue"><small>{{ 'O_H_payment_conditions_2'|from_key }}</small></div>
+                                                        {% else %}
+                                                            <div class="label-discount blue"><small>{{ 'O_H_payment_conditions_3'|from_key }}</small></div>
+                                                        {% endif %}
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="left">
+                                                    {{ order.time_delivered|date:'d.m.Y H:i:s' }}
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-3" align="left" title="{{ order.address.address}} {{ order.address.city }}">
+                                                    {{ order.address.city }} {{ order.address.address|truncatechars:60 }}
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="right" title="{{ order.address.address}} {{ order.address.city }}">
+                                                    <div class="label-discount green"><label>{{ order.total_price }} {{ currency }}</label></div>
+                                               </div>
+
+                                                <div class="col-xs-12 col-sm-1" align="right">
+                                                    <i class="fa fa-arrow-down"></i>
+                                               </div>
+
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <div id="collapse{{ forloop.counter }}" class="accordion-body collapse">
+
+                                        <div class="accordion-inner">
+                                            <ul>
+                                                <br>
+                                                {% for product in order.products %}
+                                                    <li>
+                                                        <div class="row no-margin order-item">
+                                                            <div class="col-xs-12 col-sm-1 no-margin">
+                                                                <div class="ribbon green"><span>{{ forloop.counter }}</span></div>
+                                                            </div>
+
+                                                            <div class="col-xs-12 col-sm-6 no-margin">
+                                                                <a href="{% url 'store:detail' product.slug %}" class="qty" title="{{ product.title }}"><h5>{{ product.title|truncatechars:60 }}</h5></a>
+                                                            </div>
+
+                                                            <div class="col-xs-12 col-sm-1 no-margin">
+                                                                <a href="{{ product.image_url }}">
+                                                                    <img src="{{ product.image_url }}" width="90" height="67"/>
+                                                                </a>
+                                                            </div>
+
+                                                            <div class="col-xs-12 col-sm-2 no-margin">
+                                                                {{ product.quantity }}{{ 'orders_pcs'|from_key }}. X {{ product.price }} {{ currency }}
+                                                            </div>
+
+                                                            <div class="col-xs-12 col-sm-2 no-margin">
+                                                            </div>
+
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+
+                                                {% if order.status != 2 %}
+                                                    <br>
+                                                    <li>
+                                                        <div class="row no-margin order-buttons">
+                                                        <div class="col-xs-12 col-sm-8 no-margin">
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-2 no-margin">
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-2 no-margin">
+                                                            {% if order.status == 0 %}
+                                                                <form action="{% url 'orders:cancel_order' %}" method="post">
+                                                                    {% csrf_token %}
+                                                                    <input name="order_id" value="{{ order.id }}" hidden>
+                                                                    <button type="submit" class="le-button">{{ 'button_cancel_order'|from_key }}</button>
+                                                                </form>
+                                                            {% endif %}
+                                                        </div>
+
+                                                    </div>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                            </div>
+                            <br>
+
+                        {% endfor %}
+                    {% else %}
+                        {% if not new_order %}
+                            <div>
+                                <h4>{{ 'not_allowed_for_anonimous_user'|from_key }}</h4>
+                                <br>
+                                <a href="{% url 'users:login' %}">
+                                    <h5><i class="fa fa-hand-o-up"></i> {{ 'authenticate'|from_key }}</h5>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    <br><br>
+
+
+                </div><!-- /.container -->
+            </section><!-- /#checkout-page -->
+            <!-- ========================================= CONTENT : END ========================================= -->
+
+            <!-- ============================================================= FOOTER ============================================================= -->
+            {% include 'store/divs/div_footer.html'%}
+            <!-- ============================================================= FOOTER : END ============================================================= -->
+        </div><!-- /.wrapper -->
+
+        <!-- JavaScripts placed at the end of the document so the pages load faster -->
+        {% include 'store/settings/end_java_scripts.html' %}
+    </body>
+</html>

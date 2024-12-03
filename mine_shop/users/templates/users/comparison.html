@@ -1,0 +1,59 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="keywords" content="">
+        <meta name="robots" content="all">
+
+        <title>{{ store_title }}. {{ 'uc_title'|from_key }}.</title>
+
+         {% include 'store/settings/BC_Cu_Fo_Ic.html' %}
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <!-- ============================================================= TOP NAVIGATION ============================================================= -->
+            {% include 'store/divs/div_top_navigation.html' %}
+            <!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+            <!-- ============================================================= HEADER ============================================================= -->
+            <header class="no-padding-bottom header-alt">
+                {% include 'store/divs/div_header.html'%}
+
+                <!-- ========================================= NAVIGATION ========================================= -->
+                {% include 'store/divs/div_horizontal_navigation.html' %}
+                <!-- ========================================= NAVIGATION : END ========================================= -->
+
+            </header>
+            <!-- ============================================================= HEADER : END ============================================================= -->
+            <div class="main-content" id="comparison-main-content"
+                 hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                 hx-post
+                 hx-trigger="load"
+            >
+                ---
+            </div>
+
+
+            <!-- ========================================= RECENTLY VIEWED ========================================= -->
+            {% include 'store/divs/div_recently_viewed.html' %}
+            <!-- ========================================= RECENTLY VIEWED : END ========================================= -->
+
+            <!-- ============================================================= FOOTER ============================================================= -->
+            {% include 'store/divs/div_footer.html'%}
+            <!-- ============================================================= FOOTER : END ============================================================= -->
+        </div><!-- /.wrapper -->
+
+        <!-- JavaScripts placed at the end of the document so the pages load faster -->
+        {% include 'store/settings/end_java_scripts.html' %}
+    </body>
+</html>

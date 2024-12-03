@@ -1,0 +1,166 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+{% load store_tags_rating %}
+
+
+
+                                <div class="comments" id="posts">
+
+                                    {% if not posts_count %}
+                                        <h2>{{ 'p_no_posts'|from_key }}</h2>
+                                    {% else %}
+                                        <h2>{{ 'p_posts'|from_key  }} ({{ posts_count }})</h2>
+                                        <br>
+
+                                        <div id="posts_next"
+                                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                            hx-post
+                                            hx-trigger="load"
+                                        >
+                                            ---
+                                        </div>
+
+
+                                    {% endif %}
+
+
+                                    {% if user.is_authenticated %}
+                                        <br>
+                                        <div class="add-review row">
+                                            <div class="col-sm-12 col-xs-12">
+                                                <div class="new-review-form">
+                                                    <h2>{{ 'p_add_post'|from_key }}</h2>
+                                                    <br>
+
+
+
+                                                             <div class="row field-row">
+                                                                 <div class="col-xs-12 col-sm-6 col-sm">
+                                                                        <form id="choose_product_form">
+                                                                            <label>{{ 'p_about_product'|from_key }}</label>
+                                                                            <input class="le-input" placeholder="{{ 'p_enter_link_or_name'|from_key }}" id="input_choose_product" name="raw_chosen_product">
+                                                                            <br><br>
+                                                                            <button class="le-button" id="choose_product"
+                                                                                   hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                                   hx-post
+                                                                                   hx-trigger="click"
+                                                                                   hx-target="#chosen_product"
+                                                                            >{{ 'find'|from_key }}</button>
+                                                                        </form>
+                                                                </div>
+                                                                 <div class="col-xs-12 col-sm-6 col-sm">
+
+                                                                     <div id="chosen_product"
+                                                                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                            hx-post
+                                                                            hx-trigger="load"
+                                                                    >
+                                                                         ---
+                                                                    </div>
+
+                                                                </div>
+                                                             </div>
+
+                                                    <br>
+
+                                                    <form id="post-form" class="contact-form">
+                                                        {% csrf_token %}
+
+                                                        <input id="stars" name="stars" value="5" hidden>
+
+                                                        <div class="row field-row">
+                                                            <div class="col-xs-12 col-sm-6">
+                                                                <table>
+                                                                    <er>
+                                                                        <ul>
+                                                                            {% if form.name.errors %}
+                                                                                {% for error in form.name.errors %}
+                                                                                    <li><em><h5>*{{ error | escape }}</h5></em></li>
+                                                                                {% endfor %}
+                                                                            {% else %}
+                                                                                    <li><em><h5> <br></h5></em></li>
+                                                                            {% endif %}
+                                                                        </ul>
+                                                                    </er>
+											                    </table>
+                                                                <label>{{ form.name.label }}*</label>
+                                                                <input class="le-input" name="name"
+                                                                   {% if form.name.value %}
+                                                                        value="{{ form.name.value }}"
+                                                                   {% else %}
+                                                                        placeholder="{{ form.name.label }}"
+                                                                   {% endif %}
+                                                                >
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-6">
+                                                                <table>
+												                    <er>
+														                <ul>
+                                                                            {% if form.email.errors %}
+                                                                                {% for error in form.email.errors %}
+                                                                                    <li><em><h5>*{{ error | escape }}</h5></em></li>
+                                                                                {% endfor %}
+                                                                            {% else %}
+                                                                                    <li><em><h5> <br></h5></em></li>
+                                                                            {% endif %}
+														                </ul>
+												                    </er>
+											                    </table>
+                                                                <label>{{ form.email.label }}</label>
+                                                                <input class="le-input" name="email"
+                                                                   {% if user.is_authenticated %}
+                                                                       value="{{ user.email }}" readonly
+                                                                   {% else %}
+                                                                       {% if form.email.value %}
+                                                                            value="{{ form.email.value }}"
+                                                                       {% else %}
+                                                                            placeholder="{{ form.email.label }}"
+                                                                       {% endif %}
+                                                                   {% endif %}
+                                                                >
+                                                            </div>
+                                                        </div><!-- /.field-row -->
+
+                                                        <div class="field-row">
+                                                            <table>
+												                <er>
+														            <ul>
+                                                                        {% if form.review.errors %}
+                                                                            {% for error in form.review.errors %}
+                                                                                <li><em><h5>*{{ error | escape }}</h5></em></li>
+                                                                            {% endfor %}
+                                                                        {% else %}
+                                                                                <li><em><h5> <br></h5></em></li>
+                                                                        {% endif %}
+														            </ul>
+												                </er>
+											                </table>
+                                                            <label>{{ form.review.label }}*</label>
+                                                            <textarea rows="8" class="le-input" name="review">{% if not posted %}{% if form.review.value %}{{ form.review.value }}{% endif %}{% endif %}</textarea>
+                                                        </div><!-- /.field-row -->
+                                                        <br>
+                                                        <div class="row field-row">
+
+                                                             <div class="col-xs-12 col-sm-2">
+                                                                 <button class="le-button huge" id="button_add_post"
+                                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                    hx-post=""
+                                                                    hx-trigger="click"
+                                                                    hx-target="#posts"
+                                                                    hx-vals='js:{product_id:get_element_value_by_id("product_id")}'
+                                                                 >{{ 'p_public'|from_key }}</button>
+                                                             </div>
+
+                                                        </div><!-- /.field-row -->
+
+                                                    </form><!-- /.contact-form -->
+
+                                        </div><!-- /.new-review-form -->
+                                    </div><!-- /.col -->
+                                        </div><!-- /.add-review -->
+
+                                    {% endif %}
+
+                                </div><!-- /.comments -->

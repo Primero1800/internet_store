@@ -1,0 +1,13 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+
+                                    <div id="total_field">
+                                        <ul id="total-field" class="tabled-data inverse-bold ">
+                                            <li>
+                                                    <label>{{ 'adtf_total_pay'|from_key }}</label>
+                                                    <div class="value">{{ currency }} {{ order_total_price }}</div>
+                                            </li>
+                                        </ul><!-- /.tabled-data -->
+                                    </div>

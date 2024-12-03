@@ -1,0 +1,219 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="keywords" content="">
+        <meta name="robots" content="all">
+
+        <title>{{ store_title }}. {{ 'admin_orders_title'|from_key }}</title>
+
+        {% include 'store/settings/BC_Cu_Fo_Ic.html' %}
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <!-- ============================================================= TOP NAVIGATION ============================================================= -->
+            {% include 'store/divs/div_top_navigation.html' %}
+            <!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+            <!-- ============================================================= HEADER ============================================================= -->
+
+            <!-- ============================================================= HEADER : END ============================================================= -->
+
+            <!-- ========================================= CONTENT ========================================= -->
+            <section id="checkout-page">
+                <br><br>
+                <div class="container">
+                    {% if orders_info and orders_info.count.all > 0%}
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="row">
+
+                                <div class="col-xs-12 col-sm-1" align="left">
+                                </div>
+
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                </div>
+
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                        <label>{{ 'A_all'|from_key }}</label>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                    <div class="label-discount green">
+                                        {{ 'A_delivered'|from_key }}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                    <div class="label-discount blue">
+                                        {{ 'A_awaits'|from_key }}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                    <div class="label-discount red">
+                                        {{ 'A_cancelled'|from_key }}
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-1" align="left">
+                                </div>
+
+                            </div>
+                            <div class="row">
+
+                                <div class="col-xs-12 col-sm-1" align="left">
+                                </div>
+
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                    <label>{{ 'A_count'|from_key }}</label>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                        <label>{{ orders_info.count.all }}</label>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                     <label>{{ orders_info.count.delivered }}</label>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                     <label>{{ orders_info.count.awaits }}</label>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                     <label>{{ orders_info.count.cancelled }}</label>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-1" align="left">
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <hr class="solid">
+                            </div>
+
+                            <br>
+
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                    <div class="label-discount green">
+                                        {{ 'A_last_delivery'|from_key }}
+                                    </div>
+                                </div>
+                                 <div class="col-xs-12 col-sm-1" align="left">
+                                     <label>{{ 'ID'|from_key }}</label>
+                                 </div>
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                        {{ orders_info.last_delivery.id }}
+                                </div>
+                                <div class="col-xs-12 col-sm-2" align="right">
+                                     <label>{{ order_fields.time_delivered }}</label>
+                                 </div>
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                        {{ orders_info.last_delivery.time_delivered|date:'d.m.Y H:i:s' }}
+                                </div>
+                                <div class="col-xs-12 col-sm-3" align="left">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                    <div class="label-discount blue">
+                                        {{ 'A_long_await'|from_key }}
+                                    </div>
+                                </div>
+                                 <div class="col-xs-12 col-sm-1" align="left">
+                                     <label>{{ 'ID'|from_key }}</label>
+                                 </div>
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                        {{ orders_info.long_await.id }}
+                                </div>
+                                <div class="col-xs-12 col-sm-2" align="right">
+                                     <label>{{ order_fields.time_placed }}</label>
+                                 </div>
+                                <div class="col-xs-12 col-sm-2" align="left">
+                                        {{ orders_info.long_await.time_placed|date:'d.m.Y H:i:s' }}
+                                </div>
+                                <div class="col-xs-12 col-sm-3" align="left">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        <br>
+                        <br>
+                        <hr class="solid">
+
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-1" align="left">
+                            <label>{{ order_fields.time_placed }}</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-1" align="left">
+                            <label>{{ 'ID'|from_key }}</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-1" align="left">
+                            <label>{{ order_fields.status }}</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-1" align="left">
+                            <label>{{ order_fields.time_delivered }}</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-1" align="left">
+                            <label>{{ order_fields.total_price }}</label>
+                         </div>
+                        <div class="col-xs-12 col-sm-1" align="left">
+                            <label>{{ order_fields.payment_conditions }}</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-2" align="left">
+                            <label>{{ order_fields.address }}</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-1" align="left">
+                            <label>{{ order_fields.person }}</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-1" align="left">
+                            <label>{{ order_fields.user }}</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-2" align="right">
+                            <br>
+                        </div>
+                    </div>
+
+                        <hr class="solid">
+
+                        <div id="admin_orders"
+                             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                             hx-post
+                             hx-trigger="load"
+                        >
+                            ---
+
+                        </div>
+
+                    {% endif %}
+
+                </div><!-- /.container -->
+
+            </section><!-- /#checkout-page -->
+            <!-- ========================================= CONTENT : END ========================================= -->
+
+            <!-- ============================================================= FOOTER ============================================================= -->
+            <!-- ============================================================= FOOTER : END ============================================================= -->
+        </div><!-- /.wrapper -->
+
+        <!-- JavaScripts placed at the end of the document so the pages load faster -->
+        {% include 'store/settings/end_java_scripts.html' %}
+    </body>
+</html>

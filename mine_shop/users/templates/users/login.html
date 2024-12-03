@@ -1,0 +1,142 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Meta -->
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+	    <meta name="keywords" content="">
+	    <meta name="robots" content="all">
+
+	    <title>{{ store_title }}. {{ 'ul_title'|from_key }}</title>
+
+			{% include 'store/settings/BC_Cu_Fo_Ic.html' %}
+
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<!-- ============================================================= TOP NAVIGATION ============================================================= -->
+			{% include 'store/divs/div_top_navigation.html' %}
+			<!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+			<!-- ============================================================= HEADER ============================================================= -->
+			<header class="no-padding-bottom header-alt">
+    			{% include 'store/divs/div_header.html'%}
+
+				<!-- ========================================= NAVIGATION ========================================= -->
+				{% include 'store/divs/div_horizontal_navigation.html' %}
+				<!-- ========================================= NAVIGATION : END ========================================= -->
+
+			</header>
+			<!-- ============================================================= HEADER : END ============================================================= -->
+
+			<!-- ========================================= MAIN ========================================= -->
+			<main id="authentication" class="inner-bottom-md">
+
+				<div class="container">
+					<div class="row">
+						<div class="col-md-3"></div>
+
+						<div class="col-md-6">
+							<section class="section sign-in inner-right-xs">
+								<h2 class="bordered">{{ 'enter'|from_key }} </h2>
+								<div class="social-auth-buttons">
+									<div class="row">
+										<div class="col-md-6">
+											<p>{{ 'ul_enter_account'|from_key }}</p>
+										</div>
+										<div class="col-md-6">
+											<p><a href="{% url 'users:registration' %}">{{ 'ul_no_account_register'|from_key }}.</a></p>
+										</div>
+									</div>
+								</div>
+
+
+								<form role="form" class="login-form cf-style-1" action="{% url 'users:login' %}" method="post">
+									{% csrf_token %}
+									{% if next %}
+										<input name="next" id="next" type="text" class="le-input" value="{{ next }}" hidden>
+									{% endif %}
+
+										<table>
+												<er><ul><li><em><h5>
+													{% if auth_error %}
+														*{{ auth_error }}
+													{% endif %}
+													{% if member_message %}
+														{% load users_tags_members %}
+														*{{ member_message|message_for_key }}
+													{% endif %}
+												</h5></em></li></ul></er>
+											</table>
+									<div class="field-row">
+										{% if form.email.errors %}
+											<table>
+												<er>
+														<ul>
+															{% for error in form.email.errors %}
+																<li><em><h5>*{{ error | escape }}</h5></em></li>
+															{% endfor %}
+														</ul>
+												</er>
+											</table>
+										{% endif %}
+			                            <label>{{ 'email'|from_key }}</label>
+			                            <input name="email" id="email" type="text" class="le-input" {% if email_placeholder %}value="{{ email_placeholder }}"{% else %}autofocus{% endif %}>
+			                        </div><!-- /.field-row -->
+
+									<div class="field-row">
+										{% if form.email.errors %}
+											<table>
+												<er>
+														<ul>
+															{% for error in form.password.errors %}
+																<li><em><h5>*{{ error | escape }}</h5></em></li>
+															{% endfor %}
+														</ul>
+												</er>
+											</table>
+										{% endif %}
+			                            <label>{{ 'password'|from_key }}</label>
+			                            <input name="password" type="password" class="le-input" {% if email_placeholder %}autofocus{% endif %}>
+			                        </div><!-- /.field-row -->
+
+			                        <div class="field-row clearfix">
+			                        	 <span class="pull-right">
+											 	<a href="{% url 'users:restore_password'  %}" class="content-color bold">
+													<h6>{{ 'ul_forget_password_get_new'|from_key }}.</h6></a>
+										 </span>
+			                        </div>
+
+			                        <div class="buttons-holder">
+			                            <button type="submit" class="le-button huge">{{ 'to_enter'|from_key }}</button>
+			                        </div><!-- /.buttons-holder -->
+								</form><!-- /.cf-style-1 -->
+
+							</section><!-- /.sign-in -->
+						</div><!-- /.col -->
+
+
+					</div><!-- /.row -->
+				</div><!-- /.container -->
+
+			</main><!-- /.authentication -->
+			<!-- ========================================= MAIN : END ========================================= -->
+
+			<!-- ============================================================= FOOTER ============================================================= -->
+            {% include 'store/divs/div_footer.html'%}
+            <!-- ============================================================= FOOTER : END ============================================================= -->
+        </div><!-- /.wrapper -->
+
+        <!-- JavaScripts placed at the end of the document so the pages load faster -->
+        {% include 'store/settings/end_java_scripts.html' %}
+
+    </body>
+</html>

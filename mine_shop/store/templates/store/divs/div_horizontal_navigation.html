@@ -1,0 +1,223 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+{% if not rubrics %}
+    {% load store_tags_rubrics %}
+            {% add_rubrics_to_context as rubrics %}
+{% endif %}
+
+{% if not new_arrivals %}
+    {% load store_tags_products %}
+        {% add_new_arrivals_to_context as new_arrivals %}
+{% endif %}
+
+<nav id="top-megamenu-nav" class="megamenu-vertical animate-dropdown">
+                    <div class="container">
+                        <div class="yamm navbar">
+
+                            <div class="collapse navbar-collapse" id="mc-horizontal-menu-collapse">
+                                <ul class="nav navbar-nav">
+
+                                     <li class="dropdown yamm-fw">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'all_rubrics'|from_key }}</a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <div class="yamm-content">
+                                                    <div class="row">
+                                                       <div class="col-md-4">
+
+                                                            <ul>
+                                                                {% for rubric in rubrics.all|slice_to_3:1 %}
+                                                                    <li><a href="{% url 'store:rubric' rubric.slug %}">{{ rubric.title }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+
+                                                        </div><!-- /.col -->
+
+                                                       <div class="col-md-4">
+
+                                                            <ul>
+                                                                {% for rubric in rubrics.all|slice_to_3:2 %}
+                                                                    <li><a href="{% url 'store:rubric' rubric.slug %}">{{ rubric.title }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div><!-- /.col -->
+
+                                                       <div class="col-md-4">
+                                                            <ul>
+                                                                {% for rubric in rubrics.all|slice_to_3:3 %}
+                                                                    <li><a href="{% url 'store:rubric' rubric.slug %}">{{ rubric.title }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div><!-- /.col -->
+                                                    </div><!-- /.row -->
+                                                </div><!-- /.yamm-content -->
+                                            </li>
+                                        </ul>
+                                     </li>
+
+                                    <li class="dropdown yamm-fw">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'products_on_sale'|from_key }}</a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <div class="yamm-content">
+                                                    <div class="row">
+                                                       <div class="col-md-4">
+                                                            <ul>
+                                                               <li><a href="{% url 'store:discont' 5 %}">{{ 'all_sales'|from_key }}</a></li>
+                                                            </ul>
+                                                        </div><!-- /.col -->
+
+                                                        <div class="col-md-4">
+                                                            <ul>
+                                                                <li><a href="{% url 'store:discont' 25 %}">{{ 'sales_more_'|from_key }} <b>25%</b></a></li>
+                                                            </ul>
+                                                        </div><!-- /.col -->
+
+                                                       <div class="col-md-4">
+                                                            <ul>
+                                                               <li><a href="{% url 'store:discont' 50 %}">{{ 'sales_more_'|from_key }} <b>50%</b></a></li>
+                                                            </ul>
+                                                        </div><!-- /.col -->
+                                                    </div><!-- /.row -->
+                                                </div><!-- /.yamm-content -->
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                     <li class="dropdown yamm-fw">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'popular'|from_key }}</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="{% url 'store:all' %}"><i><b>{{ 'all_products'|from_key }}</b></i></a></li>
+                                            <li><a href="{% url 'store:all' to_filter='n' %}">{{ 'new_arrivals'|from_key }}</a></li>
+                                            <li><a href="{% url 'store:discont' discont=5 %}">{{ 'on_sale'|from_key }}</a></li>
+                                            <li><a href="{% url 'store:popular' 's' %}">{{ 'top_sales'|from_key }}</a></li>
+                                            <li><a href="{% url 'store:popular' 'b' %}">{{ 'bestsellers'|from_key }}</a></li>
+                                            <li><a href="{% url 'store:popular' 'r' %}">{{ 'top_rated'|from_key }}</a></li>
+                                            <li><a href="{% url 'store:popular' 'v' %}">{{ 'most_viewed'|from_key }}</a></li>
+                                        </ul>
+                                    </li>
+
+                                     <li class="dropdown yamm-fw">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'new_arrivals'|from_key }}</a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <div class="yamm-content">
+                                                    <div class="row">
+                                                       <div class="col-md-4">
+                                                            <ul>
+                                                                {% for product in new_arrivals.products|slice_to_3:1 %}
+                                                                    <li><a href="{% url 'store:detail' product.slug %}" title="{{ product.title }}">
+                                                                        {% for rubric in product.rubrics.all %}
+                                                                            <b>{{ rubric.title }}</b>
+                                                                        {% endfor %}
+                                                                        {{ product.title|truncatechars:60 }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div><!-- /.col -->
+
+                                                        <div class="col-md-4">
+                                                            <ul>
+                                                                {% for product in new_arrivals.products|slice_to_3:2 %}
+                                                                    <li><a href="{% url 'store:detail' product.slug %}" title="{{ product.title }}">
+                                                                        {% for rubric in product.rubrics.all %}
+                                                                            <b>{{ rubric.title }}</b>
+                                                                        {% endfor %}
+                                                                        {{ product.title|truncatechars:60 }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div><!-- /.col -->
+
+                                                        <div class="col-md-4">
+                                                            <ul>
+                                                                {% for product in new_arrivals.products|slice_to_3:3 %}
+                                                                    <li><a href="{% url 'store:detail' product.slug %}" title="{{ product.title }}">
+                                                                        {% for rubric in product.rubrics.all %}
+                                                                            <b>{{ rubric.title }}</b>
+                                                                        {% endfor %}
+                                                                        {{ product.title|truncatechars:60 }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div><!-- /.col -->
+                                                    </div><!-- /.row -->
+                                                </div><!-- /.yamm-content -->
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    {% for rubric in rubrics.all|shuffle|slice:":2" %}
+                                        <li class="dropdown yamm-fw">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="{{ rubric.title }}">{{ rubric.title|truncatechars:22 }}</a>
+                                            <ul class="dropdown-menu">
+                                            <li>
+                                                <div class="yamm-content">
+                                                    <div class="row">
+                                                       <div class="col-md-4">
+                                                            <ul>
+                                                                {% for product in rubric.products.all|slice_to_3:1 %}
+                                                                    <li><a href="{% url 'store:detail' product.slug %}" title="{{ product.title }}">
+                                                                        {{ product.title|truncatechars:60 }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div><!-- /.col -->
+
+                                                        <div class="col-md-4">
+                                                            <ul>
+                                                                {% for product in rubric.products.all|slice_to_3:2 %}
+                                                                    <li><a href="{% url 'store:detail' product.slug %}" title="{{ product.title }}">
+                                                                        {{ product.title|truncatechars:60 }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div><!-- /.col -->
+
+                                                        <div class="col-md-4">
+                                                            <ul>
+                                                                {% for product in rubric.products.all|slice_to_3:3 %}
+                                                                    <li><a href="{% url 'store:detail' product.slug %}" title="{{ product.title }}">
+                                                                        {{ product.title|truncatechars:60 }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div><!-- /.col -->
+                                                    </div><!-- /.row -->
+                                                </div><!-- /.yamm-content -->
+                                            </li>
+                                        </ul>
+                                        </li>
+                                    {% endfor %}
+
+                                </ul><!-- /.navbar-nav -->
+                            </div><!-- /.navbar-collapse -->
+                        </div><!-- /.navbar -->
+                    </div><!-- /.container -->
+                </nav><!-- /.megamenu-vertical -->
+                <!-- ========================================= NAVIGATION : END ========================================= -->
+    	        <div class="animate-dropdown">
+                    <!-- ========================================= BREADCRUMB ========================================= -->
+                    <div id="breadcrumb-alt">
+                        <div class="container">
+                            <div class="breadcrumb-nav-holder minimal">
+                                <ul>
+
+                                    {% for rubric in rubrics.all|shuffle|slice:":7" %}
+                                        <li class="dropdown breadcrumb-item">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                <i>{{ rubric.title }}</i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="{% url 'store:rubric' rubric.slug %}"><b><i>{{ 'all_products_from_rubric'|from_key }}</i></b></a></li>
+                                                <li><a href="{% url 'store:rubric' slug=rubric.slug to_filter='n' %}"><b><i>{{ 'new_arrivals'|from_key }}</i></b></a></li>
+                                                <li><a href="{% url 'store:rubric' slug=rubric.slug to_filter='d' %}"><b><i>{{ 'on_sale'|from_key }}</i></b></a></li>
+                                                {% for product in rubric.products.all|shuffle|slice:":10"%}
+                                                <li><a href="{% url 'store:detail' product.slug %}"><i>{{ product.title|truncatechars:60 }} - <b>{{ product.brand.title }}</b></i></a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li><!-- /.breadcrumb-item -->
+                                    {% endfor %}
+
+                                </ul><!-- /.breadcrumb-nav-holder -->
+                            </div>
+                        </div><!-- /.container -->
+                    </div><!-- /#breadcrumb-alt -->
+                    <!-- ========================================= BREADCRUMB : END ========================================= -->
+                </div>

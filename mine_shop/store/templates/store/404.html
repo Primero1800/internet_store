@@ -1,0 +1,73 @@
+{% load static %}
+
+{% load store_tags_error_page %}
+
+{% load mine_shop_tags_constants %}
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="keywords" content="">
+        <meta name="robots" content="all">
+
+        <title>{{ store_title }} {{ '404_title'|from_key }}</title>
+
+        {% include 'store/settings/BC_Cu_Fo_Ic.html' %}
+    </head>
+
+	<body>
+		<div class="wrapper">
+			<!-- ============================================================= TOP NAVIGATION ============================================================= -->
+			{% include 'store/divs/div_top_navigation.html' %}
+			<!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+			<!-- ============================================================= HEADER ============================================================= -->
+			<header class="no-padding-bottom header-alt">
+    			{% include 'store/divs/div_header.html'%}
+
+				<!-- ========================================= NAVIGATION ========================================= -->
+				{% include 'store/divs/div_horizontal_navigation.html' %}
+				<!-- ========================================= NAVIGATION : END ========================================= -->
+			</header>
+			<!-- ============================================================= HEADER : END ============================================================= -->
+
+			<main id="faq" class="inner">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8 center-block">
+							<div class="info-404 text-center">
+								<h2 class="primary-color inner-bottom-xs">404</h2>
+
+								<div class="text-center">
+									{% if message %}
+										<a href="{% url  message|link_for_key %}" class="btn-lg huge"><i class="fa fa-link"></i> {{ message|message_for_key }}</a>
+									{% else %}
+										<a><i class="fa fa-link"></i> {{ exception }}</a> (Request URL: {{ request_path }})
+									{% endif %}
+								</div>
+								<br>
+								<div class="text-center">
+									<a href="{% url 'store:index' %}" class="btn-lg huge"><i class="fa fa-home"></i> {{ 'to_home_page'|from_key }}</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+
+			<!-- ============================================================= FOOTER ============================================================= -->
+			{% include 'store/divs/div_footer.html'%}
+			<!-- ============================================================= FOOTER : END ============================================================= -->
+		</div><!-- /.wrapper -->
+
+		<!-- JavaScripts placed at the end of the document so the pages load faster -->
+		{% include 'store/settings/end_java_scripts.html' %}
+	</body>
+</html>

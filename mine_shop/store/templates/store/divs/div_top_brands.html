@@ -1,0 +1,38 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+{% load store_tags_brands %}
+
+
+            <section id="top-brands" class="wow fadeInUp">
+                <div class="container">
+                    <div class="carousel-holder" >
+
+                        <div class="title-nav">
+                            <h2>{{ 'dtb_top_brands'|from_key }}</h2>
+                            <div class="nav-holder">
+                                <a href="#prev" data-target="#owl-brands" class="slider-prev btn-prev fa fa-angle-left"></a>
+                                <a href="#next" data-target="#owl-brands" class="slider-next btn-next fa fa-angle-right"></a>
+                            </div>
+                        </div><!-- /.title-nav -->
+
+                        <div id="owl-brands" class="owl-carousel brands-carousel">
+
+                            {% add_brands_to_context  as brands %}
+                            {% for brand in brands.top %}
+
+                                <div class="carousel-item">
+                                    <a href="{{ brand.image.url }}">
+                                        <img alt="" src="{{ brand.image.url }}" title="{{ brand.description }}"/>
+                                    </a>
+                                </div><!-- /.carousel-item -->
+
+                            {% endfor %}
+
+
+                        </div><!-- /.brands-caresoul -->
+
+                    </div><!-- /.carousel-holder -->
+                </div><!-- /.container -->
+            </section><!-- /#top-brands -->

@@ -1,0 +1,198 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+{% load store_tags_rubrics %}
+    {% add_rubrics_to_context as rubrics %}
+    {% add_random_rubrics_to_context 4 as random_rubrics %}
+
+{% load posts_tags_posts %}
+    {% add_recent_posted as recent_posted %}
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="keywords" content="">
+        <meta name="robots" content="all">
+
+        <title>{{ store_title }} {{ 'p_forum_title'|from_key }}</title>
+
+        {% include 'store/settings/BC_Cu_Fo_Ic.html' %}
+
+    </head>
+
+    <body>
+        <div class="wrapper">
+           <!-- ============================================================= TOP NAVIGATION ============================================================= -->
+            {% include 'store/divs/div_top_navigation.html' %}
+            <!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+            <!-- ============================================================= HEADER ============================================================= -->
+            <header class="no-padding-bottom header-alt">
+                {% include 'store/divs/div_header.html'%}
+
+    	        <!-- ========================================= NAVIGATION ========================================= -->
+                {% include 'store/divs/div_horizontal_navigation.html' %}
+                <!-- ========================================= NAVIGATION : END ========================================= -->
+
+            </header>
+            <!-- ============================================================= HEADER : END ============================================================= -->
+
+            <section id="blog-single">
+                <div class="container">
+                    <!-- ========================================= CONTENT ========================================= -->
+                    <div class="posts col-md-9">
+                        <div class="post-entry">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-1">
+                                </div>
+                                <div class="col-xs-12 col-md-8 homebanner-holder no-margin">
+                                <!-- ========================================== SECTION – HERO ========================================= -->
+                                    <div id="hero">
+                                    <div id="owl-main" class="owl-carousel owl-inner-nav owl-ui-sm">
+
+                                        {% for rubric in random_rubrics.rubrics %}
+                                            <div class="item" style="background-image: url({{ rubric.image.url }});">
+                                                <div class="container-fluid">
+                                                    <div class="caption vertical-center text-left">
+                                                        <div class="big-text fadeInDown-1">
+                                                            {{ rubric.title }}
+                                                        </div>
+
+                                                        <div class="excerpt fadeInDown-2">
+                                                            {{ rubric.description }}
+                                                        </div>
+                                                        <div class="button-holder fadeInDown-3">
+                                                            <a href="{% url 'store:rubric' rubric.slug %}" class="big le-button ">{{ 'p_follow'|from_key }}</a>
+                                                        </div>
+                                                    </div><!-- /.caption -->
+                                                </div><!-- /.container-fluid -->
+                                            </div><!-- /.item -->
+                                        {% endfor %}
+
+                                    </div ><!-- /.owl-carousel -->
+                                </div>
+                                <!-- ========================================= SECTION – HERO : END ========================================= -->
+                                </div>
+                            </div>
+
+                        </div><!-- /.post-entry -->
+                        <br>
+                        <div class="meta-row">
+                            <div class="inline">
+                                <label>{{ 'rubrics'|from_key }}:</label>
+                                {% for rubric in rubrics.all %}
+                                    <span><a href="{% url 'store:rubric' rubric.slug %}">{{ rubric.title }}</a>,</span>
+                                {% endfor %}
+                            </div>
+                        </div><!-- /.meta-row -->
+
+                        <div class="blog-post-author">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p>{{ 'p_authorized_only'|from_key }}. </p>
+                                </div>
+                            </div>
+                        </div><!-- /.blog-post-author -->
+
+
+                        <section class="inner-bottom-xs">
+                                <div class="comments" id="posts"
+                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                    hx-post
+                                    hx-trigger="load"
+                                >
+                                    ---
+                                </div> <!-- end basket-content   -->
+
+                        </section>
+
+
+                    </div><!-- /.posts -->
+
+                    <!-- ========================================= CONTENT :END ========================================= -->
+
+                    <!-- ========================================= SIDEBAR ========================================= -->
+                    <div class="col-md-3">
+                        <aside class="sidebar blog-sidebar">
+
+                            <div class="widget">
+                                <h4>{{ 'p_about_forum'|from_key }}</h4>
+                                <div class="body">
+                                    <p>{{ 'p_blog_rules'|from_key }}</p>
+                                </div>
+                            </div><!-- /.widget -->
+
+                            <div class="widget">
+                                <h4>{{ 'rubrics'|from_key }}</h4>
+                                <div class="body">
+                                    <ul class="le-links">
+                                        {% for rubric in rubrics.all %}
+                                            <li><a href="{% url 'store:rubric' rubric.slug %}">{{ rubric.title }}</a></li>
+                                        {% endfor %}
+                                    </ul><!-- /.le-links -->
+                                </div>
+                            </div><!-- /.widget -->
+
+                            <div class="widget">
+                                <div class="simple-banner">
+                                    <a href="{% url 'store:all' %}"><img alt="" class="img-responsive" src="{% static 'assets/images/brand-size/all.png' %}" data-echo="{% static 'assets/images/brand-size/all.png' %}" /></a>
+                                </div>
+                            </div>
+
+                            <!-- ========================================= RECENT POST ========================================= -->
+                            <div class="widget">
+                                <h4>{{ 'p_recent_in_posts'|from_key }}</h4>
+                                <div class="body">
+                                    <ul class="recent-post-list">
+                                        {% for product in recent_posted %}
+                                            <li class="sidebar-recent-post-item">
+                                                <div class="media">
+                                                    <a href="{{ product.image_url }}" class="thumb-holder pull-left">
+                                                        <img alt="" src="{% static 'assets/images/blank.gif' %}" data-echo="{{ product.image_url }}" />
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <h5><a href="{% url 'store:detail' product.slug %}">{{ product.title|truncatechars:40 }} </a></h5>
+                                                    </div>
+                                                </div>
+                                            </li><!-- /.sidebar-recent-post-item -->
+                                        {% endfor %}
+
+
+                                    </ul><!-- /.recent-post-list -->
+                                </div><!-- /.body -->
+                            </div><!-- /.widget -->
+                            <!-- ========================================= RECENT POST : END ========================================= -->
+
+
+                        </aside><!-- /.sidebar .blog-sidebar -->
+                    </div><!-- /.col -->
+                    <!-- ========================================= SIDEBAR : END ========================================= -->
+
+                    <!-- ========================================= CONTENT ========================================= -->
+                </div>
+            </section>
+
+
+            <!-- ========================================= RECENTLY VIEWED ========================================= -->
+            {% include 'store/divs/div_recently_viewed.html' %}
+            <!-- ========================================= RECENTLY VIEWED : END ========================================= -->
+
+
+            <!-- ============================================================= FOOTER ============================================================= -->
+            {% include 'store/divs/div_footer.html'%}
+            <!-- ============================================================= FOOTER : END ============================================================= -->
+        </div><!-- /.wrapper -->
+
+        <!-- JavaScripts placed at the end of the document so the pages load faster -->
+        {% include 'store/settings/end_java_scripts.html' %}
+    </body>
+</html>

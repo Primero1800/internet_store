@@ -1,0 +1,615 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+{% load store_tags_sale_information %}
+        {% add_top_sales_to_context as top_sales %}
+        {% add_top_views_to_context as top_views %}
+{% load store_tags_products %}
+    {% add_new_arrivals_to_context as new_arrivals %}
+    {% add_heroes_to_context as heroes %}
+{% load store_tags_rubrics %}
+    {% add_rubrics_to_context as rubrics %}
+    {% add_random_rubrics_to_context 2 as random_rubrics %}
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="keywords" content="">
+        <meta name="robots" content="all">
+
+        <title>{{ store_title }}</title>
+
+
+       {% include 'store/settings/BC_Cu_Fo_Ic.html' %}
+
+
+    </head>
+
+    <body>
+
+        <div class="wrapper">
+            <!-- ============================================================= TOP NAVIGATION ============================================================= -->
+                    {% include 'store/divs/div_top_navigation.html' %}
+            <!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+
+            <!-- ============================================================= HEADER ============================================================= -->
+             <header>
+                    {% include 'store/divs/div_header.html'%}
+             </header>
+
+
+            <!-- ============================================================= HEADER : END ============================================================= -->
+
+
+            <div id="top-banner-and-menu">
+                <div class="container">
+                    <div class="col-xs-12 col-sm-4 col-md-3 sidemenu-holder">
+                        <!-- ================================== TOP NAVIGATION ================================== -->
+
+                            {% include 'store/divs/div_vertical_navigation.html' %}
+
+                        <!-- ================================== TOP NAVIGATION : END ================================== -->
+                    </div><!-- /.sidemenu-holder -->
+
+                    <div class="col-xs-12 col-sm-8 col-md-9 homebanner-holder">
+                        <!-- ========================================== SECTION – HERO ========================================= -->
+
+                        <div id="hero">
+                            <div id="owl-main" class="owl-carousel owl-inner-nav owl-ui-sm">
+
+                                {% for product in heroes %}
+                                    <div class="item" style="background-image: url({{ product.images.first.image.url }});">
+                                    <div class="container-fluid">
+                                        <div class="caption vertical-center text-left">
+                                            <div class="big-text fadeInDown-1">
+                                                {{ 'sale'|from_key }}<span class="big"><span class="sign"></span>{{ product.discont}}%</span>
+                                            </div>
+
+                                            <div class="excerpt fadeInDown-2">
+                                                {{ 'i_on_chosen_product_'|from_key }}:<br>
+                                                {{ product.title }}<br>
+                                                <div class="small fadeInDown-2">
+                                                    <b>{{ product.brand.title }}</b>
+                                                </div>
+                                            </div>
+                                            <div class="small fadeInDown-2">
+                                                {% for rubric in product.rubrics.all %}
+                                                    {{ rubric.title }}
+                                                {% endfor %}
+                                            </div>
+                                            <div class="button-holder fadeInDown-3">
+                                                <a href="{% url 'store:detail' product.slug %}" class="big le-button ">{{ 'i_buy_now'|from_key }}</a>
+                                            </div>
+                                        </div><!-- /.caption -->
+                                    </div><!-- /.container-fluid -->
+                                </div><!-- /.item -->
+                                {% endfor %}
+
+                            </div><!-- /.owl-carousel -->
+                        </div>
+                        <!-- ========================================= SECTION – HERO : END ========================================= -->
+                    </div><!-- /.homebanner-holder -->
+                </div><!-- /.container -->
+            </div><!-- /#top-banner-and-menu -->
+
+            <!-- ========================================= HOME BANNERS ========================================= -->
+            <section id="banner-holder" class="wow fadeInUp">
+                <div class="container">
+                    <div class="col-xs-12 col-lg-6 no-margin banner">
+                        <a href="{% url 'store:rubric' random_rubrics.rubrics.0.slug %}">
+                            <div class="banner-text theblue">
+                                <h1>{{ random_rubrics.rubrics.0.title }}</h1>
+                                <span class="tagline">{{ random_rubrics.rubrics.0.description }}</span>
+                            </div>
+                            <img class="banner-image" alt="" src="" data-echo="{{ random_rubrics.rubrics.0.image.url }}" />
+                        </a>
+                    </div>
+                    <div class="col-xs-12 col-lg-6 no-margin text-right banner">
+                        <a href="{% url 'store:rubric' random_rubrics.rubrics.1.slug %}">
+                            <div class="banner-text right">
+                                <h1>{{ random_rubrics.rubrics.1.title }}</h1>
+                                <span class="tagline">{{ random_rubrics.rubrics.1.description }}</span>
+                            </div>
+                            <img class="banner-image" alt="" src="" data-echo="{{ random_rubrics.rubrics.1.image.url }}" />
+                        </a>
+                    </div>
+                </div><!-- /.container -->
+            </section><!-- /#banner-holder -->
+            <!-- ========================================= HOME BANNERS : END ========================================= -->
+
+            <div id="products-tab" class="wow fadeInUp">
+                <div class="container">
+                    <div class="tab-holder">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" >
+                            <li class="active"><a href="#featured" data-toggle="tab">{{ 'i_most_viewed'|from_key }}</a></li>
+                            <li><a href="#new-arrivals" data-toggle="tab">{{ 'i_new_arrivals'|from_key }}</a></li>
+                            <li><a href="#top-sales" data-toggle="tab">{{ 'i_top_sales'|from_key }}</a></li>
+                        </ul>
+
+                        <!-- Tab panes -->
+
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="featured">
+                                 <div class="product-grid-holder">
+
+                                    {%  for product in top_views.products|slice:'0:8' %}
+                                        <div class="col-sm-4 col-md-3 no-margin product-item-holder hover">
+                                        <div class="product-item">
+                                            {% if product.id in new_arrivals.ids %}
+                                                <div class="ribbon blue"><span>{{ 'new_arrival'|from_key }}</span></div>
+                                            {% endif %}
+                                            {% if product.is_on_sale %}
+                                                <div class="ribbon red"><span>{{ 'sale'|from_key }}</span></div>
+                                            {% endif %}
+                                            {% if product.id in top_sales.bids %}
+                                                <div class="ribbon green"><span>{{ 'bestseller'|from_key }}</span></div>
+                                            {% endif %}
+
+                                            <div class="image">
+                                                <img alt="" src="" data-echo="{{ product.images.first.image.url }}" />
+                                            </div>
+                                            <div class="body">
+                                                {% if product.is_on_sale %}
+                                                    <div class="label-discount green">-{{ product.discont }}% {{ 'sale'|from_key }}</div>
+                                                {% else %}
+                                                    <div class="label-discount clear"></div>
+                                                {% endif %}
+                                                <div class="title">
+                                                    <a href="{% url 'store:detail' product.slug %}">{{ product.title | truncatechars:45 }}</a>
+                                                </div>
+                                                <div class="brand">{{ product.brand.title}}</div>
+                                            </div>
+                                            <div class="prices">
+                                                {% if product.is_on_sale %}
+                                                    <div class="price-prev">{{ product.start_price }}{{ currency }}</div>
+                                                {% endif %}
+                                                <div class="price-current pull-right">{{ product.price }}{{ currency }}</div>
+                                            </div>
+
+                                            <div class="hover-area">
+
+                                                <div class="add-cart-button" id="add-cart-button1{{ forloop.counter }}"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#basket"
+                                                    hx-vals='js:{product_id: {{ product.id }} }'
+                                                >
+                                                    <a>
+                                                        <button class="le-button{% if not product.is_available %} inverse{% endif %}" onclick="change_add_to_cart_button(this)" {% if not product.is_available %}disabled{% endif %}>
+                                                            {% if not product.is_available %}
+                                                                {{ 'not_available'|from_key }}
+                                                            {% else %}{{ 'add_to_cart'|from_key }}{% endif %}
+                                                        </button>
+                                                    </a>
+                                                </div>
+
+                                                {% if user.is_authenticated %}
+                                                    <div class="wish-compare" id="wish-compare1" name="wish-compare1" value="n"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#wishlist-compare-holder"
+                                                    hx-vals='js:{product_id: {{ product.id }}, value: get_element_value_by_id("wish-compare1") }'
+                                                >
+                                                <a class="btn-add-to-wishlist" id="btn-add-to-wishlist" value="w"
+                                                   onmouseover="cursor_pointer(this)"
+                                                    onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-heart', 'wish-compare1', 'w')" value="to">
+                                                        {{ 'add'|from_key }}
+                                                </a>
+
+                                                <a class="btn-add-to-compare" id="btn-add-to-compare" value="c"
+                                                   onmouseover="cursor_pointer(this)"
+                                                    onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-exchange', 'wish-compare1', 'c')" value="to">
+                                                       {{ 'add'|from_key }}
+                                                </a>
+
+                                        </div>
+                                                {% endif %}
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+
+
+                                </div>
+                            <br><br>
+                            </div>
+
+                           <!-- ВКЛАДКА НОВИНКИ -->
+                            <div class="tab-pane" id="new-arrivals">
+                                <div class="product-grid-holder">
+
+                                    {%  for product in new_arrivals.products|slice:'0:8' %}
+                                        <div class="col-sm-4 col-md-3 no-margin product-item-holder hover">
+                                        <div class="product-item">
+                                            <div class="ribbon blue"><span>{{ 'new_arrival'|from_key }}</span></div>
+                                            {% if product.is_on_sale %}
+                                                <div class="ribbon red"><span>{{ 'sale'|from_key }}</span></div>
+                                            {% endif %}
+                                            {% if product.id in top_sales.bids %}
+                                                <div class="ribbon green"><span>{{ 'bestseller'|from_key }}</span></div>
+                                            {% endif %}
+
+                                            <div class="image">
+                                                <img alt="" src="" data-echo="{{ product.images.first.image.url }}" />
+                                            </div>
+                                            <div class="body">
+                                                {% if product.is_on_sale %}
+                                                    <div class="label-discount green">-{{ product.discont }}% {{ 'sale'|from_key }}</div>
+                                                {% else %}
+                                                    <div class="label-discount clear"></div>
+                                                {% endif %}
+                                                <div class="title">
+                                                    <a href="{% url 'store:detail' product.slug %}">{{ product.title | truncatechars:45 }}</a>
+                                                </div>
+                                                <div class="brand">{{ product.brand.title}}</div>
+                                            </div>
+                                            <div class="prices">
+                                                {% if product.is_on_sale %}
+                                                    <div class="price-prev">{{ product.start_price }}{{ currency }}</div>
+                                                {% endif %}
+                                                <div class="price-current pull-right">{{ product.price }}{{ currency }}</div>
+                                            </div>
+                                            <div class="hover-area">
+                                                <div class="add-cart-button" id="add-cart-button2{{ forloop.counter }}"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#basket"
+                                                    hx-vals='js:{product_id: {{ product.id }} }'
+                                                >
+                                                    <a>
+                                                        <button class="le-button{% if not product.is_available %} inverse{% endif %}" onclick="change_add_to_cart_button(this)" {% if not product.is_available %}disabled{% endif %}>
+                                                            {% if not product.is_available %}
+                                                                {{ 'not_available'|from_key }}
+                                                            {% else %}{{ 'add_to_cart'|from_key }}{% endif %}
+                                                        </button>
+                                                    </a>
+                                                </div>
+
+                                                {% if user.is_authenticated %}
+                                                    <div class="wish-compare" id="wish-compare2" name="wish-compare2" value="n"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#wishlist-compare-holder"
+                                                    hx-vals='js:{product_id: {{ product.id }}, value: get_element_value_by_id("wish-compare2") }'
+                                                >
+                                                <a class="btn-add-to-wishlist" id="btn-add-to-wishlist2" value="w"
+                                                    onmouseover="cursor_pointer(this)"
+                                                    onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-heart', 'wish-compare2', 'w')" value="to">
+                                                        {{ 'add'|from_key }}
+                                                </a>
+
+                                                <a class="btn-add-to-compare" id="btn-add-to-compare2" value="c"
+                                                    onmouseover="cursor_pointer(this)"
+                                                    onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-exchange', 'wish-compare2', 'c')" value="to">
+                                                       {{ 'add'|from_key }}
+                                                </a>
+
+                                        </div>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+
+
+                                </div>
+                            <br><br>
+                            </div>
+
+                            <!-- ВКЛАДКА ЛИДЕРЫ ПРОДАЖ -->
+                            <div class="tab-pane" id="top-sales">
+                                <div class="product-grid-holder">
+
+                                    {%  for product in top_sales.products|slice:'0:8' %}
+                                        <div class="col-sm-4 col-md-3 no-margin product-item-holder hover">
+                                        <div class="product-item">
+                                            {% if product.id in new_arrivals.ids %}
+                                                <div class="ribbon blue"><span>{{ 'new_arrival'|from_key }}</span></div>
+                                            {% endif %}
+                                            {% if product.is_on_sale %}
+                                                <div class="ribbon red"><span>{{ 'sale'|from_key }}</span></div>
+                                            {% endif %}
+                                            {% if product.id in top_sales.bids %}
+                                                <div class="ribbon green"><span>{{ 'bestseller'|from_key }}</span></div>
+                                            {% endif %}
+
+                                            <div class="image">
+                                                <img alt="" src="" data-echo="{{ product.images.first.image.url }}" />
+                                            </div>
+                                            <div class="body">
+                                                {% if product.is_on_sale %}
+                                                    <div class="label-discount green">-{{ product.discont }}% {{ 'sale'|from_key }}</div>
+                                                {% else %}
+                                                    <div class="label-discount clear"></div>
+                                                {% endif %}
+                                                <div class="title">
+                                                    <a href="{% url 'store:detail' product.slug %}">{{ product.title | truncatechars:45 }}</a>
+                                                </div>
+                                                <div class="brand">{{ product.brand.title}}</div>
+                                            </div>
+                                            <div class="prices">
+                                                {% if product.is_on_sale %}
+                                                    <div class="price-prev">{{ product.start_price }}{{ currency }}</div>
+                                                {% endif %}
+                                                <div class="price-current pull-right">{{ product.price }}{{ currency }}</div>
+                                            </div>
+                                            <div class="hover-area">
+                                                <div class="add-cart-button" id="add-cart-button3{{ forloop.counter }}"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#basket"
+                                                    hx-vals='js:{product_id: {{ product.id }} }'
+                                                >
+                                                    <a>
+                                                        <button class="le-button{% if not product.is_available %} inverse{% endif %}" onclick="change_add_to_cart_button(this)" {% if not product.is_available %}disabled{% endif %}>
+                                                            {% if not product.is_available %}
+                                                                {{ 'not_available'|from_key }}
+                                                            {% else %}{{ 'add_to_cart'|from_key }}{% endif %}
+                                                        </button>
+                                                    </a>
+
+                                                </div>
+
+                                                {% if user.is_authenticated %}
+                                                    <div class="wish-compare" id="wish-compare3" name="wish-compare3" value="n"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#wishlist-compare-holder"
+                                                    hx-vals='js:{product_id: {{ product.id }}, value: get_element_value_by_id("wish-compare3") }'
+                                                >
+                                                <a class="btn-add-to-wishlist" id="btn-add-to-wishlist3" value="w"
+                                                    onmouseover="cursor_pointer(this)"
+                                                    onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-heart', 'wish-compare3', 'w')" value="to">
+                                                        {{ 'add'|from_key }}
+                                                </a>
+
+                                                <a class="btn-add-to-compare" id="btn-add-to-compare3" value="c"
+                                                    onmouseover="cursor_pointer(this)"
+                                                    onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-exchange', 'wish-compare3', 'c')" value="to">
+                                                       {{ 'add'|from_key }}
+                                                </a>
+
+                                        </div>
+                                                {% endif %}
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+
+
+                                </div>
+                            <br><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br><br><br>
+
+            <!-- ========================================= BEST SELLERS ========================================= -->
+            <section id="bestsellers" class="color-bg wow fadeInUp">
+                <div class="container">
+                    <h1 class="section-title">{{ 'bestsellers'|from_key }}</h1>
+
+                    <div class="product-grid-holder medium">
+                        <div class="col-xs-12 col-md-7 no-margin">
+
+                            {% for product in top_sales.bestsellers|slice:'1:7' %}
+                                {% if forloop.counter0 == 0 or forloop.counter0 == 3 %}
+                                    <div class="row no-margin">
+                                {% endif %}
+
+                                    <div class="col-xs-12 col-sm-4 no-margin product-item-holder size-medium hover">
+                                    <div class="product-item">
+                                        <div class="image">
+                                            <img alt="" src="" data-echo="{{ product.images.first.image.url }}" />
+                                        </div>
+                                        <div class="body">
+                                            {% if product.is_on_sale %}
+                                                <div class="label-discount green">-{{ product.discont }}% {{ 'sale'|from_key }}</div>
+                                            {% else %}
+                                                <div class="label-discount clear"></div>
+                                            {% endif %}
+                                            <div class="title">
+                                                <a href="{% url 'store:detail' product.slug %}">{{ product.title | truncatechars:30 }}</a>
+                                            </div>
+                                            <div class="brand">{{ product.brand.title }}</div>
+                                        </div>
+                                        <div class="prices">
+
+                                            <div class="price-current text-right">{{ product.price }}{{ currency }}</div>
+                                        </div>
+                                        <div class="hover-area">
+
+                                            <div class="add-cart-button" id="add-cart-button4{{ forloop.counter }}"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#basket"
+                                                    hx-vals='js:{product_id: {{ product.id }} }'
+                                                >
+                                                    <a>
+                                                        <button class="le-button{% if not product.is_available %} inverse{% endif %}" onclick="change_add_to_cart_button(this)" {% if not product.is_available %}disabled{% endif %}>
+                                                            {% if not product.is_available %}
+                                                                {{ 'not_available'|from_key }}
+                                                            {% else %}{{ 'to_basket'|from_key }}{% endif %}
+                                                        </button>
+                                                    </a>
+
+                                                </div>
+
+                                            {% if user.is_authenticated %}
+                                                <div class="wish-compare" id="wish-compare4" name="wish-compare4" value="n"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#wishlist-compare-holder"
+                                                    hx-vals='js:{product_id: {{ product.id }}, value: get_element_value_by_id("wish-compare4") }'
+                                                >
+                                                <a class="btn-add-to-wishlist" id="btn-add-to-wishlist4" value="w"
+                                                    onmouseover="cursor_pointer(this)"
+                                                    onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-heart', 'wish-compare4', 'w')" value="to">
+                                                        {{ 'add'|from_key }}
+                                                </a>
+
+                                                <a class="btn-add-to-compare" id="btn-add-to-compare4" value="c"
+                                                    onmouseover="cursor_pointer(this)"
+                                                    onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-exchange', 'wish-compare4', 'c')" value="to">
+                                                       {{ 'add'|from_key }}
+                                                </a>
+
+                                        </div>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+                                </div><!-- /.product-item-holder -->
+
+
+                                {% if forloop.counter0 == 2 or forloop.counter0 == 5 %}
+                                    </div><!-- /.row -->
+                                {% endif%}
+                            {% endfor %}
+
+                        </div><!-- /.col -->
+                        {% if top_sales.top_bestseller %}
+                            <div class="col-xs-12 col-md-5 no-margin">
+                            <div class="product-item-holder size-big single-product-gallery small-gallery">
+
+                                <div id="best-seller-single-product-slider" class="single-product-slider owl-carousel">
+
+                                    {% for image in top_sales.top_bestseller.images.all %}
+                                        <div class="single-product-gallery-item" id="slide{{ forloop.counter }}">
+                                            <a data-rel="prettyphoto" href="{{ top_sales.top_bestseller.images.first.image.url }}">
+                                                <img alt="" src="{{ image.image.url }}" data-echo="{{ image.image.url }}" />
+                                            </a>
+                                        </div><!-- /.single-product-gallery-item -->
+                                    {% endfor %}
+
+                                </div><!-- /.single-product-slider -->
+
+                                <div class="gallery-thumbs clearfix">
+                                    <ul>
+                                        {% for image in top_sales.top_bestseller.images.all %}
+                                            <li><a class="horizontal-thumb{% if forloop.counter == 1%} active{% endif %}" data-target="#best-seller-single-product-slider" data-slide="{{ forloop.counter0}}" href="#slide{{ forloop.counter}}"><img height="60" width="60" alt="" src="{% static 'assets/images/blank.gif' %}" data-echo="{{ image.image.url }}" /></a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div><!-- /.gallery-thumbs -->
+
+                                <div class="body">
+                                            {% if top_sales.top_bestseller.is_on_sale %}
+                                                <div class="label-discount green">-{{ top_sales.top_bestseller.discont }}% {{ 'sale'|from_key }}</div>
+                                            {% else %}
+                                                <div class="label-discount clear"></div>
+                                            {% endif %}
+                                    <div class="title">
+                                        <a href="{% url 'store:detail' top_sales.top_bestseller.slug %}">{{ top_sales.top_bestseller.title }}</a>
+                                    </div>
+                                    <div class="brand">{{ top_sales.top_bestseller.brand.title }}</div>
+                                </div>
+                                <div class="prices text-right" align="left">
+                                    <div class="price-current" align="center">{{ currency }} {{ top_sales.top_bestseller.price }}</div>
+
+                                        <div align="center" class="add-cart-button" id="add-cart-button5"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#basket"
+                                                    hx-vals='js:{product_id: {{ top_sales.top_bestseller.id }} }'
+                                        >
+                                                <a>
+                                                        <button class="le-button{% if not top_sales.top_bestseller.is_available %} inverse{% endif %}" onclick="change_add_to_cart_button(this)" {% if not top_sales.top_bestseller.is_available %}disabled{% endif %}>
+                                                            {% if not top_sales.top_bestseller.is_available %}
+                                                                {{ 'not_available'|from_key }}
+                                                            {% else %}{{ 'add_to_cart'|from_key }}{% endif %}
+                                                        </button>
+                                                    </a>
+                                        </div>
+
+                                        <br>
+
+                                    {% if user.is_authenticated %}
+                                        <div class="wish-compare" id="wish-compare5" name="wish-compare5" value="n" align="center"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#wishlist-compare-holder"
+                                                    hx-vals='js:{product_id: {{ top_sales.top_bestseller.id }}, value: get_element_value_by_id("wish-compare5") }'
+                                            >
+                                                <a class="btn-add-to-wishlist" id="btn-add-to-wishlist5" value="w"
+                                                    onmouseover="cursor_pointer(this)"
+                                                    onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-heart', 'wish-compare5', 'w')" value="to">
+                                                        {{ 'add'|from_key }}
+                                                </a>
+
+                                                <a class="btn-add-to-compare" id="btn-add-to-compare5" value="c"
+                                                    onmouseover="cursor_pointer(this)"
+                                                    onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-exchange', 'wish-compare5', 'c')" value="to">
+                                                       {{ 'add'|from_key }}
+                                                </a>
+
+                                        </div>
+                                    {% endif %}
+
+
+
+
+                                </div>
+                            </div><!-- /.product-item-holder -->
+                        </div><!-- /.col -->
+                        {% else %}
+                            <div align="center">{{ 'i_no_sales'|from_key }}</div>
+                        {% endif %}
+
+                    </div><!-- /.product-grid-holder -->
+                </div><!-- /.container -->
+            </section><!-- /#bestsellers -->
+            <!-- ========================================= BEST SELLERS : END ========================================= -->
+
+            <!-- ========================================= RECENTLY VIEWED ========================================= -->
+            {% include 'store/divs/div_recently_viewed.html' %}
+            <!-- ========================================= RECENTLY VIEWED : END ========================================= -->
+
+
+
+            <!-- ========================================= TOP BRANDS ========================================= -->
+
+            {% include 'store/divs/div_top_brands.html' %}
+            <!-- ========================================= TOP BRANDS : END ========================================= -->
+
+
+
+            <!-- ============================================================= FOOTER ============================================================= -->
+            {% include 'store/divs/div_footer.html' %}
+
+            <!-- ============================================================= FOOTER : END ============================================================= -->
+        </div><!-- /.wrapper -->
+
+        <!-- JavaScripts placed at the end of the document so the pages load faster -->
+        {% include 'store/settings/end_java_scripts.html' %}
+
+
+    </body>
+</html>

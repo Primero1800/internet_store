@@ -1,0 +1,120 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+{% if not new_arrivals %}
+    {% load store_tags_products %}
+    {% add_new_arrivals_to_context as new_arrivals %}
+{% endif %}
+
+{% if not top_sales %}
+    {% load store_tags_sale_information %}
+    {% add_top_sales_to_context as top_sales %}
+{% endif %}
+
+
+
+<div id="div_category_list" value="{{ current_page }}">
+
+                                         <div class="products-list">
+                                            {% for product in filtered_products %}
+                                                <div class="product-item product-item-holder">
+                                                    {% if product.id in new_arrivals.ids %}
+                                                        <div class="ribbon blue"><span>{{ 'new_arrival'|from_key }}</span></div>
+                                                    {% endif %}
+                                                    {% if product.is_on_sale %}
+                                                        <div class="ribbon red"><span>{{ 'sale'|from_key }}</span></div>
+                                                    {% endif %}
+                                                    {% if product.id in top_sales.bids %}
+                                                        <div class="ribbon green"><span>{{ 'bestseller'|from_key }}</span></div>
+                                                    {% endif %}
+                                                <div class="row">
+                                                    <div class="no-margin col-xs-12 col-sm-4 image-holder">
+                                                        <div class="image">
+                                                            <img alt="" src="{{ product.images.first.image.url }}" data-echo="{{ product.images.first.image.url }}" loading="eager"/>
+                                                        </div>
+                                                    </div><!-- /.image-holder -->
+                                                    <div class="no-margin col-xs-12 col-sm-5 body-holder">
+                                                        <div class="body">
+                                                            {% if product.is_on_sale %}
+                                                                <div class="label-discount green">-{{ product.discont }}% {{ 'sale'|from_key }}</div>
+                                                            {% endif %}
+                                                            <div class="title">
+                                                                <a href="{% url 'store:detail' product.slug %}">{{ product.title|truncatechars:40}}</a>
+                                                            </div>
+                                                            <div class="brand">{{ product.brand.title }}</div>
+                                                            <div class="excerpt">
+                                                                <p>{{ product.description|truncatechars:200}}</p>
+                                                            </div>
+
+                                                            {% if user.is_authenticated %}
+                                                                <div class="wish-compare" id="wish-compare" name="wish-compare" value="n"
+                                                                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                            hx-post=""
+                                                                            hx-trigger="click"
+                                                                            hx-target="#wishlist-compare-holder"
+                                                                            hx-vals='js:{product_id: {{ product.id }}, value: get_element_value_by_id("wish-compare") }'
+                                                            >
+                                                                        <a class="btn-add-to-wishlist" id="btn-add-to-wishlist" value="w"
+                                                                            onmouseover="cursor_pointer(this)"
+                                                                            onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-heart', 'wish-compare', 'w')" value="to">
+                                                                                {{ 'add'|from_key }}
+                                                                        </a>
+
+                                                                        <a class="btn-add-to-compare" id="btn-add-to-compare" value="c"
+                                                                            onmouseover="cursor_pointer(this)"
+                                                                            onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-exchange', 'wish-compare', 'c')" value="to">
+                                                                            {{ 'add'|from_key }}
+                                                                        </a>
+
+                                                            </div>
+                                                            {% endif %}
+
+                                                        </div>
+                                                    </div><!-- /.body-holder -->
+                                                    <div class="no-margin col-xs-12 col-sm-3 price-area">
+                                                        <div class="right-clmn">
+                                                            <div class="price-current">{{ product.price }} {{ currency }}</div>
+                                                            {% if product.is_on_sale %}
+                                                                <div class="price-prev">{{ product.start_price }} {{ currency }}</div>
+                                                            {% endif %}
+                                                            <div class="availability"><span class="{% if not product.is_available %}not-{% endif %}available">  {{ product.get_available_display }}</span></div>
+
+                                                            <div class="add-cart-button" id="add-cart-button"
+                                                                         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                         hx-post=""
+                                                                         hx-trigger="click"
+                                                                         hx-target="#basket"
+                                                                         hx-vals='js:{product_id: {{ product.id }} }'
+                                                                    >
+                                                                        <a>
+                                                                            <button class="le-button{% if not product.is_available %} inverse{% endif %}" onclick="change_add_to_cart_button(this)" {% if not product.is_available %}disabled{% endif %}>
+                                                                                    {% if not product.is_available %}
+                                                                                        {{ 'not_available'|from_key }}
+                                                                                    {% else %}{{ 'to_basket'|from_key }}{% endif %}
+                                                                            </button>
+
+                                                                        </a>
+
+                                                                    </div>
+
+                                                        </div>
+                                                    </div><!-- /.price-area -->
+                                                </div><!-- /.row -->
+                                            </div><!-- /.product-item -->
+                                            {% endfor %}
+                                        </div><!-- /.products-list -->
+
+                                        {% if pages_count > 0 %}
+                                            <div class="pagination-holder">
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-sm-12">
+                                                        <div class="result-counter">
+                                                            {{ 'adlt_shown_'|from_key }}:  <span>{{ indices.0 }} - {{ indices.1 }}</span> из <span>{{ all_filtered_products_count }}</span> {{ 'adlt_results_'|from_key }}
+                                                        </div>
+                                                    </div>
+                                                </div><!-- /.row -->
+                                            </div><!-- /.pagination-holder -->
+                                        {% endif %}
+
+</div>

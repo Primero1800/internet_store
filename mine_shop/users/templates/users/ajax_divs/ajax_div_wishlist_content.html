@@ -1,0 +1,150 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+            <div class="wishlist-main-content" id="wishlist-main-content">
+
+                {% if wc_updated %}
+                    <div id = 'wish-compare-holder-updater'
+                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                            hx-post
+                             hx-target="#wishlist-compare-holder"
+                            hx-trigger="load">
+                    </div>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-lg-10 center-block page-wishlist style-cart-page inner-bottom-xs">
+
+                        <div class="inner-xs">
+                            <div class="page-header">
+                                <h2 class="page-title">{{ 'wishlist'|from_key }}</h2>
+                            </div>
+                        </div><!-- /.section-page-title -->
+
+                        <div class="items-holder">
+                            <div class="container-fluid wishlist_table">
+
+                                {% for product in products %}
+
+                                    <div class="row cart-item cart_item" id="yith-wcwl-row-1">
+
+                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                            <div class="remove-wishlist-button" id="wishlist-item-delete-1"
+                                                                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                hx-post=""
+                                                                hx-trigger="click"
+                                                                hx-target="#wishlist-main-content"
+                                                                hx-vals='js:{product_id: {{ product.id }} }'
+                                            >
+                                                <a>
+                                                    <button class="plus">
+                                                        x
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                            <a href="{% url 'store:detail' product.slug %}">
+                                                <img width="90" height="67" alt="{{ product.title }}" src="{{ product.images.first.image.url }}">
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-4 no-margin">
+                                            <div class="title">
+                                                <a href="{% url 'store:detail' product.slug  %}">{{ product.title|truncatechars:40 }}</a>
+                                            </div><!-- /.title -->
+                                            <div>
+                                                {% if product.is_available %}
+                                                    <span class="label label-success wishlist-in-stock">{{ product.get_available_display }}</span>
+                                                {% else %}
+                                                    <span class="label label-danger wishlist-out-of-stock">{{ product.get_available_display }}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                            <div class="price">
+                                                <span class="amount">{{ currency  }} {{ product.price }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                            <div class="price-prev">
+                                                {% if product.is_on_sale %}
+                                                    <span class="amount"><s>{{ currency  }} {{ product.start_price }}</s></span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                            {% if product.is_on_sale %}
+                                                <div class="ribbon green"><span>{{ product.get_discont_display }}</span></div>
+                                            {% else %}
+                                                <div class="ribbon blue"><span>{{ product.get_discont_display }}</span></div>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                            <div class="wish-compare" id="wish-compare" name="wish-compare" value="n"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#wishlist-compare-holder"
+                                                    hx-vals='js:{product_id: {{ product.id }}, value: get_element_value() }'
+                                            >
+                                                <a class="btn-add-to-compare" id="btn-add-to-compare" value="c"
+                                                    onmouseover="cursor_pointer(this)"
+                                                    onclick="click_to_tool_button(this, 'Добавлено', 'fa fa-exchange', 'wish-compare', 'c')" value="to">
+                                                       {{ 'add'|from_key }}
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                            <div class="text-right">
+                                                <div class="add-cart-button" id="add-cart-button{{ forloop.counter }}"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#basket"
+                                                    hx-vals='js:{product_id: {{ product.id }} }'
+                                                >
+                                                    <a>
+                                                         <script>
+                                                             function change_add_to_cart_button(el, old_text, new_text){
+                                                                el.className += ' inverse';
+                                                                el.textContent = new_text';
+                                                                setTimeout(() => {
+                                                                    el.className = 'le-button';
+                                                                    el.textContent = old_text;
+                                                                }, 200);
+                                                            }
+
+                                                        </script>
+                                                        <button class="le-button{% if not product.is_available %} inverse{% endif %}"
+                                                                onclick="change_add_to_cart_button(this, '{{ 'to_basket'|from_key }}', '{{ 'added'|from_key }}')" {% if not product.is_available %}disabled{% endif %}>
+                                                            {% if not product.is_available %}
+                                                                {{ 'not_available'|from_key }}
+                                                            {% else %}
+                                                                {{ 'to_basket'|from_key }}
+                                                            {% endif %}
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div><!-- /.cart-item -->
+
+                                {% endfor %}
+
+                            </div><!-- /.wishlist-table -->
+                        </div><!-- /.items-holder -->
+
+                    </div><!-- .large-->
+                </div><!-- .row-->
+            </div>

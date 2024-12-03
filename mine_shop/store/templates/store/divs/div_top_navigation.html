@@ -1,0 +1,60 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+
+            <nav class="top-bar animate-dropdown">
+                <div class="container">
+                    <div class="col-xs-12 col-sm-8 no-margin">
+                        <ul>
+                            <li><a href="{% url 'store:index' %}">{{ 'home_page'|from_key }}</a></li>
+                            <li><a href="{% url 'posts:index' %}">{{ 'forum'|from_key }}</a></li>
+                            <li><a href="{% url 'posts:information' %}">{{ 'p_info_link'|from_key }}</a></li>
+
+
+                            {% if user.is_staff or user.is_superuser %}
+                                <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#pages2"><b>{{ 'admin_tools'|from_key }}</b></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{% url 'orders:admin_orders' %}"><b>{{ 'orders_tools'|from_key }}</b></a></li>
+                                </ul>
+                            </li>
+                            {% endif%}
+
+                        </ul>
+                    </div><!-- /.col -->
+
+                    <div class="col-xs-12 col-sm-4 no-margin">
+                        <ul class="right">
+                            {% if user.is_authenticated %}
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle"  data-toggle="dropdown" href="#pages3"><b>
+                                        <i class="fa fa-user"> {{ user }}</i></b></a>
+                                <ul class="dropdown-menu" role="menu" >
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'cart:cart' %}">{{ 'cart_of_buyer'|from_key }}</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'users:wishlist' %}">{{ 'wishlist'|from_key }}</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'users:comparison' %}">{{ 'comparison'|from_key }}</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'orders:index' %}">{{ 'orders'|from_key }}</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'orders:history' %}">{{ 'orders_history'|from_key }}</a></li>
+                                </ul>
+                            </li>
+                            {% else %}
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle"  data-toggle="dropdown" href="#pages4"><b>
+                                        <i class="fa fa-eye-slash"> {{ 'anonimous'|from_key }}</i></b></a>
+                                <ul class="dropdown-menu" role="menu" >
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">!!!JОзнакомиться с пользовательскими соглашениями!!</a></li>
+                                </ul>
+                            </li>
+                            {% endif %}
+
+                            {% if user.is_authenticated %}
+                            <li><a href="{% url 'users:logout' %}"><i class="fa fa-sign-out"> {{ 'exit'|from_key }}</i></a></li>
+                            {% else %}
+                                <li><a href="{% url 'users:registration' %}"><i class="fa fa-pencil-square-o"> {{ 'registration'|from_key }}</i></a></li>
+                                <li><a href="{% url 'users:login' %}"><i class="fa fa-sign-in"> {{ 'enter'|from_key }}</i></a></li>
+                            {% endif %}
+                        </ul>
+                    </div><!-- /.col -->
+                </div><!-- /.container -->
+            </nav><!-- /.top-bar -->

@@ -1,0 +1,198 @@
+{% load static %}
+
+{% load store_tags_rating %}
+{% load mine_shop_tags_constants %}
+
+
+
+                                <div class="comments">
+
+
+
+                                    {% if product.votes.all|length != 0%}
+                                        {% for vote in product.votes.all %}
+                                            <div class="comment-item">
+                                                <div class="row no-margin">
+                                                <div class="col-lg-1 col-xs-12 col-sm-2 no-margin">
+                                                    <div class="author inline">
+                                                        <a class="bold">{{ vote.name }}</a>
+                                                    </div>
+                                                </div><!-- /.col -->
+
+                                                <div class="col-xs-12 col-lg-10 col-sm-9 no-margin">
+                                                    <div class="comment-body">
+                                                        <div class="meta-info">
+
+                                                            <div class="star-holder inline">
+                                                                {% for i in vote.stars|stars_on %}
+                                                                    <img src="{% static '/assets/images/star-on.png' %}" data-echo="{% static '/assets/images/star-on.png' %}">
+                                                                {% endfor %}
+                                                                {% for i in vote.stars|stars_off %}
+                                                                    <img src="{% static '/assets/images/star-off.png' %}" data-echo="{% static '/assets/images/star-off.png' %}">
+                                                                {% endfor %}
+                                                                {% if vote.user == user %}
+                                                                    <label> ({{ 'c_your_vote'|from_key }})</label>
+                                                                {% endif %}
+                                                            </div>
+
+                                                            <div class="date inline pull-right">
+                                                                {{ vote.time_published|date:'d.m.Y H:i:s'}}
+                                                            </div>
+                                                        </div><!-- /.meta-info -->
+
+                                                        <p class="comment-text">
+                                                            {{ vote.review }}
+                                                        </p><!-- /.comment-text -->
+                                                    </div><!-- /.comment-body -->
+
+                                                </div><!-- /.col -->
+
+                                                <div class="col-lg-1 col-xs-12 col-sm-1">
+                                                    {% if vote.user == user %}
+                                                        <div class="remove-review-button" id="reviews_item_delete_{{ forloop.counter }}"
+                                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                    hx-post=""
+                                                                    hx-trigger="click"
+                                                                    hx-target="#comments"
+                                                                    hx-vals='js:{vote_id: {{ vote.id }} }'
+                                                        >
+                                                            <a>
+                                                                <button class="plus">
+                                                                    x
+                                                                </button>
+                                                            </a>
+                                                        </div>
+                                                    {% else %}
+                                                        <div><br></div>
+                                                    {% endif %}
+
+                                                    {% if user.is_staff or user.is_superuser %}
+                                                        <hr class="solid">
+                                                        <h7>({{ 'c_admin'|from_key }})</h7>
+                                                            <div class="remove-review-button" id="reviews_item_delete_admin_{{ forloop.counter }}" onmouseover="cursor_pointer(this)"
+                                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                    hx-post=""
+                                                                    hx-trigger="click"
+                                                                    hx-target="#comments"
+                                                                    hx-vals='js:{vote_id: {{ vote.id }} }'
+                                                            >
+                                                                <i class="fa fa-cut"></i>
+                                                            </div>
+                                                    {% endif %}
+                                                </div>
+
+                                            </div><!-- /.row -->
+                                            </div><!-- /.comment-item -->
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="author inline">
+                                            <a class="bold">{{ 'c_current_food_no_comments'|from_key }}.</a>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if not voted and user.is_authenticated %}
+                                        <div class="add-review row">
+                                            <div class="col-sm-8 col-xs-12">
+                                                <div class="new-review-form">
+                                                    <h2>{{ 'c_add_review'|from_key }}</h2>
+
+                                                    <form id="vote-form" class="contact-form">
+                                                        {% csrf_token %}
+                                                        <div class="row field-row">
+                                                            <div class="col-xs-12 col-sm-6">
+                                                                <table>
+												<er>
+														<ul>
+                                                            {% if form.name.errors %}
+                                                                {% for error in form.name.errors %}
+                                                                    <li><em><h5>*{{ error | escape }}</h5></em></li>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <li><em><h5> <br></h5></em></li>
+                                                            {% endif %}
+														</ul>
+												</er>
+											</table>
+                                                                <label>{{ form.name.label }}*</label>
+                                                                <input class="le-input" name="name"
+                                                                       {% if form.name.value %}
+                                                                            value="{{ form.name.value }}"
+                                                                       {% else %}
+                                                                            placeholder="{{ form.name.label }}"
+                                                                       {% endif %}
+                                                                >
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-6">
+                                                                <table>
+												<er>
+														<ul>
+                                                            {% if form.email.errors %}
+                                                                {% for error in form.email.errors %}
+                                                                    <li><em><h5>*{{ error | escape }}</h5></em></li>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <li><em><h5> <br></h5></em></li>
+                                                            {% endif %}
+														</ul>
+												</er>
+											</table>
+                                                                <label>{{ form.email.label }}</label>
+                                                                <input class="le-input" name="email"
+                                                                   {% if user.is_authenticated %}
+                                                                       value="{{ user.email }}" readonly
+                                                                   {% else %}
+                                                                       {% if form.email.value %}
+                                                                            value="{{ form.email.value }}"
+                                                                       {% else %}
+                                                                            placeholder="{{ form.email.label }}"
+                                                                       {% endif %}
+                                                                   {% endif %}
+                                                                >
+                                                            </div>
+                                                        </div><!-- /.field-row -->
+
+                                                        <div class="field-row">
+                                                            <label>{{ form.review.label }}</label>
+                                                            <textarea rows="8" class="le-input" name="review">{% if form.review.value %}{{ form.review.value }}{% endif %}</textarea>
+                                                        </div><!-- /.field-row -->
+
+                                                        <div class="row field-row">
+                                                            <div class="col-xs-12 col-sm-9">
+                                                                <label>{{ form.stars.label }}</label>
+
+                                                                    <div id="stars_rating"
+                                                                        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                        hx-post
+                                                                        hx-trigger="load"
+                                                                        hx-vals='js:{new_vote: {{ stars }} }'
+                                                                    >
+                                                                        ---
+                                                                    </div>
+
+                                                            </div>
+
+                                                             <div class="col-xs-12 col-sm-2" align="right">
+                                                                 <button class="le-button huge" id="button_add_comment"
+                                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                    hx-post=""
+                                                                    hx-trigger="click"
+                                                                    hx-target="#comments"
+                                                                 >{{ 'c_add'|from_key }}</button>
+                                                             </div>
+
+                                                        </div><!-- /.field-row -->
+
+                                                    </form><!-- /.contact-form -->
+
+                                        </div><!-- /.new-review-form -->
+                                    </div><!-- /.col -->
+                                        </div><!-- /.add-review -->
+                                    {% else %}
+                                        {% if voted %}
+                                            <a class="bold">{{ 'c_already_voted'|from_key }}.</a>
+                                        {% else%}
+                                            <a class="bold">{{ 'c_only_authorized'|from_key }}.</a>
+                                        {% endif %}
+                                    {% endif %}
+
+                                </div><!-- /.comments -->

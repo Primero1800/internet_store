@@ -1,0 +1,118 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+{% load store_tags_rating %}
+
+                                        {% for post in posts %}
+                                            <div class="comment-item">
+                                                <div class="row no-margin">
+                                                <div class="col-lg-1 col-xs-12 col-sm-2 no-margin">
+                                                    <div class="author inline">
+                                                        <a class="bold">{{ post.name }}</a>
+                                                    </div>
+                                                </div><!-- /.col -->
+
+                                                <div class="col-xs-12 col-lg-10 col-sm-9 no-margin">
+                                                    <div class="comment-body">
+                                                        <div class="meta-info">
+                                                            {% if post.product %}
+                                                                <div class="row">
+
+                                                                    <div class="col-xs-12 col-sm-3 col-sm">
+                                                                        <a href="{% url 'store:detail'  post.product.slug %}">
+                                                                            <img alt="" src="{{ post.product.image }}" height="70" width="90"/>
+                                                                        </a>
+                                                                    </div>
+
+                                                                    <div class="col-xs-12 col-sm-9 col-sm">
+                                                                         <div class="row">
+                                                                             <div class="star-holder inline">
+                                                                                     {% for i in post.product.rating|stars_on %}
+                                                                                         <img src="{% static '/assets/images/star-on.png' %}" data-echo="{% static '/assets/images/star-on.png' %}">
+                                                                                     {% endfor %}
+                                                                                     {% for i in post.product.rating|stars_off %}
+                                                                                         <img src="{% static '/assets/images/star-off.png' %}" data-echo="{% static '/assets/images/star-off.png' %}">
+                                                                                     {% endfor %}
+                                                                                         {{ post.product.rating }} ({{ post.product.get_rating_display }})
+                                                                                 </div>
+                                                                         </div>
+                                                                         <div class="row">
+                                                                              <a href="{% url 'store:detail' post.product.slug %}">
+                                                                                   {{ post.product.title|truncatechars:50 }}
+                                                                              </a>
+                                                                         </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            {% endif %}
+
+                                                            <div class="date inline pull-right">
+                                                                {{ post.time_published|date:'d.m.Y H:i:s'}}
+                                                            </div>
+                                                        </div><!-- /.meta-info -->
+
+                                                        <p class="comment-text">
+                                                            {{ post.review }}
+                                                        </p><!-- /.comment-text -->
+                                                    </div><!-- /.comment-body -->
+
+                                                </div><!-- /.col -->
+
+                                                <div class="col-lg-1 col-xs-12 col-sm-1">
+                                                    {% if post.user == user %}
+                                                        <div class="remove-review-button" id="posts_item_delete_{{ forloop.counter }}"
+                                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                    hx-post=""
+                                                                    hx-trigger="click"
+                                                                    hx-target="#posts"
+                                                                    hx-vals='js:{post_id: {{ post.id }} }'
+                                                        >
+                                                            <a>
+                                                                <button class="plus">
+                                                                    x
+                                                                </button>
+                                                            </a>
+                                                        </div>
+                                                    {% else %}
+                                                        <div><br></div>
+                                                    {% endif %}
+
+                                                    {% if user.is_staff or user.is_superuser %}
+                                                        <hr class="solid">
+                                                        <h7>({{ 'c_admin'|from_key }})</h7>
+                                                            <div class="remove-review-button" id="posts_item_delete_admin_{{ forloop.counter }}" onmouseover="cursor_pointer(this)"
+                                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                    hx-post=""
+                                                                    hx-trigger="click"
+                                                                    hx-target="#posts"
+                                                                    hx-vals='js:{post_id: {{ post.id }} }'
+                                                            >
+                                                                <i class="fa fa-cut"></i>
+                                                            </div>
+                                                    {% endif %}
+                                                </div>
+
+                                            </div><!-- /.row -->
+                                            </div><!-- /.comment-item -->
+                                        {% endfor %}
+
+                                        {% if has_next %}
+                                            <div id="target_next_{{ last_post_id }}">
+
+
+                                                <div class="loadmore-holder text-center" id="posts_next_{{ last_post_id }}"
+                                                                hx-post
+                                                                hx-trigger="click"
+                                                                hx-target="#target_next_{{ last_post_id }}"
+                                                                hx-vals='js:{last_post_id: {{ last_post_id }}}'
+                                                >
+                                                    <a class="btn-loadmore">
+                                                        <i class="fa fa-plus"></i>
+                                                            {{ 'adcg_show_more'|from_key }}
+                                                    </a>
+                                                </div>
+
+                                            </div>
+
+                                       {% endif %}

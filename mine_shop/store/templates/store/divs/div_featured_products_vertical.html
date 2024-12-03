@@ -1,0 +1,37 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+{% if not top_views %}
+    {% load store_tags_sale_information %}
+    {% add_top_views_to_context as top_views %}
+{% endif %}
+
+<div class="widget">
+                            <h1 class="border">{{ 'most_viewed'|from_key }}</h1>
+                            <ul class="product-list">
+
+                                {% for product in top_views.products|slice:'0:5' %}
+                                    <li class="sidebar-product-list-item">
+                                        <div class="row">
+                                            <div class="col-xs-4 col-sm-4 no-margin">
+                                                <a href="{% url 'store:detail' product.slug %}" class="thumb-holder">
+                                                    <img alt="" src="{% static 'assets/images/blank.gif' %}" data-echo="{{ product.images.first.image.url }}" height="67" width="67"/>
+                                                </a>
+                                            </div>
+                                            <div class="col-xs-8 col-sm-8 no-margin">
+                                                <a href="{% url 'store:detail' product.slug %}">{{ product.title|truncatechars:30}} </a>
+                                                <div class="price">
+                                                    {% if product.is_on_sale %}
+                                                        <div class="price-prev">{{ product.start_price }}{{ currency }}</div>
+                                                    {% endif %}
+                                                    <div class="price-current">{{ product.price }}{{ currency }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li><!-- /.sidebar-product-list-item -->
+                                {% endfor %}
+
+
+                            </ul><!-- /.product-list -->
+                        </div><!-- /.widget -->

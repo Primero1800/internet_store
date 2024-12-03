@@ -1,0 +1,63 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+{% load store_tags_rating %}
+
+
+                                                                     <div id="chosen_product">
+                                                                         <input class="le-input" value="{{ chosen_product.id }}" name="product_id" id="product_id" hidden>
+
+                                                                         <div class="row">
+                                                                             <div class="col-xs-12 col-sm-3 col-sm">
+                                                                                 <a {% if chosen_product %} href="{% url 'store:detail'  chosen_product.slug %}"{% endif %}>
+                                                                                     {% if chosen_product %}
+                                                                                        <img alt="" src="{{ chosen_product.image }}" height="70" width="90"/>
+                                                                                     {% else %}
+                                                                                        <img alt="" src="{% static 'assets/images/default-avatar.jpg' %}" height="70" width="90"/>
+                                                                                     {% endif %}
+                                                                                </a>
+
+                                                                             </div>
+
+                                                                             <div class="col-xs-12 col-sm-9 col-sm">
+                                                                                         <div class="row">
+                                                                                             {% if chosen_product %}
+                                                                                                <div class="star-holder inline">
+                                                                                                    {% for i in chosen_product.rating|stars_on %}
+                                                                                                        <img src="{% static '/assets/images/star-on.png' %}" data-echo="{% static '/assets/images/star-on.png' %}">
+                                                                                                    {% endfor %}
+                                                                                                    {% for i in chosen_product.rating|stars_off %}
+                                                                                                        <img src="{% static '/assets/images/star-off.png' %}" data-echo="{% static '/assets/images/star-off.png' %}">
+                                                                                                    {% endfor %}
+                                                                                                    {{ chosen_product.rating }} ({{ chosen_product.get_rating_display }})
+                                                                                                </div>
+                                                                                             {% else %}
+                                                                                                <div class="star-holder inline">
+                                                                                                    {% for i in chosen_product.rating|stars_on %}
+                                                                                                        <img src="{% static '/assets/images/star-on.png' %}" data-echo="{% static '/assets/images/star-on.png' %}">
+                                                                                                    {% endfor %}
+                                                                                                    {% for i in chosen_product.rating|stars_off %}
+                                                                                                        <img src="{% static '/assets/images/star-off.png' %}" data-echo="{% static '/assets/images/star-off.png' %}">
+                                                                                                    {% endfor %}
+                                                                                                </div>
+                                                                                             {% endif %}
+
+                                                                                         </div>
+                                                                                         <div class="row">
+                                                                                             {% if chosen_product %}
+                                                                                                <a href="{% url 'store:detail' chosen_product.slug %}">
+                                                                                                    {{ chosen_product.title|truncatechars:30 }}
+                                                                                               </a>
+                                                                                             {% else %}
+                                                                                                 {% if not_found %}
+                                                                                                     {{ 'p_not_found'|from_key }}
+                                                                                                 {% else %}
+                                                                                                     {{ 'p_not_chosen'|from_key }}
+                                                                                                 {% endif %}
+                                                                                             {% endif %}
+                                                                                         </div>
+                                                                             </div>
+
+                                                                         </div>
+                                                                    </div>

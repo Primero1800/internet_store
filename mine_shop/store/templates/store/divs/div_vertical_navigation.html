@@ -1,0 +1,171 @@
+{% load static %}
+
+{% load store_tags_rubrics %}
+{% load mine_shop_tags_constants %}
+
+<div class="side-menu animate-dropdown">
+                            <div class="head"><i class="fa fa-list"></i>{{ 'head_rubrics'|from_key }}</div>
+                            <nav class="yamm megamenu-horizontal" role="navigation">
+                                <ul class="nav">
+
+                                    <li class="dropdown menu-item">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'all_rubrics'|from_key }}</a>
+                                        <ul class="dropdown-menu mega-menu">
+                                            <li class="yamm-content">
+                                                <div class="row">
+
+                                                    <div class="col-md-4">
+                                                            <ul class="list-unstyled">
+                                                                {% for rubric in rubrics.all|slice_to_3:1 %}
+                                                                    <li><a href="{% url 'store:rubric' rubric.slug %}">{{ rubric.title }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                            <ul class="list-unstyled">
+                                                                {% for rubric in rubrics.all|slice_to_3:2 %}
+                                                                    <li><a href="{% url 'store:rubric' rubric.slug %}">{{ rubric.title }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                            <ul class="list-unstyled">
+                                                                {% for rubric in rubrics.all|slice_to_3:3 %}
+                                                                    <li><a href="{% url 'store:rubric' rubric.slug %}">{{ rubric.title }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li><!-- /.menu-item -->
+
+                                    <li class="dropdown menu-item">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'products_on_sale'|from_key }}</a>
+                                        <ul class="dropdown-menu mega-menu">
+                                            <li class="yamm-content">
+                                                <!-- ================================== MEGAMENU VERTICAL ================================== -->
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-lg-4">
+                                                        <ul>
+                                                            <li><a href="{% url 'store:discont' 5 %}">{{ 'all_sales'|from_key }}</a></li>
+                                                            <li><a href="{% url 'store:discont' 25 %}">{{ 'sales_more_'|from_key }} 25%</a></li>
+                                                            <li><a href="{% url 'store:discont' 50 %}">{{ 'sales_more_'|from_key }} 50%</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="dropdown-banner-holder">
+                                                        <img alt="" src="{% static 'assets/images/brand-size/skidki.png' %}" height="130"/>
+                                                    </div>
+                                                </div>
+                                                <!-- ================================== MEGAMENU VERTICAL ================================== -->
+                                            </li>
+                                        </ul>
+                                    </li><!-- /.menu-item -->
+
+                                    <li class="dropdown menu-item">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'popular'|from_key }}</a>
+                                        <ul class="dropdown-menu mega-menu">
+                                            <li class="yamm-content">
+                                                <!-- ================================== MEGAMENU VERTICAL ================================== -->
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-lg-4">
+                                                        <ul>
+                                                            <li><a href="{% url 'store:all' %}"><i><b>{{ 'all_products'|from_key }}</b></i></a></li>
+                                                            <li><a href="{% url 'store:all' to_filter='n' %}">{{ 'new_arrivals'|from_key }}</a></li>
+                                                            <li><a href="{% url 'store:discont' discont=5 %}">{{ 'on_sale'|from_key }}</a></li>
+                                                            <li><a href="{% url 'store:popular' 's' %}">{{ 'top_sales'|from_key }}</a></li>
+                                                            <li><a href="{% url 'store:popular' 'b' %}">{{ 'bestsellers'|from_key }}</a></li>
+                                                            <li><a href="{% url 'store:popular' 'r' %}">{{ 'top_rated'|from_key }}</a></li>
+                                                            <li><a href="{% url 'store:popular' 'v' %}">{{ 'most_viewed'|from_key }}</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="dropdown-banner-holder">
+                                                        <img alt="" src="{% static 'assets/images/brand-size/liders.png' %}" height="130"/>
+                                                    </div>
+                                                </div>
+                                                <!-- ================================== MEGAMENU VERTICAL ================================== -->
+                                            </li>
+                                        </ul>
+                                    </li><!-- /.menu-item -->
+
+                                    <li class="dropdown menu-item">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'new_arrivals'|from_key }}</a>
+                                        <ul class="dropdown-menu mega-menu">
+                                           <li class="yamm-content">
+                                                <div class="row">
+
+                                                    <div class="col-md-4">
+                                                            <ul class="list-unstyled">
+                                                                {% for product in new_arrivals.products|slice_to_3:1 %}
+                                                                    <li><a href="{% url 'store:detail' product.slug %}" title="{{ product.title }}">{{ product.title|truncatechars:25 }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                            <ul class="list-unstyled">
+                                                                {% for product in new_arrivals.products|slice_to_3:2 %}
+                                                                    <li><a href="{% url 'store:detail' product.slug %}">{{ product.title|truncatechars:25 }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                            <ul class="list-unstyled">
+                                                                {% for product in new_arrivals.products|slice_to_3:3 %}
+                                                                    <li><a href="{% url 'store:detail' product.slug %}">{{ product.title|truncatechars:25 }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li><!-- /.menu-item -->
+
+                                    {% for rubric in rubrics.all|shuffle|slice:":7" %}
+                                        <li class="dropdown menu-item">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ rubric.title|truncatechars:20 }}</a>
+                                        <ul class="dropdown-menu mega-menu">
+                                           <li class="yamm-content">
+                                                <div class="row">
+
+                                                    <div class="col-md-4">
+                                                            <ul class="list-unstyled">
+                                                                {% for product in rubric.products.all|slice_to_3:1 %}
+                                                                    <li><a href="{% url 'store:detail' product.slug %}" title="{{ product.title }}">{{ product.title|truncatechars:25 }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                            <ul class="list-unstyled">
+                                                                {% for product in rubric.products.all|slice_to_3:2 %}
+                                                                    <li><a href="{% url 'store:detail' product.slug %}"  title="{{ product.title }}">{{ product.title|truncatechars:25 }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                            <ul class="list-unstyled">
+                                                                {% for product in rubric.products.all|slice_to_3:3 %}
+                                                                    <li><a href="{% url 'store:detail' product.slug %}"  title="{{ product.title }}">{{ product.title|truncatechars:25 }}</a></li>
+                                                                {% endfor %}
+                                                                <li><a href="{% url 'store:rubric' rubric.slug %}"><b>{{ 'follow_to_rubric'|from_key }}</b></a></li>
+                                                            </ul>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li><!-- /.menu-item -->
+                                    {% endfor %}
+
+                                </ul><!-- /.nav -->
+                            </nav><!-- /.megamenu-horizontal -->
+                        </div><!-- /.side-menu -->

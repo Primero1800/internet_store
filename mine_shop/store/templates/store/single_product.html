@@ -1,0 +1,379 @@
+{% load static %}
+
+{% load store_tags_rating %}
+
+{% load mine_shop_tags_constants %}
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Meta -->
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">-->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height,target-densitydpi=medium-dpi, user-scalable=0" />
+		<meta name="description" content="">
+		<meta name="author" content="">
+	    <meta name="keywords" content="">
+	    <meta name="robots" content="all">
+
+
+	    <title>{{ product.title }}</title>
+
+	          {% include 'store/settings/BC_Cu_Fo_Ic.html' %}
+
+	</head>
+
+    <body>
+    	<div class="wrapper">
+
+    		<!-- ============================================================= TOP NAVIGATION ============================================================= -->
+            {% include 'store/divs/div_top_navigation.html' %}
+            <!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+            <!-- ============================================================= HEADER ============================================================= -->
+            <header class="no-padding-bottom header-alt">
+                {% include 'store/divs/div_header.html'%}
+
+    	        <!-- ========================================= NAVIGATION ========================================= -->
+                {% include 'store/divs/div_horizontal_navigation.html' %}
+                <!-- ========================================= NAVIGATION : END ========================================= -->
+
+            </header>
+            <!-- ============================================================= HEADER : END ============================================================= -->
+
+            <div id="single-product">
+                <div class="container">
+
+                    <div class="no-margin col-xs-12 col-sm-6 col-md-5 gallery-holder">
+                        <div class="product-item-holder size-big single-product-gallery small-gallery">
+
+                            <div id="owl-single-product" class="owl-carousel">
+
+                                {% for image in product.images.all %}
+                                    <div class="single-product-gallery-item" id="slide{{ forloop.counter }}">
+                                        <a data-rel="prettyphoto" href="{{ image.image.url }}">
+                                            <img class="img-responsive" alt="" src="{{ image.image.url }}" data-echo="{{ image.image.url }}" height="325" width="433"/>
+                                        </a>
+                                    </div><!-- /.single-product-gallery-item -->
+                                {% endfor %}
+
+
+                            </div><!-- /.single-product-slider -->
+
+
+                            <div class="single-product-gallery-thumbs gallery-thumbs">
+
+                                <div id="owl-single-product-thumbnails" class="owl-carousel">
+
+                                    {% for i in '12' %}
+                                    {% for image in product.images.all %}
+                                        <a class="horizontal-thumb active" data-target="#owl-single-product" data-slide="{{ forloop.counter0 }}" href="#slide{{ forloop.counter }}">
+                                            <img width="67" alt="" src="" data-echo="{{ image.image.url }}" />
+                                        </a>
+                                    {% endfor %}
+                                    {% endfor %}
+
+
+                                </div><!-- /#owl-single-product-thumbnails -->
+
+                                <div class="nav-holder left hidden-xs">
+                                    <a class="prev-btn slider-prev" data-target="#owl-single-product-thumbnails" href="#prev"></a>
+                                </div><!-- /.nav-holder -->
+
+                                <div class="nav-holder right hidden-xs">
+                                    <a class="next-btn slider-next" data-target="#owl-single-product-thumbnails" href="#next"></a>
+                                </div><!-- /.nav-holder -->
+
+                            </div><!-- /.gallery-thumbs -->
+
+                        </div><!-- /.single-product-gallery -->
+                    </div><!-- /.gallery-holder -->
+
+                    <div class="no-margin col-xs-12 col-sm-7 body-holder">
+                        <div class="body">
+
+                            <label>{{ form.stars.label }}</label>
+
+
+                            <div class="star-holder inline">
+                                    {% for i in product.rating|stars_on %}
+                                        <img src="{% static '/assets/images/star-on.png' %}" data-echo="{% static '/assets/images/star-on.png' %}">
+                                    {% endfor %}
+                                    {% for i in product.rating|stars_off %}
+                                        <img src="{% static '/assets/images/star-off.png' %}" data-echo="{% static '/assets/images/star-off.png' %}">
+                                    {% endfor %}
+                                <label><small>{{ product.rating }} ({{ product.get_rating_display }})</small></label>
+                            </div>
+
+                            <div class="availability"><label>{{ 'sp_availability'|from_key }}:</label><span class="{% if not product.is_available %}not-{% endif %}available">  {{ product.get_available_display }} </span></div>
+
+                            {% if product.is_on_sale %}
+                                <div class="label-discount green">-{{ product.discont }}% {{ 'sale'|from_key }}</div>
+                            {% else %}
+                                <div class="label-discount clear"></div>
+                            {% endif %}
+
+                            <div class="title"><a href="#">{{ product.title }}</a></div>
+                            <div class="brand">{{ product.brand.title }}</div>
+
+                            {% if user.is_authenticated %}
+                                <div class="wish-compare" id="wish-compare" name="wish-compare" value="n"
+                                                                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                            hx-post=""
+                                                                            hx-trigger="click"
+                                                                            hx-target="#wishlist-compare-holder"
+                                                                            hx-vals='js:{product_id: {{ product.id }}, value: get_element_value_by_id("wish-compare") }'
+                            >
+                                                                        <a class="btn-add-to-wishlist" id="btn-add-to-wishlist" value="w"
+                                                                            onmouseover="cursor_pointer(this)"
+                                                                            onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-heart', 'wish-compare', 'w')" value="to">
+                                                                                {{ 'add'|from_key }}
+                                                                        </a>
+                                <label>        </label>
+                                                                        <a class="btn-add-to-compare" id="btn-add-to-compare" value="c"
+                                                                            onmouseover="cursor_pointer(this)"
+                                                                            onclick="click_to_tool_button(this, '{{ 'added'|from_key }}', 'fa fa-exchange', 'wish-compare', 'c')" value="to">
+                                                                            {{ 'add'|from_key }}
+                                                                        </a>
+
+                            </div>
+                            {% endif %}
+
+                            <div class="excerpt">
+                                <p>{{ product.description }}</p>
+                            </div>
+
+                            <div class="prices">
+                                <div class="price-current">{{ product.price }} {{ currency }}</div>
+                                {% if  product.is_on_sale %}
+                                    <div class="price-prev">{{ product.start_price }} {{ currency }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="qnt-holder">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-3">
+                                        <div class="le-quantity">
+                                        <a class="minus" href="#reduce"></a>
+                                            <input name="quantity" readonly="readonly" type="text" value="1" id="quantity"/>
+                                        <a class="plus" href="#add"></a>
+                                    </div>
+                                    </div>
+
+                                    <script>
+                                        function get_quantity() {
+                                            return document.getElementById("quantity").value
+                                        }
+                                    </script>
+                                </div>
+                                <br><br>
+
+
+                                <div class="row">
+                                        <div class="col-xs-12 col-sm-4">
+                                             <div id="add_quantity_cart_button"
+                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                    hx-post=""
+                                                    hx-trigger="click"
+                                                    hx-target="#basket"
+                                                    hx-vals='js:{product_id: {{ product.id }}, add_quantity: get_quantity() }'>
+
+                                                    <a>
+                                                        <button class="le-button{% if not product.is_available %} inverse{% endif %}"
+                                                                onclick="change_add_to_cart_button(this, '{{ 'add'|from_key }}')" {% if not product.is_available %}disabled{% endif %}>
+                                                            {% if not product.is_available %}
+                                                                {{ 'not_available'|from_key }}
+                                                            {% else %}
+                                                                {{ 'add'|from_key }}
+                                                            {% endif %}
+                                                        </button>
+                                                    </a>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-4">
+                                            <a href="{% url 'cart:cart' %}" class="le-button">{{ 'basket'|from_key }}</a>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-4">
+                                            <a href="{% url 'orders:index' %}" class="le-button inverse">{{ 'to_order'|from_key }}</a>
+                                        </div>
+                                    </div>
+
+                            </div><!-- /.qnt-holder -->
+
+                        </div><!-- /.body -->
+
+                    </div><!-- /.body-holder -->
+                </div><!-- /.container -->
+            </div><!-- /.single-product -->
+
+            <!-- ========================================= SINGLE PRODUCT TAB ========================================= -->
+            <section id="single-product-tab">
+                <div class="container">
+                    <div class="tab-holder">
+
+                        <ul class="nav nav-tabs simple" >
+                            <li class="active"><a href="#description" data-toggle="tab">{{ 'sp_description'|from_key }}</a></li>
+                            <li><a href="#additional-info" data-toggle="tab">{{ 'sp_additional_information'|from_key }}</a></li>
+                            <li><a href="#reviews" data-toggle="tab">{{ 'sp_reviews_and_votes'|from_key }} ({{ product.votes.all|length }})</a></li>
+                            {% if user.is_authenticated and user.is_staff %}
+                                <li><a href="#sale-information" data-toggle="tab">({{ 'administration'|from_key }}) {{ 'sp_product_moving'|from_key }}</a></li>
+                            {% endif %}
+                        </ul><!-- /.nav-tabs -->
+
+                        <div class="tab-content">
+
+                            <div class="tab-pane active" id="description">
+                                {{ product.description }}
+                                <div class="meta-row">
+
+
+                                    <div class="inline">
+                                        <label>{{ 'rubrics'|from_key }}:</label>
+                                        {% for rubric in product.rubrics.all %}
+                                            <span><a href="{% url 'store:rubric' rubric.slug %}">{{ rubric.title }}</a>,</span>
+                                        {% endfor %}
+                                    </div><!-- /.inline -->
+
+                                    <span class="seperator">/</span>
+
+                                    <div class="inline">
+                                        <label>{{ 'tools'|from_key }}:</label>
+                                            <a class="btn-add-to-wishlist" href="{% url 'users:wishlist' %}">
+                                                  {{ 'wishlist'|from_key }}
+                                            </a>
+                                    </div><!-- /.inline -->
+
+                                    <span class="seperator">/</span>
+
+                                    <div class="inline">
+                                        <label>{{ 'tools'|from_key }}:</label>
+                                            <a class="btn-add-to-comparison" href="{% url 'users:comparison' %}">
+                                                  {{ 'comparison'|from_key }}
+                                            </a>
+                                    </div><!-- /.inline -->
+
+
+                                </div><!-- /.meta-row -->
+                            </div><!-- /.tab-pane #description -->
+
+                            <div class="tab-pane" id="additional-info">
+                                <ul class="tabled-data">
+                                    <li>
+                                        <label>{{ product.additional_information|verbose_name:"weight" }}</label>
+                                        <div class="value">{{ product.additional_information.weight | capfirst }}</div>
+                                    </li>
+                                    <li>
+                                        <label>{{ product.additional_information|verbose_name:"dimensions" }}</label>
+                                        <div class="value">{{ product.additional_information.dimensions | capfirst }}</div>
+                                    </li>
+                                    <li>
+                                        <label>{{ product.additional_information|verbose_name:"size" }}</label>
+                                        <div class="value">{{ product.additional_information.size | capfirst }}</div>
+                                    </li>
+                                    <li>
+                                        <label>{{ product.additional_information|verbose_name:"guarantee" }}</label>
+                                        <div class="value">{{ product.additional_information.guarantee | capfirst }}</div>
+                                    </li>
+                                </ul><!-- /.tabled-data -->
+
+                                <div class="meta-row">
+
+                                    <div class="inline">
+                                        <label>{{ 'rubrics'|from_key }}:</label>
+                                        {% for rubric in product.rubrics.all %}
+                                            <span><a href="{% url 'store:rubric' rubric.slug %}">{{ rubric.title }}</a>,</span>
+                                        {% endfor %}
+                                    </div><!-- /.inline -->
+
+                                    <span class="seperator">/</span>
+
+                                    <div class="inline">
+                                        <label>{{ 'tools'|from_key }}:</label>
+                                            <a class="btn-add-to-wishlist" href="{% url 'users:wishlist' %}">
+                                                  {{ 'wishlist'|from_key }}
+                                            </a>
+                                    </div><!-- /.inline -->
+
+                                    <span class="seperator">/</span>
+
+                                    <div class="inline">
+                                        <label>{{ 'tools'|from_key }}:</label>
+                                            <a class="btn-add-to-comparison" href="{% url 'users:comparison' %}">
+                                                  {{ 'comparison'|from_key }}
+                                            </a>
+                                    </div><!-- /.inline -->
+
+                                </div><!-- /.meta-row -->
+                            </div><!-- /.tab-pane #additional-info -->
+
+
+                            <div class="tab-pane" id="reviews">
+
+                                <div class="comments" id="comments"
+                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                    hx-post
+                                    hx-trigger="load"
+                                >
+                                    ---
+                                </div> <!-- end basket-content   -->
+
+
+                            </div><!-- /.tab-pane #reviews -->
+
+                             <div class="tab-pane" id="sale-information">
+                                <ul class="tabled-data">
+                                    <li>
+                                        <label>{{ 'product_id'|from_key }}</label>
+                                        <div class="value">{{ product.id }}</div>
+                                    </li>
+                                    <li>
+                                        <label>{{ product.sale_information|verbose_name:"viewed_count" }}</label>
+                                        <div class="value">{{ product.sale_information.viewed_count }}</div>
+                                    </li>
+                                    <li>
+                                        <label><a href="#reviews">{{ product.sale_information|verbose_name:"rating" }}</a></label>
+                                        <div class="value">{{ product.sale_information.rating }}</div>
+                                    </li>
+                                    <li>
+                                        <label><a href="#reviews">{{ product.sale_information|verbose_name:"voted_count" }}</a></label>
+                                        <div class="value">{{ product.sale_information.voted_count }}</div>
+                                    </li>
+                                    <li>
+                                        <label>{{ product.sale_information|verbose_name:"sold_count" }}</label>
+                                        <div class="value">{{ product.sale_information.sold_count }}</div>
+                                    </li>
+                                    <li>
+                                        <label>{{ product|verbose_name:"quantity" }}</label>
+                                        <div class="value">{{ product.quantity }}</div>
+                                    </li>
+                                </ul><!-- /.tabled-data -->
+
+
+                            </div><!-- /.tab-pane #sale-information -->
+
+                        </div><!-- /.tab-content -->
+
+                    </div><!-- /.tab-holder -->
+                </div><!-- /.container -->
+            </section><!-- /#single-product-tab -->
+            <!-- ========================================= SINGLE PRODUCT TAB : END ========================================= -->
+            <!-- ========================================= RECENTLY VIEWED ========================================= -->
+            {% include 'store/divs/div_recently_viewed.html' %}
+            <!-- ========================================= RECENTLY VIEWED : END ========================================= -->
+
+
+            <!-- ============================================================= FOOTER ============================================================= -->
+            {% include 'store/divs/div_footer.html'%}
+            <!-- ============================================================= FOOTER : END ============================================================= -->
+
+        </div><!-- /.wrapper -->
+
+    	<!-- JavaScripts placed at the end of the document so the pages load faster -->
+    	{% include 'store/settings/end_java_scripts.html' %}
+
+    </body>
+</html>

@@ -1,0 +1,134 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Meta -->
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+	    <meta name="keywords" content="">
+	    <meta name="robots" content="all">
+
+	    <title>{{ 'registration'|from_key }}</title>
+
+			{% include 'store/settings/BC_Cu_Fo_Ic.html' %}
+
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<!-- ============================================================= TOP NAVIGATION ============================================================= -->
+			{% include 'store/divs/div_top_navigation.html' %}
+			<!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+			<!-- ============================================================= HEADER ============================================================= -->
+			<header class="no-padding-bottom header-alt">
+    			{% include 'store/divs/div_header.html'%}
+
+				<!-- ========================================= NAVIGATION ========================================= -->
+				{% include 'store/divs/div_horizontal_navigation.html' %}
+				<!-- ========================================= NAVIGATION : END ========================================= -->
+
+			</header>
+			<!-- ============================================================= HEADER : END ============================================================= -->
+
+			<!-- ========================================= MAIN ========================================= -->
+			<main id="authentication" class="inner-bottom-md">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-3"></div>
+
+						<div class="col-md-6">
+							<section class="section register inner-left-xs">
+								<h2 class="bordered">{{ 'registration'|from_key }}</h2>
+								<div class="social-auth-buttons">
+									<div class="row">
+										<div class="col-md-6">
+											<p>{{ 'ur_create_new_account'|from_key }} </p>
+										</div>
+										<div class="col-md-6">
+											<p><a href="{% url 'users:login' %}">{{ 'ur_have_account_enter'|from_key }}.</a></p>
+										</div>
+									</div>
+								</div>
+
+								<form role="form" class="register-form cf-style-1" action="{% url 'users:registration' %}" method="post">
+									{% csrf_token %}
+									<div class="field-row">
+										{% if form.email.errors %}
+											<table>
+												<er>
+														<ul>
+															{% for error in form.email.errors %}
+																<li><em><h5>*{{ error | escape }}</h5></em></li>
+															{% endfor %}
+														</ul>
+												</er>
+											</table>
+										{% endif %}
+			                            <label>{{ 'email'|from_key }}</label>
+			                            <input name="email" type="text" class="le-input" autofocus>
+			                        </div><!-- /.field-row -->
+
+									<div class="field-row clearfix">
+			                        	<span class="pull-left">
+
+			                        		<label class="content-color">
+												{% if form.confirmation.errors %}
+													<table>
+												<er>
+														<ul>
+															{% for error in form.confirmation.errors %}
+																<li><em><h5>*{{ error | escape }}</h5></em></li>
+															{% endfor %}
+														</ul>
+												</er>
+											</table>
+												{% endif %}
+												<input name="confirmation" type="checkbox" class="le-checbox auto-width inline">
+													<span class="bold">{{ 'ur_agree_to_personalize'|from_key }}</span>
+											</label>
+			                        	</span>
+			                        </div>
+
+			                        <div class="buttons-holder">
+			                            <button type="submit" class="le-button huge">{{ 'ur_register'|from_key }}</button>
+			                        </div><!-- /.buttons-holder -->
+								</form>
+
+								<h3 class="semi-bold">{{ 'ur_register_now_and_get'|from_key }}:</h3>
+								<br><br>
+
+								<ul class="list-unstyled list-benefits">
+									<li><i class="fa fa-check primary-color"></i> {{ 'ur_rule1'|from_key }}</li>
+									<li><i class="fa fa-check primary-color"></i> {{ 'ur_rule2'|from_key }}</li>
+									<li><i class="fa fa-check primary-color"></i> {{ 'ur_rule3'|from_key }}</li>
+									<li><i class="fa fa-check primary-color"></i> {{ 'ur_rule4'|from_key }}</li>
+									<li><i class="fa fa-check primary-color"></i> {{ 'ur_rule5'|from_key }}</li>
+									<li><i class="fa fa-check primary-color"></i> {{ 'ur_rule6'|from_key }}</li>
+								</ul>
+
+							</section><!-- /.register -->
+
+						</div><!-- /.col -->
+
+					</div><!-- /.row -->
+				</div><!-- /.container -->
+			</main><!-- /.authentication -->
+			<!-- ========================================= MAIN : END ========================================= -->
+
+			<!-- ============================================================= FOOTER ============================================================= -->
+            {% include 'store/divs/div_footer.html'%}
+            <!-- ============================================================= FOOTER : END ============================================================= -->
+        </div><!-- /.wrapper -->
+
+        <!-- JavaScripts placed at the end of the document so the pages load faster -->
+        {% include 'store/settings/end_java_scripts.html' %}
+
+    </body>
+</html>

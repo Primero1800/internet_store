@@ -1,0 +1,125 @@
+{% load static %}
+
+{% load cart_tags_cart %}
+
+
+{% load mine_shop_tags_constants %}
+
+<div id="basket-content">
+
+    <div id = 'basket-content-updater'
+        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+        hx-post
+        hx-target="#basket"
+        hx-trigger="load">
+    </div>
+
+    <div class="col-xs-12 col-md-9 items-holder no-margin">
+
+        {% for cart_item in cart %}
+            {% with cart_item|product as product %}
+                <div class="row no-margin cart-item">
+                            <div class="col-xs-12 col-sm-2 no-margin">
+                                <a href="{% url 'store:detail' product.slug %}" class="thumb-holder">
+                                    <img class="lazy" alt="" src="{{ product.images.first.image.url }}" width="67" height="67" />
+                                </a>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-5 ">
+                                <div class="title">
+                                    <a href="{% url 'store:detail' product.slug %}">{{ product.title|truncatechars:60 }}</a>
+                                </div>
+                                <div class="brand">{{ product.brand.title }}</div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-2 no-margin">
+
+                                <div class="quantity">
+
+                                    <div class="le-quantity">
+                                        <div class="remove-cart-button" id="cart-item-quantity-0"
+                                                                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                hx-post=""
+                                                                hx-trigger="click"
+                                                                hx-target="#basket-content"
+                                                                hx-vals='js:{product_id: {{ cart_item.product_id }} }'
+                                        >
+                                           <a><button class="minus"></button></a>
+                                        </div>
+                                        <form>
+                                           <input name="quantity" readonly="readonly" type="text" value="{{ cart_item.quantity }}" />
+                                        </form>
+
+                                        <div class="remove-cart-button" id="cart-item-quantity-1"
+                                                                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                hx-post=""
+                                                                hx-trigger="click"
+                                                                hx-target="#basket-content"
+                                                                hx-vals='js:{product_id: {{ cart_item.product_id }} }'
+                                        >
+                                           <a><button class="plus"></button></a>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-xs-12 col-sm-3 no-margin">
+                                <div class="price">
+                                    {{ currency}} {{ cart_item.total_price }}
+                                </div>
+                                <div class="remove-cart-button" id="remove-cart-button-content"
+                                                                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                hx-post=""
+                                                                hx-trigger="click"
+                                                                hx-target="#basket-content"
+                                                                hx-vals='js:{product_id: {{ cart_item.product_id }} }'
+                                >
+                                    <a><button class="close-btn"></button></a>
+                                </div>
+                            </div>
+                        </div><!-- /.cart-item -->
+            {% endwith %}
+        {% endfor %}
+
+
+    </div>
+
+
+                    <!-- ========================================= CONTENT : END ========================================= -->
+                    <!-- ========================================= SIDEBAR ========================================= -->
+
+                    <div class="col-xs-12 col-md-3 no-margin sidebar ">
+
+                        <div class="widget cart-summary">
+                            <h1 class="border">{{ 'basket'|from_key }}</h1>
+                            <div class="body">
+                                <ul class="tabled-data no-border inverse-bold">
+                                    <li>
+                                        <label>{{ 'all_over'|from_key }}:</label>
+                                        <div class="value pull-right">{{ cart.total_price }} {{ currency }}</div>
+                                    </li>
+                                    <li>
+                                        <label>{{ 'delivery'|from_key }}:</label>
+                                        <div class="value pull-right">{{ cart.total_price|delivery_cost }}</div>
+                                    </li>
+                                </ul>
+                                <ul id="total-price" class="tabled-data inverse-bold no-border">
+                                    <li>
+                                        <label>{{ 'all_over'|from_key }}<h6>(* {{ 'cart_without_delivery'|from_key }}):</h6></label>
+                                        <div class="value pull-right">{{ cart.total_price }} {{ currency }}</div>
+                                    </li>
+                                </ul>
+                                <div class="buttons-holder">
+                                    <a class="le-button big" href="{% url 'orders:index' %}" >{{ 'cart_order'|from_key }}</a>
+                                    <a class="simple-link block" href="{% url 'store:index' %}" >{{ 'cart_continue_shopping'|from_key }}</a>
+                                </div>
+                            </div>
+                        </div><!-- /.widget -->
+
+                    </div><!-- /.sidebar -->
+
+
+
+</div> <!-- end basket-content   -->

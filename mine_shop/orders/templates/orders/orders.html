@@ -1,0 +1,449 @@
+{% load static %}
+
+{% load orders_tags_phone_numbers %}
+    {% add_phone_numbers_allowed_regions as allowed_phone_numbers %}
+
+{% load mine_shop_tags_constants %}
+
+{% load cart_tags_cart %}
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="keywords" content="">
+        <meta name="robots" content="all">
+
+        <title>{{ store_title }}. {{ 'orders_title'|from_key }}</title>
+
+        {% include 'store/settings/BC_Cu_Fo_Ic.html' %}
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <!-- ============================================================= TOP NAVIGATION ============================================================= -->
+            {% include 'store/divs/div_top_navigation.html' %}
+            <!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+            <!-- ============================================================= HEADER ============================================================= -->
+            <header class="no-padding-bottom header-alt">
+                {% include 'store/divs/div_header.html'%}
+
+                <!-- ========================================= NAVIGATION ========================================= -->
+                {% include 'store/divs/div_horizontal_navigation.html' %}
+                <!-- ========================================= NAVIGATION : END ========================================= -->
+
+            </header>
+            <!-- ============================================================= HEADER : END ============================================================= -->
+
+            <!-- ========================================= CONTENT ========================================= -->
+            <section id="checkout-page">
+                <div class="container">
+                    <form method="post" action="{% url 'orders:index' %}">
+
+                        {% csrf_token %}
+                        <input class="le-input" name="total_price" value="{{ total_price }}" hidden>
+
+                        <div class="col-xs-12 no-margin">
+
+                        <div class="billing-address">
+                            <h2 class="border h1">{{ 'O_user_data_for_delivery'|from_key }}</h2>
+                            <h5>(* - {{ 'O_required_fields'|from_key }})</h5>
+                            {% if message %}
+                                <h4>{{ message }}</h4>
+                            {% endif %}
+
+                            <br><br>
+
+                                <div class="row field-row">
+                                    <div class="col-xs-12 col-sm-6">
+										<table>
+												<er>
+														<ul>
+                                                            {% if form.name.errors %}
+                                                                {% for error in form.name.errors %}
+                                                                    <li><em><h5>*{{ error | escape }}</h5></em></li>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <li><em><h5> <br></h5></em></li>
+                                                            {% endif %}
+														</ul>
+												</er>
+											</table>
+                                        <label>{{ form.name.label }}*</label>
+                                        <input class="le-input" name="name"
+                                               {% if form.name.value %}
+                                                    value="{{ form.name.value }}"
+                                               {% else %}
+                                                    placeholder="{{ form.name.label }}"
+                                               {% endif %}
+                                        >
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <table>
+												<er>
+														<ul>
+                                                            {% if form.surname.errors %}
+                                                                {% for error in form.surname.errors %}
+                                                                    <li><em><h5>*{{ error | escape }}</h5></em></li>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <li><em><h5> <br></h5></em></li>
+                                                            {% endif %}
+														</ul>
+												</er>
+											</table>
+                                        <label>{{ form.surname.label }}</label>
+                                        <input class="le-input" name="surname"
+                                               {% if form.surname.value %}
+                                                    value="{{ form.surname.value }}"
+                                               {% else %}
+                                                    placeholder="{{ form.surname.label }}"
+                                               {% endif %}
+                                        >
+                                    </div>
+                                </div><!-- /.field-row -->
+
+                                <div class="row field-row">
+                                    <div class="col-xs-12">
+                                        <table>
+												<er>
+														<ul>
+                                                            {% if form.company_name.errors %}
+                                                                {% for error in form.company_name.errors %}
+                                                                    <li><em><h5>*{{ error | escape }}</h5></em></li>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <li><em><h5> <br></h5></em></li>
+                                                            {% endif %}
+														</ul>
+												</er>
+											</table>
+                                        <label>{{ form.company_name.label }}</label>
+                                        <input class="le-input" name="company_name"
+                                               {% if form.company_name.value %}
+                                                    value="{{ form.company_name.value }}"
+                                               {% else %}
+                                                    placeholder="{{ form.company_name.label }}"
+                                               {% endif %}
+                                        >
+                                    </div>
+                                </div><!-- /.field-row -->
+
+                                <div class="row field-row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <table>
+												<er>
+														<ul>
+                                                            {% if form.address.errors %}
+                                                                {% for error in form.address.errors %}
+                                                                    <li><em><h5>*{{ error | escape }}</h5></em></li>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <li><em><h5> <br></h5></em></li>
+                                                            {% endif %}
+														</ul>
+												</er>
+											</table>
+                                        <label>{{ form.address.label }}*</label>
+                                        <input class="le-input" name="address"
+                                                {% if form.address.value %}
+                                                    value="{{ form.address.value }}"
+                                               {% else %}
+                                                    placeholder="{{ form.address.label }}"
+                                               {% endif %}
+                                        >
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <table>
+												<er>
+														<ul>
+                                                            {% if form.city.errors %}
+                                                                {% for error in form.city.errors %}
+                                                                    <li><em><h5>*{{ error | escape }}</h5></em></li>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <li><em><h5> <br></h5></em></li>
+                                                            {% endif %}
+														</ul>
+												</er>
+											</table>
+                                        <label>{{ form.city.label }}*</label>
+                                        <input class="le-input" name="city"
+                                            {% if form.city.value %}
+                                                value="{{ form.city.value }}"
+                                            {% else %}
+                                                placeholder="{{ form.city.label }}"
+                                           {% endif %}
+                                        >
+                                    </div>
+                                </div><!-- /.field-row -->
+
+                                <div class="row field-row">
+                                    <div class="col-xs-12 col-sm-3">
+                                        <table>
+												<er>
+														<ul>
+                                                            {% if form.postcode.errors %}
+                                                                {% for error in form.postcode.errors %}
+                                                                    <li><em><h5>*{{ error | escape }}</h5></em></li>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <li><em><h5> <br></h5></em></li>
+                                                            {% endif %}
+														</ul>
+												</er>
+											</table>
+                                        <label>{{ form.postcode.label }}</label>
+                                        <input class="le-input"  name="postcode"
+                                            {% if form.postcode.value %}
+                                                value="{{ form.postcode.value }}"
+                                           {% else %}
+                                                placeholder="{{ form.postcode.label }}"
+                                           {% endif %}
+                                        >
+                                    </div>
+                                    <div class="col-xs-12 col-sm-3">
+                                        <table>
+												<er>
+														<ul>
+                                                            {% if form.email.errors %}
+                                                                {% for error in form.email.errors %}
+                                                                    <li><em><h5>*{{ error | escape }}</h5></em></li>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <li><em><h5> <br></h5></em></li>
+                                                            {% endif %}
+														</ul>
+												</er>
+											</table>
+                                        <label>{{ form.email.label }}</label>
+                                        <input class="le-input" name="email"
+                                           {% if user.is_authenticated %}
+                                               value="{{ user.email }}" readonly
+                                           {% else %}
+                                               {% if form.email.value %}
+                                                    value="{{ form.email.value }}"
+                                               {% else %}
+                                                    placeholder="{{ form.email.label }}"
+                                               {% endif %}
+                                           {% endif %}
+                                        >
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-2">
+                                        <table>
+											<er>
+                                                <ul>
+                                                    <li><em><h5> <br></h5></em></li>
+												</ul>
+											</er>
+										</table>
+                                        <label>{{ form.phonenumber.label.0 }}*</label>
+                                        <select class="le-input" name="phonenumber_0"
+                                        >
+                                            {% for region in allowed_phone_numbers.allowed_regions %}
+                                                <option value="{{ region.0 }}"
+                                                        {% if form.phonenumber.value.0 %}
+                                                            {% if form.phonenumber.value.0 == region.0 %}
+                                                                selected
+                                                            {% endif %}
+                                                        {% else %}
+                                                            {% if region.0 == allowed_phone_numbers.default_region %}
+                                                                selected
+                                                            {% endif %}
+                                                        {% endif %}
+                                                >
+                                                    {{ region.1 }}
+                                                </option>>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-4">
+                                        <table>
+												<er>
+														<ul>
+                                                            {% if form.phonenumber.errors %}
+                                                                {% for error in form.phonenumber.errors %}
+                                                                    <li><em><h5>*{{ error | escape }}</h5></em></li>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <li><em><h5> <br></h5></em></li>
+                                                            {% endif %}
+														</ul>
+												</er>
+											</table>
+                                        <label>{{ form.phonenumber.label.1 }}*</label>
+                                        <input class="le-input" name="phonenumber_1"
+                                            {% if form.phonenumber.value.1 %}
+                                                value="{{ form.phonenumber.value.1 }}"
+                                            {% endif %}
+                                        >
+                                    </div>
+                                </div><!-- /.field-row -->
+
+                                <div class="row field-row">
+                                    <div id="create-account" class="col-xs-12">
+                                        <a class="simple-link bold" href="{% url 'store:index' %}">{{ 'O_not_finished'|from_key }}?</a> - {{ 'O_follow_link_to_continue'|from_key }}.
+                                    </div>
+                                </div><!-- /.field-row -->
+
+
+                        </div><!-- /.billing-address -->
+
+                        {% if cart.total_count > 0 %}
+
+                            <section id="your-order">
+
+                                <h2 class="border h1">{{ 'O_your_order'|from_key }}</h2>
+                                <h5>(* - {{ 'O_correct_quantity'|from_key }} )</h5>
+
+                               {% for cart_item in cart %}
+                                {% with cart_item|product as product %}
+                                    <div class="row no-margin order-item">
+                                        <div class="col-xs-12 col-sm-2 no-margin">
+                                        <a href="{% url 'store:detail' product.slug %}" class="qty">{{ cart_item.quantity }} x {{ cart_item.price }} {{ currency }}</a>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-2">
+                                        <div class="thumb">
+                                            <a href="{% url 'store:detail'  product.slug %}">
+                                               <img alt="" src="{{ product.images.first.image.url }}" height="67" width="90"/>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-4">
+                                        <div class="title"><a href="{% url 'store:detail' product.slug %}">{{ product.title|truncatechars:45 }}</a></div>
+                                        <div class="brand">{{ product.brand.title }}</div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-2 no-margin" align="left">
+                                        <div class="price">{{ currency }} {{ cart_item.total_price }} </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-2 no-margin" align="right">
+                                        <div class="buttons-holder">
+                                            <a class="simple-link block" href="{% url 'cart:cart' %}" ><i class="fa fa-pencil-square-o"></i>{{ 'O_edit_order'|from_key }}</a>
+                                         </div>
+                                    </div>
+                                    </div><!-- /.order-item -->
+                                {% endwith %}
+                                {% endfor %}
+
+                        </section><!-- /#your-order -->
+
+
+
+                            <div id="total-area" class="row no-margin">
+                            <div class="col-xs-12 col-lg-4 col-lg-offset-8 no-margin-right">
+                                <div id="subtotal-holder">
+                                    <ul class="tabled-data inverse-bold no-border">
+                                        <li>
+                                            <label>{{ 'O_order_price'|from_key }}</label>
+                                            <div class="value ">{{ currency }} {{ cart.total_price }}</div>
+                                        </li>
+                                        <li>
+
+                                            <label>{{ 'O_delivery'|from_key }}</label>
+                                            <div class="value">
+                                                <div class="radio-group" id="delivery_group"
+                                                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                     hx-post
+                                                     hx-trigger="click"
+                                                     hx-target="#total_field"
+                                                >
+                                                    <input class="le-radio" type="radio" name="delivery" value="no"> <div class="radio-label bold">{{ 'O_autodelivery'|from_key }}</div><br>
+                                                    <input class="le-radio" type="radio" name="delivery" value="yes" checked>  <div class="radio-label">{{ 'O_delivery'|from_key }}<br><span class="bold">{{ cart.total_price|delivery_cost }}</span></div>
+                                                </div>
+                                            </div>
+
+                                        </li>
+                                    </ul><!-- /.tabled-data -->
+
+                                    <div id="total_field"
+                                         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                         hx-post
+                                         hx-trigger="load"
+                                    >
+                                        ---
+                                    </div>
+
+
+                                </div><!-- /#subtotal-holder -->
+                            </div><!-- /.col -->
+                        </div><!-- /#total-area -->
+
+                        {% endif %}
+
+                            <div id="payment-method-options">
+                                <div class="payment-method-option">
+                                    <input class="le-radio" type="radio" name="payment" value="direct" checked>
+                                    <div class="radio-label bold ">{{ 'O_direct_banking'|from_key }}<br>
+                                        <p>{{ 'O_direct_banking_text'|from_key }}</p>
+                                    </div>
+                                </div><!-- /.payment-method-option -->
+
+                                <div class="payment-method-option">
+                                    <input class="le-radio" type="radio" name="payment" value="card">
+                                    <div class="radio-label bold ">{{ 'O_pay_card'|from_key }}<br>
+                                        <p>{{ 'O_pay_card_text'|from_key }}</p>
+                                    </div>
+                                </div><!-- /.payment-method-option -->
+
+                                <div class="payment-method-option">
+                                    <input class="le-radio" type="radio" name="payment" value="cash">
+                                    <div class="radio-label bold ">{{ 'O_pay_cash'|from_key }}<br>
+                                        <p>{{ 'O_pay_cash_text'|from_key }}</p>
+                                    </div>
+                                </div><!-- /.payment-method-option -->
+                        </div><!-- /#payment-method-options -->
+
+
+
+                        <div class="place-order-button">
+                            <button class="le-button big {% if not cart.total_count > 0 %}inverse{% endif %}" type="submit" {% if not cart.total_count > 0 %}disabled{% endif %}>{{ 'do_order'|from_key }}</button>
+                            {% if not cart.total_count > 0 %}
+                                <div class="row field-row" align="right">
+                                    <div id="button-submit" class="col-xs-12">
+                                        <a class="simple-link bold" href="{% url 'store:index' %}">{{ 'O_empty_cart_no_order'|from_key }}.</a> - {{ 'O_follow_link_to_continue'|from_key }}.
+                                    </div>
+                                </div><!-- /.field-row -->
+                            {% endif %}
+                            {% if user.is_authenticated %}
+                                <br><br>
+                                <div class="row field-row" align="right">
+                                    <div id="history_submit" class="col-xs-12">
+                                        <a class="simple-link bold" href="{% url 'orders:history' %}"><h4><i class="fa fa-file"></i><b> {{ 'O_view_orders_history'|from_key }}.</b></h4></a><h5>(* {{ 'user'|from_key }} {{ user }})</h5>
+                                    </div>
+                                </div><!-- /.field-row -->
+                            {% endif %}
+                        </div><!-- /.place-order-button -->
+
+
+                         <br>
+
+                    </div><!-- /.col -->
+
+                    </form>
+
+                </div><!-- /.container -->
+            </section><!-- /#checkout-page -->
+            <!-- ========================================= CONTENT : END ========================================= -->
+
+            <!-- ============================================================= FOOTER ============================================================= -->
+            {% include 'store/divs/div_footer.html'%}
+            <!-- ============================================================= FOOTER : END ============================================================= -->
+        </div><!-- /.wrapper -->
+
+        <!-- JavaScripts placed at the end of the document so the pages load faster -->
+        {% include 'store/settings/end_java_scripts.html' %}
+    </body>
+</html>

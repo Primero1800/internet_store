@@ -1,0 +1,143 @@
+{% load static %}
+
+{% load cart_tags_cart %}
+
+{% load store_tags_rating %}
+
+{% load mine_shop_tags_constants %}
+
+
+
+<div class="container no-padding">
+                    <div class="col-xs-12 col-md-3 logo-holder">
+                        <!-- ============================================================= LOGO ============================================================= -->
+                            <a href="{% url 'store:index' %}">
+                            <!--<img alt="logo" src="assets/images/logo.svg" width="233" height="54"/>-->
+                            <!--<object id="sp" type="image/svg+xml" data="assets/images/logo.svg" width="233" height="54"></object>-->
+                                {% include 'store/divs/div_logo.html'%}
+                            </a>
+                        <!-- ============================================================= LOGO : END ============================================================= -->
+                    </div><!-- /.logo-holder -->
+
+                    <div class="col-xs-12 col-md-6 top-search-holder no-margin">
+                        <div class="contact-row">
+                            <div class="phone inline">
+                                <i class="fa fa-phone"></i>{{ store.phonenumber }}
+                            </div>
+                            <div class="contact inline">
+                                <i class="fa fa-envelope"></i><span class="le-color">{{ store.email }}</span>
+                            </div>
+                        </div><!-- /.contact-row -->
+                        <!-- ============================================================= SEARCH AREA ============================================================= -->
+                        <div class="search-area">
+
+                            <form action="{% url 'store:search' %}" method="post">
+
+                                <input name="category-field" id="category-field" class="search-field" value="{{ 'dh_all_rubrics'|from_key }}" type="hidden"/>
+                                {% csrf_token %}
+
+                                <div class="control-group">
+
+
+                                    <input name="search-field" id="search-field" class="search-field" onchange="enable_button(this)"
+                                                                                                placeholder="{{ 'dh_find_product'|from_key }}" onmouseleave="enable_button(this)"/></input>
+
+                                    <ul class="categories-filter animate-dropdown">
+                                        <li class="dropdown">
+                                            <div name="search-category-dropdown"
+                                                            id="search-category-dropdown"
+                                                            value="{{ 'dh_all_rubrics'|from_key }}"
+                                                            class="dropdown-toggle"  data-toggle="dropdown"
+                                                            title="">{{ 'dh_all_rubrics'|from_key }}</div>
+
+                                            <ul class="dropdown-menu" role="menu" >
+                                                <script>
+                                                    function change_dropdown_text(el) {
+                                                        var menu = document.getElementById("search-category-dropdown");
+                                                        var newtext =  el.title;
+                                                        if (newtext.length > 14){
+                                                            newtext = el.title.substring(0, 11) + '...';
+                                                        }
+                                                        menu.textContent = newtext;
+                                                        menu.title = el.title;
+                                                        document.getElementById("category-field").value = el.title;
+                                                    }
+                                                </script>
+                                                    <li role="presentation">
+                                                        <a role="menuitem" tabindex="-1">
+                                                            <div id="search-menuitemall" onclick="change_dropdown_text(this)" title="{{ 'dh_all_rubrics'|from_key }}"
+                                                                        >
+                                                                {{ 'dh_all_rubrics'|from_key }}
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                {% for rubric in rubrics.all %}
+                                                    <li role="presentation">
+                                                        <a role="menuitem" tabindex="-1">
+                                                            <div id="search-menuitem{{ forloop.counter0 }}" onclick="change_dropdown_text(this)" title="{{ rubric.title }}"
+                                                                        >
+                                                                {{ rubric.title }}
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                    </ul>
+
+                                    <button class="search-button" id="search-button"
+                                            disabled
+                                    >
+                                    </button>
+
+
+                                    <script>
+                                        function enable_button(el){
+                                            if (el.value.length > 1){
+                                                document.getElementById("search-button").disabled=false;
+                                            } else if (el.value.length < 2){
+                                                document.getElementById("search-button").disabled=true;
+                                            }
+                                        }
+                                    </script>
+
+                                </div>
+                            </form>
+                        </div><!-- /.search-area -->
+                        <!-- ============================================================= SEARCH AREA : END ============================================================= -->
+                    </div><!-- /.top-search-holder -->
+
+                    <div class="col-xs-12 col-md-3 top-cart-row no-margin">
+                        <div class="top-cart-row-container">
+                            {% if user.is_authenticated %}
+
+                                <div class="wishlist-compare-holder" id="wishlist-compare-holder"
+                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                    hx-post
+                                    hx-trigger="load"
+                                    hx-vals
+                                >
+                                   ---
+                                </div>
+
+                            {% endif %}
+                            <!-- ============================================================= SHOPPING CART DROPDOWN ============================================================= -->
+                            <div class="top-cart-holder dropdown animate-dropdown">
+
+
+                                <div id="basket"
+                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                    hx-post
+                                    hx-trigger="load"
+                                    hx-vals=''>      <!-- /.tab-content -->
+                                            ---
+                                </div>
+
+
+
+                            </div><!-- /.top-cart-holder -->
+                        </div><!-- /.top-cart-row-container -->
+                        <!-- ============================================================= SHOPPING CART DROPDOWN : END ============================================================= -->
+                    </div><!-- /.top-cart-row -->
+                </div><!-- /.container -->
+

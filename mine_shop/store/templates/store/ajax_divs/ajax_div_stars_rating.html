@@ -1,0 +1,61 @@
+ {% load static %}
+
+ {% load store_tags_rating %}
+
+                                                                    <div id="stars-rating">
+
+                                                                        <input id="stars" name="stars" value="{{ new_vote }}" hidden>
+
+                                                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+
+                                                                            <div class="stars-rating">
+                                                                                <div class="row">
+                                                                                    <div class="col-xs-12 col-sm-12">
+                                                                                        {% for i in new_vote|stars_on %}
+                                                                                            <img src="{% static '/assets/images/star-on.png' %}" data-echo="{% static '/assets/images/star-on.png' %}">
+                                                                                        {% endfor %}
+                                                                                        {% for i in new_vote|stars_off %}
+                                                                                            <img src="{% static '/assets/images/star-off.png' %}" data-echo="{% static '/assets/images/star-off.png' %}">
+                                                                                        {% endfor %}
+                                                                                    </div>
+                                                                                    <div class="col-xs-12 col-sm-4">
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                        </a>
+
+                                                                        <ul class="dropdown-menu">
+                                                                            {% for star in '12345' %}
+                                                                                <li>
+                                                                                    <div class="star-item">
+                                                                                        <div class="row" id="stars_row_{{ forloop.counter }}" name="stars_row_{{ forloop.counter }}"
+                                                                                                            onmouseover="cursor_pointer(this)"
+                                                                                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                                            hx-post=""
+                                                                                            hx-trigger="click"
+                                                                                            hx-target="#stars-rating"
+                                                                                            hx-vals='js:{new_vote: {{ forloop.counter }} }'
+                                                                                        >
+
+                                                                                            <div class="col-xs-12 col-sm-8" align="center">
+                                                                                                {% for i in forloop.counter|stars_on %}
+                                                                                                    <img src="{% static '/assets/images/star-on.png' %}" data-echo="{% static '/assets/images/star-on.png' %}">
+                                                                                                {% endfor %}
+                                                                                                {% for i in forloop.counter|stars_off %}
+                                                                                                    <img src="{% static '/assets/images/star-off.png' %}" data-echo="{% static '/assets/images/star-off.png' %}">
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                            <div class="col-xs-12 col-sm-11" align="right">
+                                                                                                <label>{{ forloop.counter|get_rating_display }}</label>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                    </div>

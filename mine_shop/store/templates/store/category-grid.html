@@ -1,0 +1,292 @@
+{% load static %}
+
+{% load store_tags_category_grid_page %}
+
+{% load mine_shop_tags_constants %}
+
+{% if not rubrics %}
+    {% load store_tags_rubrics %}
+    {% add_rubrics_to_context as rubrics %}
+{% endif %}
+
+{% if not new_arrivals %}
+    {% load store_tags_products %}
+    {% add_new_arrivals_to_context as new_arrivals %}
+{% endif %}
+
+{% if not top_sales %}
+    {% load store_tags_sale_information %}
+    {% add_top_sales_to_context as top_sales %}
+{% endif %}
+
+{% if not brands %}
+    {% load store_tags_brands %}
+    {% add_brands_to_context as brands %}
+    {% filter_by_brands products brands.all as rubric_brands %}
+{% endif %}
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="keywords" content="">
+        <meta name="robots" content="all">
+
+        <title>{% if not discont %}{{ page_title }}{% else %}{{ discont.title }}{% endif %}</title>
+
+            {% include 'store/settings/BC_Cu_Fo_Ic.html' %}
+
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <!-- ============================================================= TOP NAVIGATION ============================================================= -->
+            {% include 'store/divs/div_top_navigation.html' %}
+            <!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+            <!-- ============================================================= HEADER ============================================================= -->
+            <header class="no-padding-bottom header-alt">
+                {% include 'store/divs/div_header.html'%}
+
+                <!-- ========================================= NAVIGATION ========================================= -->
+                {% include 'store/divs/div_horizontal_navigation.html' %}
+                <!-- ========================================= NAVIGATION : END ========================================= -->
+
+            </header>
+            <!-- ============================================================= HEADER : END ============================================================= -->
+            <section id="category-grid">
+                <div class="container">
+                    <!-- ========================================= SIDEBAR ========================================= -->
+                    <div class="col-xs-12 col-sm-3 no-margin sidebar narrow">
+                        <!-- ========================================= PRODUCT FILTER ========================================= -->
+
+
+                        <div class="widget">
+                            <h1>{{ 'filters'|from_key }}</h1>
+                            <div class="body bordered">
+
+                                <div class="category-filter"
+                                        id="checkboxset"
+                                        hx-post=""
+                                        hx-trigger="change"
+                                        hx-target="#products-list"
+                                        hx-vals='js:{checkbox_statuses: get_filter_statuses({{ rubric_brands|length }}), product_ids:  {{ products|ids }} }'
+                                        name="checkbox-filter">
+                                    <h2>{{ 'brands'|from_key }}</h2>
+                                    <hr>
+                                    <ul>
+                                        {% for brand_title in rubric_brands %}
+                                            {% filter_by_brand_title products brand_title as brand_products_count %}
+                                                <li><input checked="checked"
+                                                                    class="le-checkbox"
+                                                                    type="checkbox"
+                                                                    id="brand{{ forloop.counter0 }}"/>
+                                                    <label>{{ brand_title }}</label> <span class="pull-right">({{ brand_products_count }})</span></li>
+
+                                        {% endfor %}
+                                    </ul>
+                        </div><!-- /.category-filter -->
+
+
+
+                            </div><!-- /.body -->
+                        </div><!-- /.widget -->
+
+
+                        <!-- ========================================= PRODUCT FILTER : END ========================================= -->
+
+                        <!-- ========================================= CATEGORY TREE ========================================= -->
+                        <div class="widget accordion-widget category-accordions">
+
+                            <div class="accordion">
+
+                                <div class="accordion-group">
+                                    <div class="accordion-heading">
+                                        <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseAll">
+                                            {% if not rubric %}
+                                                <i>{{ 'all_products'|from_key }}</i>
+                                            {% else %}
+                                                {{ 'all_products'|from_key }}
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                    <div id="collapseAll" class="accordion-body collapse">
+                                        <div class="accordion-inner">
+                                            <ul>
+                                                <li><a href="{% url 'store:all' %}">{{ 'cg_show_all'|from_key }}</a></li>
+                                                <li><a href="{% url 'store:all' to_filter='n' %}">{{ 'cg_new_arrivals'|from_key }}</a></li>
+                                                <li><a href="{% url 'store:discont' discont=5 %}">{{ 'cg_on_sale'|from_key }}</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div><!-- /.accordion-group -->
+
+                                {% for nav_rubric in rubrics.all %}
+                                    <div class="accordion-group">
+                                        <div class="accordion-heading">
+                                        <a class="accordion-toggle collapsed" data-toggle="collapse"  href="#collapse{{ forloop.counter }}">
+                                            {% if nav_rubric == rubric %}
+                                                <i>{{ nav_rubric.title }}</i>
+                                            {% else %}
+                                                {{ nav_rubric.title }}
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                        <div id="collapse{{ forloop.counter }}" class="accordion-body collapse">
+                                        <div class="accordion-inner">
+                                            <ul>
+                                                <li><a href="{% url 'store:rubric' slug=nav_rubric.slug %}">{{ 'cg_show_all'|from_key }}</a></li>
+                                                <li><a href="{% url 'store:rubric' slug=nav_rubric.slug to_filter='n' %}">{{ 'cg_new_arrivals'|from_key }}</a></li>
+                                                <li><a href="{% url 'store:rubric' slug=nav_rubric.slug to_filter='d' %}">{{ 'cg_on_sale'|from_key }}</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    </div><!-- /.accordion-group -->
+                                {% endfor %}
+
+
+                            </div><!-- /.accordion -->
+                        </div><!-- /.category-accordions -->
+                        <!-- ========================================= CATEGORY TREE : END ========================================= -->
+
+                        <!-- ========================================= LINKS ========================================= -->
+                        <div class="widget">
+                            <h1 class="border">{{ 'information'|from_key }}</h1>
+                            <div class="body">
+                                <ul class="le-links">
+                                    <li><a href="{% url 'cart:cart' %}">{{ 'cart'|from_key }}</a></li>
+                                    <li><a href="{%  url 'orders:index' %}">{{ 'orders'|from_key }}</a></li>
+                                    <li><a href="{% url 'users:wishlist' %}">{{ 'wishlist'|from_key }}</a></li>
+                                    <li><a href="{% url 'users:comparison' %}">{{ 'comparison'|from_key }}</a></li>
+                                </ul><!-- /.le-links -->
+                            </div><!-- /.body -->
+                        </div><!-- /.widget -->
+                        <!-- ========================================= LINKS : END ========================================= -->
+
+
+                        <!-- ========================================= FEATURED PRODUCTS ========================================= -->
+                        {% include 'store/divs/div_featured_products_vertical.html' %}
+                        <!-- ========================================= FEATURED PRODUCTS : END ========================================= -->
+                    </div>
+                    <!-- ========================================= SIDEBAR : END ========================================= -->
+
+                    <!-- ========================================= CONTENT ========================================= -->
+
+                    <div class="col-xs-12 col-sm-9 no-margin wide sidebar">
+                        <div id="grid-page-banner">
+                           {% if not discont %}
+                                {% if rubric %}
+                                    <a href="{{ rubric.image.url }}"><img src="{{ rubric.image.url }}" alt="" title="{{ rubric.description }}"/></a>
+                                {% else %}
+                                    <a href="{% static 'assets/images/brand-size/all.png' %}"><img src="{% static 'assets/images/brand-size/all.png' %}" alt=""/></a>
+                                {% endif %}
+                            {% else %}
+                                {% if is_discont_page %}
+                                    <a href="{% static 'assets/images/brand-size/skidki.png' %}"><img src="{% static 'assets/images/brand-size/skidki.png' %}"/></a>
+                                {% else %}
+                                    <a href="{% static 'assets/images/brand-size/liders.png' %}"><img src="{% static 'assets/images/brand-size/liders.png' %}"/></a>
+                                {% endif %}
+                            {% endif %}
+
+                        </div>
+
+
+                        <section id="{% if not discont %}{{ page_title }}{% else %}{{ discont.title }}{% endif %}">
+
+                            <div class="grid-list-products">
+                                <h2 class="section-title">{% if  not discont %}{{ page_title }}{% else %}{{ discont.title }}{% endif %}</h2>
+
+                                {% if search %}
+                                    {{ 'cg_searching_for_key_'|from_key }} <b><i>'{{ search.keyword }}'</i></b> {{ 'cg_in_rubric_'|from_key }} <b><i>'{{ search.keyrubric }}'</i></b>: <br><br>
+                                    {% if search.links %}
+                                        {% for link in search.links %}
+                                            {{ 'cg_following_link'|from_key }} <b><i>{{ link.name }}</i></b> :
+
+                                            <a class="btn-loadmore" href="{% url link.url %}">
+                                                <i class="fa fa-hand-o-right"></i>
+                                            </a>
+
+
+                                            <br>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <br>
+                                    {{ 'cg_found_products'|from_key }}: {{ products|length }}
+                                    <br><br>
+                                {% endif %}
+
+                                <div class="control-bar">
+                                    <div id="class-ordering-sort" class="le-select"
+                                                    hx-post=""
+                                                    hx-trigger="change"
+                                                    hx-target="#products-list"
+                                                    hx-vals='js:{checkbox_statuses: get_filter_statuses({{ rubric_brands|length }}), product_ids:  {{ products|ids }} }'>
+                                        <select data-placeholder="sort by popularity"
+                                                    id="ordering-sort">
+                                            <option value="0" selected>{{ 'cg_by_default'|from_key }}</option>
+                                            <option value="1">{{ 'cg_by_arriving'|from_key }}</option>
+                                            <option value="2">{{ 'cg_by_price'|from_key }}</option>
+                                            <option value="3">{{ 'cg_by_rating'|from_key }}</option>
+                                        </select>
+                                    </div>
+
+                                    <div id="class-paging-count" class="le-select"
+                                                    hx-post=""
+                                                    hx-trigger="change"
+                                                    hx-target="#products-list"
+                                                    hx-vals='js:{checkbox_statuses: get_filter_statuses({{ rubric_brands|length }}), product_ids:  {{ products|ids }} }'>
+                                        <select id="paging-count">
+                                            <option value="0" selected>6 {{ 'cg_on_page_'|from_key }}</option>
+                                            <option value="1">12 {{ 'cg_on_page_'|from_key }}</option>
+                                            <option value="2">24 {{ 'cg_on_page_'|from_key }}</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="grid-list-buttons">
+                                        <ul>
+                                            <li class="grid-list-button-item active"><a data-toggle="tab" href="#grid-view"><i class="fa fa-th-large"></i>{{ 'grid'|from_key }}</a></li>
+                                            <li class="grid-list-button-item "><a data-toggle="tab" href="#list-view"><i class="fa fa-th-list"></i>{{ 'list'|from_key }}</a></li>
+                                        </ul>
+                                    </div>
+                                </div><!-- /.control-bar -->
+
+
+                                <div id="products-list"
+                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                    hx-post
+                                    hx-trigger="load"
+                                    hx-vals='js:{product_ids:  {{ products|ids }} }'>      <!-- /.tab-content -->
+                                            ---
+                                </div>
+
+
+                            </div><!-- /.grid-list-products -->
+
+                        </section><!-- /#gaming -->
+                    </div><!-- /.col -->
+                    <!-- ========================================= CONTENT : END ========================================= -->
+                </div><!-- /.container -->
+            </section><!-- /#category-grid -->
+
+            <!-- ========================================= RECENTLY VIEWED ========================================= -->
+            {% include 'store/divs/div_recently_viewed.html' %}
+            <!-- ========================================= RECENTLY VIEWED : END ========================================= -->
+
+            <!-- ============================================================= FOOTER ============================================================= -->
+            {% include 'store/divs/div_footer.html'%}
+            <!-- ============================================================= FOOTER : END ============================================================= -->
+
+        </div><!-- /.wrapper -->
+
+    	<!-- JavaScripts placed at the end of the document so the pages load faster -->
+    	{% include 'store/settings/end_java_scripts.html' %}
+
+    </body>
+</html>

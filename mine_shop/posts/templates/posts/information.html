@@ -1,0 +1,310 @@
+{% load static %}
+
+{% load mine_shop_tags_constants %}
+
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="keywords" content="">
+        <meta name="robots" content="all">
+
+        <title>{{ store_title }} {{ 'p_info_title'|from_key }}</title>
+
+        {% include 'store/settings/BC_Cu_Fo_Ic.html' %}
+
+    </head>
+
+    <body>
+        <div class="wrapper">
+           <!-- ============================================================= TOP NAVIGATION ============================================================= -->
+            {% include 'store/divs/div_top_navigation.html' %}
+            <!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+            <!-- ============================================================= HEADER ============================================================= -->
+            <header class="no-padding-bottom header-alt">
+                {% include 'store/divs/div_header.html'%}
+
+    	        <!-- ========================================= NAVIGATION ========================================= -->
+                {% include 'store/divs/div_horizontal_navigation.html' %}
+                <!-- ========================================= NAVIGATION : END ========================================= -->
+
+            </header>
+            <!-- ============================================================= HEADER : END ============================================================= -->
+
+            <section id="blog-single">
+                <div class="container">
+                    <!-- ========================================= CONTENT ========================================= -->
+
+
+
+                    <div class="posts col-md-9">
+                        <div class="post-entry">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-2">
+                                </div>
+                                <div class="col-xs-12 col-md-12 homebanner-holder no-margin">
+                                <!-- ========================================== SECTION – HERO ========================================= -->
+                                    <a href="{% static 'assets/images/block_content.png' %}">
+                                        <img src="" data-echo="{% static 'assets/images/block_content.png' %}"/>
+                                    </a>
+
+                                    <div class="blog-post-author">
+                                        <div class="media">
+
+                                            <h4>{{ 'p_info_inner_header'|from_key }}</h4>
+                                            <br>
+
+                                            <div class="media-body">
+                                                <ul>
+                                                    <li>1. Store</li>
+                                                    <p>{{ 'p_info_store'|from_key }}</p>
+
+                                                    <li>2. Cart</li>
+                                                    <p>{{ 'p_info_cart'|from_key }}</p>
+
+                                                    <li>3. Users</li>
+                                                    <p>{{ 'p_info_users'|from_key }}</p>
+
+                                                    <li>4. Orders</li>
+                                                    <p>{{ 'p_info_orders'|from_key }}</p>
+
+                                                    <li>5. Posts</li>
+                                                    <p>{{ 'p_info_posts'|from_key }}</p>
+
+                                                </ul>
+                                            </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6">
+                                                <a href="{% static 'assets/images/team/index.png'%}">
+                                                    <img src="" data-echo="{% static 'assets/images/team/index.png'%}" title="{{ 'p_info_image_index'|from_key }}"/>
+                                                </a>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-6">
+                                                <a href="{% static 'assets/images/team/product.png'%}">
+                                                    <img src="" data-echo="{% static 'assets/images/team/product.png'%}" title="{{ 'p_info_image_product'|from_key }}"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6" align="center">
+                                                <label>{{ 'p_info_image_index'|from_key }}</label>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-6" align="center">
+                                                <label>{{ 'p_info_image_product'|from_key }}</label>
+                                            </div>
+                                        </div>
+
+                                        <br><br>
+
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6">
+                                                <a href="{% static 'assets/images/team/rubric.png'%}">
+                                                    <img src="" data-echo="{% static 'assets/images/team/rubric.png'%}" title="{{ 'p_info_image_rubric'|from_key }}"/>
+                                                </a>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-6">
+                                                <a href="{% static 'assets/images/team/forum.png'%}">
+                                                    <img src="" data-echo="{% static 'assets/images/team/forum.png'%}" title="{{ 'p_info_image_forum'|from_key }}"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6" align="center">
+                                                <label>{{ 'p_info_image_rubric'|from_key }}</label>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-6" align="center">
+                                                <label>{{ 'p_info_image_forum'|from_key }}</label>
+                                            </div>
+                                        </div>
+
+                                        <br><br>
+
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6">
+                                                <a href="{% static 'assets/images/team/admin_orders.png'%}">
+                                                    <img src="" data-echo="{% static 'assets/images/team/admin_orders.png'%}" title="{{ 'p_info_image_admin_orders'|from_key }}"/>
+                                                </a>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-6">
+                                                <a href="{% static 'assets/images/team/orders_history.png'%}">
+                                                    <img src="" data-echo="{% static 'assets/images/team/orders_history.png'%}" title="{{ 'p_info_image_orders_history'|from_key }}"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6" align="center">
+                                                <label>{{ 'p_info_image_admin_orders'|from_key }}</label>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-6" align="center">
+                                                <label>{{ 'p_info_image_orders_history'|from_key }}</label>
+                                            </div>
+                                        </div>
+
+                                        <br><br>
+
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6">
+                                                <a href="{% static 'assets/images/team/cart_dropdown.png'%}">
+                                                    <img src="" data-echo="{% static 'assets/images/team/cart_dropdown.png'%}" title="{{ 'p_info_image_cart_dropdown'|from_key }}"/>
+                                                </a>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-6">
+                                                <a href="{% static 'assets/images/team/cart_inner.png'%}">
+                                                    <img src="" data-echo="{% static 'assets/images/team/cart_inner.png'%}" title="{{ 'p_info_image_cart_inner'|from_key }}"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6" align="center">
+                                                <label>{{ 'p_info_image_cart_dropdown'|from_key }}</label>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-6" align="center">
+                                                <label>{{ 'p_info_image_cart_inner'|from_key }}</label>
+                                            </div>
+                                        </div>
+
+                                        <br><br>
+
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6">
+                                                <a href="{% static 'assets/images/team/wishlist.png'%}">
+                                                    <img src="" data-echo="{% static 'assets/images/team/wishlist.png'%}" title="{{ 'p_info_image_wishlist'|from_key }}"/>
+                                                </a>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-6">
+                                                <a href="{% static 'assets/images/team/comparison.png'%}">
+                                                    <img src="" data-echo="{% static 'assets/images/team/comparison.png'%}" title="{{ 'p_info_image_comparison'|from_key }}"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6" align="center">
+                                                <label>{{ 'p_info_image_wishlist'|from_key }}</label>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-6" align="center">
+                                                <label>{{ 'p_info_image_comparison'|from_key }}</label>
+                                            </div>
+                                        </div>
+
+                                        <br><br>
+
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6">
+                                                <a href="{% static 'assets/images/team/filters.png'%}">
+                                                    <img src="" data-echo="{% static 'assets/images/team/filters.png'%}" title="{{ 'p_info_image_filters'|from_key }}"/>
+                                                </a>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-6">
+                                                <a href="{% static 'assets/images/team/orders.png'%}">
+                                                    <img src="" data-echo="{% static 'assets/images/team/orders.png'%}" title="{{ 'p_info_image_orders'|from_key }}"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-md-6" align="center">
+                                                <label>{{ 'p_info_image_filters'|from_key }}</label>
+                                            </div>
+
+                                            <div class="col-xs-12 col-md-6" align="center">
+                                                <label>{{ 'p_info_image_orders'|from_key }}</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                    </div><!-- /.blog-post-author -->
+                                <!-- ========================================= SECTION – HERO : END ========================================= -->
+                                </div>
+                            </div>
+
+                        </div><!-- /.post-entry -->
+
+                    </div><!-- /.posts -->
+
+                    <!-- ========================================= CONTENT :END ========================================= -->
+
+                    <!-- ========================================= SIDEBAR ========================================= -->
+                    <div class="col-md-3">
+                        <aside class="sidebar blog-sidebar">
+
+
+
+                            <div class="widget">
+                                <h4>{{ 'p_authors'|from_key }}</h4>
+                                <br>
+                                <div class="social-icons">
+                                    <li><a class="fa fa-child"></a> {{ 'p_author'|from_key }}</li>
+                                </div>
+
+                                <br>
+                                 <h4>{{ 'p_author_contacts'|from_key }}</h4>
+                                <br>
+                                <div class="social-icons">
+                                    <ul>
+                                        <li><a href="mailto:{{ author.email }}" class="fa fa-envelope"></a> {{ author.email }}</li>
+                                        <br><br>
+                                        <li><a href="https://{{ author.tg }}" class="fa fa-telegram"></a> {{ author.tg }}</li>
+                                        <li><a href="https://{{ author.github }}" class="fa fa-github"></a> {{ author.github }}</li>
+                                        <li><a href="https://{{ author.vk }}" class="fa fa-vk"></a> {{ author.vk }}</li>
+                                    </ul>
+                                </div>
+                            </div><!-- /.widget -->
+
+                            <div class="widget">
+                                <h4>{{ 'p_used_frameworks'|from_key }}</h4>
+                                <br>
+                                <div class="social-icons">
+                                    <ul>
+                                        {% for library in tech %}
+                                            <li><a class="fa fa-angle-right"></a> {{ library }}</li><br>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div><!-- /.widget -->
+
+
+
+
+                        </aside><!-- /.sidebar .blog-sidebar -->
+                    </div><!-- /.col -->
+                    <!-- ========================================= SIDEBAR : END ========================================= -->
+
+                    <!-- ========================================= CONTENT ========================================= -->
+                </div>
+            </section>
+
+
+            <!-- ========================================= RECENTLY VIEWED ========================================= -->
+            {% include 'store/divs/div_recently_viewed.html' %}
+            <!-- ========================================= RECENTLY VIEWED : END ========================================= -->
+
+
+            <!-- ============================================================= FOOTER ============================================================= -->
+            {% include 'store/divs/div_footer.html'%}
+            <!-- ============================================================= FOOTER : END ============================================================= -->
+        </div><!-- /.wrapper -->
+
+        <!-- JavaScripts placed at the end of the document so the pages load faster -->
+        {% include 'store/settings/end_java_scripts.html' %}
+    </body>
+</html>
