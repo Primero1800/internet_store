@@ -1,4 +1,4 @@
-
+РУКОВОДСТВО ПО УСТАНОВКЕ И НАСТРОЙКЕ:
 
 
 python manage.py dumpdata users store cart posts orders -o fixtures/data.json
