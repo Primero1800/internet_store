@@ -130,9 +130,8 @@ def superuser():
 
 def defaultsuperuser():
     default_superuser = User.objects.get(email='admin@admin.com')
-    if default_superuser:
-        default_superuser.delete()
-    default_superuser = User(email='admin@admin.com', is_active=True, is_staff=True, is_superuser=True)
+    if not default_superuser:
+        default_superuser = User(email='admin@admin.com', is_active=True, is_staff=True, is_superuser=True)
     default_superuser.set_password('12345678')
     default_superuser.save()
     print()
