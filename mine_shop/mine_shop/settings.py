@@ -117,6 +117,7 @@ WSGI_APPLICATION = 'mine_shop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DB.SQLITE3
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.sqlite3',
@@ -124,6 +125,7 @@ DATABASES = {
    }
 }
 
+# POSTGRESQL
 # DATABASES = {
 #     'default': {
 #         'ENGINE': os.environ.get('DB_ENGINE'),
@@ -147,6 +149,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 # CACHE
 
+# REDIS
 # CACHES = {
 #     'default': {
 #         'BACKEND': 'django_redis.cache.RedisCache',
@@ -157,6 +160,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 #     }
 # }
 
+# DC
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
