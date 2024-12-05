@@ -1,10 +1,10 @@
 Демонстрация работы:
 
-# https://primero18.beget.tech
+# http://primero18.beget.tech
 
 Общая струтура интернет магазина:
 
-<b>https://primero18.beget.tech/posts/information/</b>
+<b>http://primero18.beget.tech/posts/information/</b>
 
 ![block_content](https://github.com/user-attachments/assets/40600fb3-7433-48c1-b494-12f7c858900d)
 
