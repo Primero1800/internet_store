@@ -51,7 +51,7 @@ class SessionCart(object):
         "Перебор элементов в корзине"
 
         for key, item in sorted(self.cart.items()):
-            item['total_price'] = str(Decimal(item['price']) * item['quantity'], 2)
+            item['total_price'] = str(Decimal(item['price']) * item['quantity'])
             item['product_id'] = key
             yield item
 
