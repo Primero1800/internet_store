@@ -43,7 +43,8 @@ def get_complex_phonenumber(country_code='RU', phone_number=''):
 
 
 def _separator_normalize(value):
-    value = value.replace(',', '.')
+    if isinstance(value, str):
+        value = value.replace(',', '.')
     return value
 
 

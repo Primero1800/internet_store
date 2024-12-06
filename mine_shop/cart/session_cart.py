@@ -3,6 +3,7 @@ from decimal import Decimal
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 
+from orders.inner_functions import _separator_normalize
 from store.models import Product
 
 
@@ -50,7 +51,7 @@ class SessionCart(object):
         "Перебор элементов в корзине"
 
         for key, item in sorted(self.cart.items()):
-            item['total_price'] = str(Decimal(item['price']) * item['quantity'])
+            item['total_price'] = str(Decimal(item['price']) * item['quantity'], 2)
             item['product_id'] = key
             yield item
 
@@ -59,7 +60,7 @@ class SessionCart(object):
 
     @property
     def total_price(self):
-        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+        return sum(Decimal(_separator_normalize(item['price'])) * item['quantity'] for item in self.cart.values())
 
 
     @property
@@ -78,7 +79,7 @@ class SessionCart(object):
             product_id = item['product_id']
             product = get_object_or_404(Product, id=product_id)
             item['quantity'] = min(item['quantity'], product.quantity)
-            item['total_price'] = str(Decimal(item['price']) * item['quantity'])
+            item['total_price'] = str(Decimal(_separator_normalize(item['price'])) * item['quantity'])
         self.save()
 
 

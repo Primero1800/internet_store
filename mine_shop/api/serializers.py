@@ -3,6 +3,7 @@ from decimal import Decimal
 
 from rest_framework import serializers
 
+from orders.inner_functions import _separator_normalize
 from orders.models import Order
 from posts.models import Post
 from store.info_classes import Vote
@@ -21,7 +22,7 @@ class ProductFreeFullSerializer(serializers.ModelSerializer):
 
     start_price = serializers.SerializerMethodField('get_start_price')
     def get_start_price(self, instance):
-        return Decimal(instance.start_price)
+        return Decimal(_separator_normalize(instance.start_price))
 
     price = serializers.SerializerMethodField('get_price')
     def get_price(self, instance):
@@ -169,7 +170,7 @@ class OrderFullSerializer(serializers.ModelSerializer):
 
     total_price = serializers.SerializerMethodField('get_total_price')
     def get_total_price(self, instance):
-        return Decimal(instance.total_price)
+        return Decimal(_separator_normalize(instance.total_price))
 
     person = serializers.SerializerMethodField('get_person')
     def get_person(self, instance):
