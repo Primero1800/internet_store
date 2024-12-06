@@ -42,3 +42,8 @@ def get_complex_phonenumber(country_code='RU', phone_number=''):
     return separator.join((country_code, phone_number_prefix, phone_number))
 
 
+def _separator_normalize(value):
+    value = value.replace(',', '.')
+    return value
+
+

@@ -12,7 +12,8 @@ from cart.inner_functions import get_current_cart
 from mine_shop.ajax_maps import ajax_show_basket_header_map, ajax_show_wishcompare_header_map, \
     ajax_orders_view_total_map
 from orders.forms import OrderInformationForm
-from orders.inner_functions import get_current_person, get_current_address, get_complex_phonenumber
+from orders.inner_functions import get_current_person, get_current_address, get_complex_phonenumber, \
+    _separator_normalize
 from orders.models import Order, Address, Person
 from posts.inner_functions import get_verbose_name
 from store.models import Product
@@ -31,7 +32,7 @@ def orders(request):
             person.set_attributes(request.POST['name'], request.POST['surname'], request.POST['company_name'])
             address.set_attributes(request.POST['address'], request.POST['city'], request.POST['postcode'], request.POST['email'], complex_phonenumber)
 
-            total_price = Decimal(request.POST['total_price'])
+            total_price = Decimal(_separator_normalize(request.POST['total_price']))
             cart = get_current_cart(request)
             if total_price != cart.total_price:
                 context['message'] = _("Во время заполнения данных заказа Ваша корзина претерпела изменения. Проверьте данные.")
