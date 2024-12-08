@@ -9,11 +9,9 @@
 
 
 <div class="container no-padding">
-                    <div class="col-xs-12 col-md-3 logo-holder">
+                    <div class="col-xs-12 col-md-2 logo-holder">
                         <!-- ============================================================= LOGO ============================================================= -->
                             <a href="{% url 'store:index' %}">
-                            <!--<img alt="logo" src="assets/images/logo.svg" width="233" height="54"/>-->
-                            <!--<object id="sp" type="image/svg+xml" data="assets/images/logo.svg" width="233" height="54"></object>-->
                                 {% include 'store/divs/div_logo.html'%}
                             </a>
                         <!-- ============================================================= LOGO : END ============================================================= -->
@@ -42,9 +40,10 @@
                                     <input name="search-field" id="search-field" class="search-field" onchange="enable_button(this)"
                                                                                                 placeholder="{{ 'dh_find_product'|from_key }}" onmouseleave="enable_button(this)"/></input>
 
+
                                     <ul class="categories-filter animate-dropdown">
                                         <li class="dropdown">
-                                            <div name="search-category-dropdown"
+                                            <div name="search-category-dropdown" align="left"
                                                             id="search-category-dropdown"
                                                             value="{{ 'dh_all_rubrics'|from_key }}"
                                                             class="dropdown-toggle"  data-toggle="dropdown"
@@ -90,7 +89,6 @@
                                     >
                                     </button>
 
-
                                     <script>
                                         function enable_button(el){
                                             if (el.value.length > 1){
@@ -107,35 +105,38 @@
                         <!-- ============================================================= SEARCH AREA : END ============================================================= -->
                     </div><!-- /.top-search-holder -->
 
-                    <div class="col-xs-12 col-md-3 top-cart-row no-margin">
+                    <div class="col-xs-12 col-md-4 top-cart-row no-margin">
                         <div class="top-cart-row-container">
-                            {% if user.is_authenticated %}
+                            <div class="row" align="center">
 
-                                <div class="wishlist-compare-holder" id="wishlist-compare-holder"
-                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                                    hx-post
-                                    hx-trigger="load"
-                                    hx-vals
-                                >
-                                   ---
-                                </div>
+                                    {% if user.is_authenticated %}
 
-                            {% endif %}
-                            <!-- ============================================================= SHOPPING CART DROPDOWN ============================================================= -->
-                            <div class="top-cart-holder dropdown animate-dropdown">
+                                        <div class="wishlist-compare-holder" id="wishlist-compare-holder"
+                                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                            hx-post
+                                            hx-trigger="load"
+                                            hx-vals
+                                        >
+                                           ---
+                                        </div>
+                                    {% else %}
+                                    {% endif %}
+
+                                    <!-- ============================================================= SHOPPING CART DROPDOWN ============================================================= -->
+
+                                    <div class="top-cart-holder dropdown animate-dropdown" align="left">
+
+                                        <div id="basket"
+                                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                            hx-post
+                                            hx-trigger="load"
+                                            hx-vals=''>      <!-- /.tab-content -->
+                                                    ---
+                                        </div>
+                                    </div><!-- /.top-cart-holder -->
 
 
-                                <div id="basket"
-                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                                    hx-post
-                                    hx-trigger="load"
-                                    hx-vals=''>      <!-- /.tab-content -->
-                                            ---
-                                </div>
-
-
-
-                            </div><!-- /.top-cart-holder -->
+                            </div>
                         </div><!-- /.top-cart-row-container -->
                         <!-- ============================================================= SHOPPING CART DROPDOWN : END ============================================================= -->
                     </div><!-- /.top-cart-row -->

@@ -3,13 +3,13 @@
 {% load mine_shop_tags_constants %}
 
 
-<div class="wishlist-compare-holder" id="wishlist-compare-holder">
+<div class="wishlist-compare-holder" id="wishlist-compare-holder" align="left">
 
     <div class="wishlist ">
-        <a href="{% url 'users:wishlist' %}"><i class="fa fa-heart"></i>{{ 'wishlist'|from_key }} <span class="value">({{ w_count }})</span> </a>
+        <a href="{% url 'users:wishlist' %}"><i class="fa fa-heart"></i><small>{{ 'wishlist'|from_key }} </small><span class="value">({{ w_count }})</span> </a>
     </div>
     <div class="compare">
-        <a href="{% url 'users:comparison' %}"><i class="fa fa-exchange"></i>{{ 'compare'|from_key }} <span class="value">({{ c_count }})</span> </a>
+        <a href="{% url 'users:comparison' %}"><i class="fa fa-exchange"></i><small>{{ 'compare'|from_key }} </small><span class="value">({{ c_count }})</span> </a>
    </div>
 
 </div>

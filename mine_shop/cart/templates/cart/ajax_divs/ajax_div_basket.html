@@ -5,7 +5,7 @@
 {% load mine_shop_tags_constants %}
 
 
-                                <div class="basket" id="basket">
+                                <div class="basket" id="basket" align="center">
 
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                         <div class="basket-item-count">
@@ -14,10 +14,13 @@
                                         </div>
 
                                         <div class="total-price-basket">
-                                            <span class="lbl">{{ 'basket'|from_key }}:</span>
-                                            <span class="total-price">
-                                                <span class="value">{{ cart.total_price }}</span><span class="sign"> {{ currency }}</span>
-                                            </span>
+
+                                                <span class="lbl">{{ 'basket'|from_key }}:</span>
+                                                <span class="total-price">
+                                                    <span class="value"><small><small>{{ cart.total_price }} <small>{{ currency }}</small></small></small></span>
+
+                                                </span>
+
                                         </div>
                                     </a>
 
@@ -25,35 +28,35 @@
                                         {% if cart.total_count %}
                                             {% for cart_item in cart %}
                                                 {% with cart_item|product as product %}
-                                                    <li>
+                                                    <li class="dropdown">
                                                         <div class="basket-item">
-                                                        <div class="row">
-                                                            <div class="col-xs-4 col-sm-4 no-margin text-center">
-                                                                <div class="thumb">
-                                                                    <a href="{% url 'store:detail'  product.slug %}">
-                                                                        <img alt="" src="{{ product.images.first.image.url }}" height="67" width="67"/>
-                                                                    </a>
+                                                            <div class="row">
+                                                                <div class="col-xs-4 col-sm-4 no-margin text-center">
+                                                                    <div class="thumb">
+                                                                        <a href="{% url 'store:detail'  product.slug %}">
+                                                                            <img alt="" src="{{ product.images.first.image.url }}" height="67" width="67"/>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xs-8 col-sm-8 no-margin">
+                                                                    <div class="title">{{ product.title|truncatechars:25 }}</div>
+                                                                    <div class="price">{{ currency }} {{ cart_item.total_price}}</div>
+                                                                    <div class="title">{{ cart_item.quantity }}{{ 'cart_pcs'|from_key }}.</div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-xs-8 col-sm-8 no-margin">
-                                                                <div class="title">{{ product.title|truncatechars:25 }}</div>
-                                                                <div class="price">{{ currency }} {{ cart_item.total_price}}</div>
-                                                                <div class="title">{{ cart_item.quantity }}{{ 'cart_pcs'|from_key }}.</div>
+
+                                                            <div class="remove-cart-button" id="remove-cart-button"
+                                                                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                                                                    hx-post=""
+                                                                    hx-trigger="click"
+                                                                    hx-target="#basket"
+                                                                    hx-vals='js:{product_id: {{ cart_item.product_id }} }'
+                                                            >
+                                                                <a><button class="close-btn"></button></a>
                                                             </div>
+
+
                                                         </div>
-
-                                                        <div class="remove-cart-button" id="remove-cart-button"
-                                                                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                                                                hx-post=""
-                                                                hx-trigger="click"
-                                                                hx-target="#basket"
-                                                                hx-vals='js:{product_id: {{ cart_item.product_id }} }'
-                                                        >
-                                                            <a><button class="close-btn"></button></a>
-                                                        </div>
-
-
-                                                    </div>
                                                     </li>
                                                 {% endwith %}
                                             {% endfor %}
