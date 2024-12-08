@@ -114,11 +114,13 @@
                                 <tr class="comparison-item description">
                                     <th>{{ 'sp_description'|from_key }}</th>
                                     {% for product in products|slice:":4" %}
-                                        <ctable>
                                             <td class="comparison-item-cell odd product_39" title="{{ product.description }}">
-                                                {{ product.description|truncatechars:40 }}
+                                                <div class="col-xs-12 col-sm-12 col-sm no-margin">
+                                                    <div class="comment-body">
+                                                        <p  class="comment-text">{{ product.description|truncatechars:40 }}</p>
+                                                    </div>
+                                                </div>
                                             </td>
-                                        </ctable>
                                     {% endfor %}
 
                                 </tr>

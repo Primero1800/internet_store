@@ -40,16 +40,14 @@
                             </li>
                             {% else %}
                                 <li class="dropdown">
-                                    <a class="dropdown-toggle"  data-toggle="dropdown" href="#pages4"><b>
+                                    <a><b>
                                         <i class="fa fa-eye-slash"> {{ 'anonimous'|from_key }}</i></b></a>
-                                <ul class="dropdown-menu" role="menu" >
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">!!!JОзнакомиться с пользовательскими соглашениями!!</a></li>
-                                </ul>
-                            </li>
+                                </li>
+
                             {% endif %}
 
                             {% if user.is_authenticated %}
-                            <li><a href="{% url 'users:logout' %}"><i class="fa fa-sign-out"> {{ 'exit'|from_key }}</i></a></li>
+                                <li><a href="{% url 'users:logout' %}"><i class="fa fa-sign-out"> {{ 'exit'|from_key }}</i></a></li>
                             {% else %}
                                 <li><a href="{% url 'users:registration' %}"><i class="fa fa-pencil-square-o"> {{ 'registration'|from_key }}</i></a></li>
                                 <li><a href="{% url 'users:login' %}"><i class="fa fa-sign-in"> {{ 'enter'|from_key }}</i></a></li>
