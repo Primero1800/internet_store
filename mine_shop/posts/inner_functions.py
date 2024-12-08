@@ -1,4 +1,5 @@
 import asyncio
+import json
 
 import telegram
 from telegram.ext import Updater
@@ -52,3 +53,7 @@ async def send_telegram_message(message):
     except Exception as ex:
         await asyncio.sleep(0)
         return ex
+
+
+def create_email_error_message(**kwargs):
+    return json.dump(kwargs)

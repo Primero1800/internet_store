@@ -1,3 +1,4 @@
+import asyncio
 import uuid
 
 from django.conf import settings
@@ -18,6 +19,7 @@ from siteajax.decorators import ajax_dispatch
 
 from cart.inner_functions import get_current_cart
 from mine_shop.ajax_maps import ajax_show_basket_header_map, ajax_show_wishcompare_header_map
+from posts.inner_functions import send_telegram_message, create_email_error_message
 from users.forms import RegisterForm, UserLoginForm, RestorePasswordForm
 from users.inner_functions import generate_password
 from users.models import User
@@ -70,12 +72,22 @@ class RegisterView(FormView):
                 message += _(f"Ваш новый пароль {new_password} \n")
                 self.message_for_member = '3'
 
-            send_mail(
-                    subject=_(f"{settings.STORE_TITLE} Пожалуйста, подтвердите регистрацию"),
-                    message=message,
-                    from_email="primero@inbox.ru",
-                    recipient_list=[user.email, ]
-            )
+            try:
+                send_mail(
+                        subject=_(f"{settings.STORE_TITLE} Пожалуйста, подтвердите регистрацию"),
+                        message=message,
+                        from_email="primero@inbox.ru",
+                        recipient_list=[user.email, ]
+                )
+            except:
+                if settings.TELEGRAM_SEND_NOTIFICATIONS:
+                    asyncio.run(send_telegram_message(
+                        message=create_email_error_message(
+                            subject=_(f"{settings.STORE_TITLE} Пожалуйста, подтвердите регистрацию"),
+                            message=message,
+                            from_email="primero@inbox.ru",
+                            recipient_list=[user.email, ],
+                        )))
 
         return super().form_valid(form)
 
