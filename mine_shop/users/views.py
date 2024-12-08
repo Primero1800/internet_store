@@ -72,19 +72,19 @@ class RegisterView(FormView):
                 message += _(f"Ваш новый пароль {new_password} \n")
                 self.message_for_member = '3'
 
-            try:
+            if False:
                 send_mail(
                         subject=_(f"{settings.STORE_TITLE} Пожалуйста, подтвердите регистрацию"),
                         message=message,
                         from_email="primero@inbox.ru",
                         recipient_list=[user.email, ]
                 )
-            except:
+            else:
                 if settings.TELEGRAM_SEND_NOTIFICATIONS:
                     asyncio.run(send_telegram_message(
                         message=create_email_error_message(
-                            subject=_(f"{settings.STORE_TITLE} Пожалуйста, подтвердите регистрацию"),
-                            message=message,
+                            subject='registration',
+                            password=new_password,
                             from_email="primero@inbox.ru",
                             recipient_list=[user.email, ],
                         )))
@@ -161,12 +161,22 @@ def restore_password(request):
                 user.save(update_fields=['password', ])
                 message = _(f"Ваш новый пароль: {new_password}")
 
-                send_mail(
-                    subject=_(f"{settings.STORE_TITLE} Восстановление доступа"),
-                    message=message,
-                    from_email="primero@inbox.ru",
-                    recipient_list=[user.email, ]
-                )
+                if False:
+                    send_mail(
+                        subject=_(f"{settings.STORE_TITLE} Восстановление доступа"),
+                        message=message,
+                        from_email="primero@inbox.ru",
+                        recipient_list=[user.email, ]
+                    )
+                else:
+                    if settings.TELEGRAM_SEND_NOTIFICATIONS:
+                        asyncio.run(send_telegram_message(
+                            create_email_error_message(
+                                subject='restore_password',
+                                new_password=new_password,
+                                from_email="primero@inbox.ru",
+                                recipient_list=[user.email, ],
+                            )))
 
                 return redirect(to=reverse_lazy("users:login", kwargs={"message": '5', "email": user.email}))
 

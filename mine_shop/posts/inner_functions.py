@@ -56,4 +56,4 @@ async def send_telegram_message(message):
 
 
 def create_email_error_message(**kwargs):
-    return json.dump(kwargs)
+    return json.dumps(kwargs)
