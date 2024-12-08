@@ -7,7 +7,7 @@
 
             <section id="top-brands" class="wow fadeInUp">
                 <div class="container">
-                    <div class="carousel-holder" >
+                    <div class="carousel-holder hover" >
 
                         <div class="title-nav">
                             <h2>{{ 'dtb_top_brands'|from_key }}</h2>
@@ -21,13 +21,15 @@
 
                             {% add_brands_to_context  as brands %}
                             {% for brand in brands.top %}
+                                <div class="no-margin carousel-item product-item-holder size-small hover">
+                                    <div class="product-item">
+                                        <div class="image">
 
-                                <div class="carousel-item">
-                                    <a href="{{ brand.image.url }}">
-                                        <img alt="" src="{{ brand.image.url }}" title="{{ brand.description }}"/>
-                                    </a>
-                                </div><!-- /.carousel-item -->
+                                                <img alt="" src="{{ brand.image.url }}" title="{{ brand.description }}"/>
 
+                                        </div>
+                                    </div><!-- /.carousel-item -->
+                                </div>
                             {% endfor %}
 
 
