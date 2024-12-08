@@ -20,6 +20,8 @@ def correct_by_word_length(text, l):
         result.append(word)
     return ' '.join(result)
 
+def truncate_word(word, l):
+    return word  if len(word) <= l-3 else word[:l-3] + '...'
 
 def get_product_by_link(link):
     slugs = link.split('/')[-2:]

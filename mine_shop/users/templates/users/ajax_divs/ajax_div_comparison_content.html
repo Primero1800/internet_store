@@ -1,6 +1,7 @@
 {% load static %}
 
 {% load mine_shop_tags_constants %}
+{% load users_tags_members %}
 
 <div class="main-content" id="comparison-main-content">
 
@@ -113,9 +114,11 @@
                                 <tr class="comparison-item description">
                                     <th>{{ 'sp_description'|from_key }}</th>
                                     {% for product in products|slice:":4" %}
-                                        <td class="comparison-item-cell odd product_39" title="{{ product.description }}">
-                                            <p>{{ product.description|truncatechars:220}}</p>
-                                        </td>
+                                        <ctable>
+                                            <td class="comparison-item-cell odd product_39" title="{{ product.description }}">
+                                                {{ product.description|truncatechars:40 }}
+                                            </td>
+                                        </ctable>
                                     {% endfor %}
 
                                 </tr>
@@ -138,6 +141,8 @@
                                                     <span class="amount"><small>{{ currency  }} {{ product.price }}</small></span>
                                                     {% if product.is_on_sale %}
                                                         <span class="price-prev"><small><s>{{ currency }} {{ product.start_price }}</s></small></span>
+                                                    {% else %}
+                                                        <span class="price-prev"></span>
                                                     {% endif %}
                                                 </div>
 

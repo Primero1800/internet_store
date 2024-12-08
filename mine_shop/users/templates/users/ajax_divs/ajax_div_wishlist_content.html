@@ -29,7 +29,7 @@
 
                                     <div class="row cart-item cart_item" id="yith-wcwl-row-1">
 
-                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                        <div class="col-xs-12 col-sm-1 no-margin" align="center">
                                             <div class="remove-wishlist-button" id="wishlist-item-delete-1"
                                                                 hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
                                                                 hx-post=""
@@ -43,14 +43,15 @@
                                                     </button>
                                                 </a>
                                             </div>
+                                            <br>
                                         </div>
 
-                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                        <div class="col-xs-12 col-sm-1">
                                             <a href="{% url 'store:detail' product.slug %}">
                                                 <img width="90" height="67" alt="{{ product.title }}" src="{{ product.images.first.image.url }}">
                                             </a>
                                         </div>
-                                        <div class="col-xs-12 col-sm-4 no-margin">
+                                        <div class="col-xs-12 col-sm-4">
                                             <div class="title">
                                                 <a href="{% url 'store:detail' product.slug  %}">{{ product.title|truncatechars:40 }}</a>
                                             </div><!-- /.title -->
@@ -63,21 +64,23 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                        <div class="col-xs-12 col-sm-1">
                                             <div class="price">
-                                                <span class="amount">{{ currency  }} {{ product.price }}</span>
+                                                <span class="amount"><small><small>{{ currency  }}</small> {{ product.price }}</small></span>
                                             </div>
                                         </div>
 
-                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                        <div class="col-xs-12 col-sm-1">
                                             <div class="price-prev">
                                                 {% if product.is_on_sale %}
-                                                    <span class="amount"><s>{{ currency  }} {{ product.start_price }}</s></span>
+                                                    <span class="amount"><s><small><small>{{ currency  }}</small> {{ product.start_price }}</small></s></span>
+                                                {% else %}
+                                                    <span class="amount"></span>
                                                 {% endif %}
                                             </div>
                                         </div>
 
-                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                        <div class="col-xs-12 col-sm-1">
                                             {% if product.is_on_sale %}
                                                 <div class="ribbon green"><span>{{ product.get_discont_display }}</span></div>
                                             {% else %}
@@ -88,7 +91,7 @@
                                         <div class="col-xs-12 col-sm-1 no-margin">
                                         </div>
 
-                                        <div class="col-xs-12 col-sm-1 no-margin">
+                                        <div class="col-xs-12 col-sm-1">
                                             <div class="wish-compare" id="wish-compare" name="wish-compare" value="n"
                                                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
                                                     hx-post=""
@@ -125,14 +128,15 @@
                                                             }
 
                                                         </script>
-                                                        <button class="le-button{% if not product.is_available %} inverse{% endif %}"
-                                                                onclick="change_add_to_cart_button(this, '{{ 'to_basket'|from_key }}', '{{ 'added'|from_key }}')" {% if not product.is_available %}disabled{% endif %}>
-                                                            {% if not product.is_available %}
-                                                                {{ 'not_available'|from_key }}
-                                                            {% else %}
-                                                                {{ 'to_basket'|from_key }}
-                                                            {% endif %}
-                                                        </button>
+
+                                                            <button class="le-button{% if not product.is_available %} inverse{% endif %}"
+                                                                    onclick="change_add_to_cart_button(this, '{{ 'to_basket'|from_key }}', '{{ 'added'|from_key }}')" {% if not product.is_available %}disabled{% endif %}>
+                                                                {% if not product.is_available %}
+                                                                    {{ 'not_available'|from_key }}
+                                                                {% else %}
+                                                                    {{ 'to_basket'|from_key }}
+                                                                {% endif %}
+                                                            </button>
                                                     </a>
                                                 </div>
                                             </div>

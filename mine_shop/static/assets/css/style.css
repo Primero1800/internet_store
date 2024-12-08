@@ -3921,3 +3921,16 @@ select.top-drop-menu {
 @media (min-width: 1200px) {
   .owl-buttons {
     display: block; } }
+
+
+/* CTable */
+
+ctable {
+  table-layout: fixed;
+  border-collapse: collapse;
+  .td {
+    padding: 100px 200px;
+    word-break: break-all;
+  }
+}
+
