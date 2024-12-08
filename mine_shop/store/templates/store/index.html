@@ -172,6 +172,8 @@
                                             <div class="prices">
                                                 {% if product.is_on_sale %}
                                                     <div class="price-prev">{{ product.start_price }}{{ currency }}</div>
+                                                {% else %}
+                                                    <div class="price-prev"> </div>
                                                 {% endif %}
                                                 <div class="price-current pull-right">{{ product.price }}{{ currency }}</div>
                                             </div>
@@ -226,7 +228,7 @@
 
 
                                 </div>
-                            <br><br>
+
                             </div>
 
                            <!-- ВКЛАДКА НОВИНКИ -->
@@ -261,6 +263,8 @@
                                             <div class="prices">
                                                 {% if product.is_on_sale %}
                                                     <div class="price-prev">{{ product.start_price }}{{ currency }}</div>
+                                                {% else %}
+                                                    <div class="price-prev"> </div>
                                                 {% endif %}
                                                 <div class="price-current pull-right">{{ product.price }}{{ currency }}</div>
                                             </div>
@@ -311,7 +315,7 @@
 
 
                                 </div>
-                            <br><br>
+
                             </div>
 
                             <!-- ВКЛАДКА ЛИДЕРЫ ПРОДАЖ -->
@@ -348,6 +352,8 @@
                                             <div class="prices">
                                                 {% if product.is_on_sale %}
                                                     <div class="price-prev">{{ product.start_price }}{{ currency }}</div>
+                                                {% else %}
+                                                    <div class="price-prev"> </div>
                                                 {% endif %}
                                                 <div class="price-current pull-right">{{ product.price }}{{ currency }}</div>
                                             </div>
@@ -400,13 +406,13 @@
 
 
                                 </div>
-                            <br><br>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <br><br><br><br>
+            <br><br>
 
             <!-- ========================================= BEST SELLERS ========================================= -->
             <section id="bestsellers" class="color-bg wow fadeInUp">
