@@ -84,6 +84,8 @@ function change_paginator_buttons(page, pages_count) {
                                                             <div class="prices">
                                                                 {% if product.is_on_sale %}
                                                                     <div class="price-prev">{{ product.start_price }}{{ currency }}</div>
+                                                                {% else %}
+                                                                    <div class="price-prev"> </div>
                                                                 {% endif %}
                                                                 <div class="price-current pull-right">{{ product.price }}{{ currency }}</div>
                                                             </div>

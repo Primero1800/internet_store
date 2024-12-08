@@ -77,6 +77,8 @@
                                                             <div class="price-current">{{ product.price }} {{ currency }}</div>
                                                             {% if product.is_on_sale %}
                                                                 <div class="price-prev">{{ product.start_price }} {{ currency }}</div>
+                                                            {% else %}
+                                                                <div class="price-prev"> </div>
                                                             {% endif %}
                                                             <div class="availability"><span class="{% if not product.is_available %}not-{% endif %}available">  {{ product.get_available_display }}</span></div>
 
