@@ -1,4 +1,5 @@
 import asyncio
+import os
 import uuid
 
 from django.conf import settings
@@ -72,11 +73,11 @@ class RegisterView(FormView):
                 message += _(f"Ваш новый пароль {new_password} \n")
                 self.message_for_member = '3'
 
-            if False:
+            if settings.VIA_MAIL:
                 send_mail(
                         subject=_(f"{settings.STORE_TITLE} Пожалуйста, подтвердите регистрацию"),
                         message=message,
-                        from_email="primero@inbox.ru",
+                        from_email=os.environ.get('EMAIL_HOST_USER'),
                         recipient_list=[user.email, ]
                 )
             else:
@@ -85,7 +86,7 @@ class RegisterView(FormView):
                         message=create_email_error_message(
                             subject='registration',
                             password=new_password,
-                            from_email="primero@inbox.ru",
+                            from_email=os.environ.get('EMAIL_HOST_USER'),
                             recipient_list=[user.email, ],
                         )))
 
@@ -161,11 +162,11 @@ def restore_password(request):
                 user.save(update_fields=['password', ])
                 message = _(f"Ваш новый пароль: {new_password}")
 
-                if False:
+                if settings.VIA_MAIL:
                     send_mail(
                         subject=_(f"{settings.STORE_TITLE} Восстановление доступа"),
                         message=message,
-                        from_email="primero@inbox.ru",
+                        from_email=os.environ.get('EMAIL_HOST_USER'),
                         recipient_list=[user.email, ]
                     )
                 else:
@@ -174,7 +175,7 @@ def restore_password(request):
                             create_email_error_message(
                                 subject='restore_password',
                                 new_password=new_password,
-                                from_email="primero@inbox.ru",
+                                from_email=os.environ.get('EMAIL_HOST_USER'),
                                 recipient_list=[user.email, ],
                             )))
 
@@ -186,7 +187,7 @@ def restore_password(request):
     return render(request, "users/restore_password.html", context)
 
 
-@login_required(login_url=reverse_lazy("users:login"), redirect_field_name='next')
+@login_required(login_url=reverse_lazy("users:los.environ.get('EMAIL_HOST_USER')ogin"), redirect_field_name='next')
 @ajax_dispatch(ajax_show_basket_header_map | ajax_show_wishcompare_header_map)
 def wishlist(request):
     context = {}

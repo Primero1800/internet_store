@@ -138,6 +138,7 @@ DATABASES = {
 # }
 
 # MAIL SETTINGS
+VIA_MAIL = True
 
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
 EMAIL_PORT = os.environ.get('EMAIL_PORT')
