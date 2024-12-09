@@ -151,27 +151,27 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 # CACHE
 
 # REDIS
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django_redis.cache.RedisCache',
-#         'LOCATION': os.environ.get('REDIS_ADDRESS'),  # Use the appropriate Redis server URL
-#         'OPTIONS': {
-#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-#         }
-#     }
-# }
-
-# DC
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'cache_table',
-        'TIMEOUT': 300,
-        'OPTIONS':{
-            'MAX_ENTRIES': 300,
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': os.environ.get('REDIS_ADDRESS'),  # Use the appropriate Redis server URL
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     }
 }
+
+# DC
+#CACHES = {
+#   'default': {
+#       'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#        'LOCATION': 'cache_table',
+#        'TIMEOUT': 300,
+#        'OPTIONS':{
+#            'MAX_ENTRIES': 300,
+#        }
+#    }
+#}
 
 MINE_SHOP_USER_CONFIRMATION_KEY = "user_confirmation_{token}"
 MINE_SHOP_USER_CONFIRMATION_TIMEOUT = 300
