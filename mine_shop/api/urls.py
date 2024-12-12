@@ -2,7 +2,8 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from .views import APIUserViewSet, APIUserView, APIPersonViewSet, APIAddressViewSet, APICartViewSet, APIPostViewSet, \
-    APIVoteViewSet, APIOrderViewSet, APIProductViewSet, APIBrandViewSet, APIRubricViewSet, APISaleInformationViewSet
+    APIVoteViewSet, APIOrderViewSet, APIProductViewSet, APIBrandViewSet, APIRubricViewSet, APISaleInformationViewSet, \
+    APIProductView
 
 app_name = 'api'
 
@@ -24,6 +25,7 @@ router.register('sale_information', APISaleInformationViewSet)
 urlpatterns = [
 
     path('users/<int:pk>/detail/', APIUserView.as_view(), name='user_detail'),
+    path('products/<int:pk>/detail/', APIProductView.as_view(), name='product_detail'),
     path('', include(router.urls)),
 
 

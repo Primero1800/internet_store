@@ -11,7 +11,7 @@ from store.models import Product, Brand, Rubric
 from users.models import User
 from .serializers import UserSerializer, UserDetailSerializer, PersonSerializer, AddressSerializer, CartSerializer, \
     PostSerializer, VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer, \
-    SaleInformationSerializer
+    SaleInformationSerializer, ProductDetailSerializer
 
 
 @permission_classes((IsAdminUser, ))
@@ -80,3 +80,9 @@ class APIProductViewSet(ModelViewSet):
 class APIUserView(RetrieveAPIView, DestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
+
+
+@permission_classes((IsAdminUser, ))
+class APIProductView(RetrieveAPIView, DestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductDetailSerializer

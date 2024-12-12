@@ -362,7 +362,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         model = Product
         fields = (
             'id', 'title', 'slug', 'brand', 'description', 'rubrics', 'start_price', 'discont', 'price', 'rating',
-            'available', 'quantity', 'images', 'additional_information', 'sale_information', 'posts', 'votes', 'orders',
+            'available', 'quantity', 'images', 'additional_information', 'sale_information', 'posts', 'votes',
             'wishlists', 'comparisons', 'cartitems',
         )
 
@@ -394,4 +394,34 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         def get_sale_information(self, instance):
             queryset = instance.sale_information
             serializer = SaleInformationInSerializer(queryset)
+            return serializer.data
+
+        posts = serializers.SerializerMethodField('get_posts')
+        def get_posts(self, instance):
+            queryset = instance.posts.all()
+            serializer = PostInProductSerializer(queryset, many=True)
+            return serializer.data
+
+        votes = serializers.SerializerMethodField('get_votes')
+        def get_votes(self, instance):
+            queryset = instance.votes.all()
+            serializer = VoteInProductSerializer(queryset, many=True)
+            return serializer.data
+
+        wishlists = serializers.SerializerMethodField('get_wishlists')
+        def get_wishlists(self, instance):
+            queryset = instance.wishlistitem_set.all()
+            serializer = WishlistItemSerializer(queryset, many=True)
+            return serializer.data
+
+        comparisons = serializers.SerializerMethodField('get_comparisons')
+        def get_comparisons(self, instance):
+            queryset = instance.comparisonitem_set.all()
+            serializer = ComparisonItemSerializer(queryset, many=True)
+            return serializer.data
+
+        cartitems = serializers.SerializerMethodField('get_cartitems')
+        def get_cartitems(self, instance):
+            queryset = instance.cartitem_set.all()
+            serializer = CartItemSerializer(queryset, many=True)
             return serializer.data
