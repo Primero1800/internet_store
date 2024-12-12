@@ -9,9 +9,11 @@ from posts.models import Post
 from store.info_classes import Vote, Sale_information
 from store.models import Product, Brand, Rubric
 from users.models import User
-from .serializers import UserSerializer, UserDetailSerializer, PersonSerializer, AddressSerializer, CartSerializer, \
-    PostSerializer, VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer, \
-    SaleInformationSerializer, ProductDetailSerializer
+from .serializers import (
+    UserSerializer, UserDetailSerializer, PersonSerializer, AddressSerializer, CartSerializer,
+    PostSerializer, VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer,
+    SaleInformationSerializer, ProductDetailSerializer,
+)
 
 
 @permission_classes((IsAdminUser, ))
