@@ -1,226 +1,351 @@
-import json
-from decimal import Decimal
-
 from rest_framework import serializers
 
-from orders.inner_functions import _separator_normalize
-from orders.models import Order
+from cart.models import Cart, CartItem
+from orders.models import Order, Person, Address
 from posts.models import Post
 from store.info_classes import Vote
-from store.models import Product
-from users.models import User
+from store.models import Product, Brand, Rubric
+from users.models import User, WishlistItem, ComparisonItem, RecentlyViewedItem, UserTools
 
 
-class ProductFreeFullSerializer(serializers.ModelSerializer):
+class UserTitlesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email')
+
+
+class ProductTitlesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id', 'title', 'brand', 'price', 'start_price', 'discont', 'rating', 'available')
-
-    brand = serializers.SerializerMethodField('get_brand')
-    def get_brand(self, instance):
-        return f"{instance.brand.title} (ID={instance.brand.id})"
-
-    start_price = serializers.SerializerMethodField('get_start_price')
-    def get_start_price(self, instance):
-        return Decimal(_separator_normalize(instance.start_price))
-
-    price = serializers.SerializerMethodField('get_price')
-    def get_price(self, instance):
-        return instance.price
-
-    discont = serializers.SerializerMethodField('get_discont')
-    def get_discont(self, instance):
-        return instance.get_discont_display()
-
-    available = serializers.SerializerMethodField('get_available')
-    def get_available(self, instance):
-        return instance.get_available_display()
+        fields = ('id', 'title')
 
 
-class ProductFullSerializer(ProductFreeFullSerializer):
+
+class UserToolsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product
-        fields = ('id', 'title', 'brand', 'price', 'start_price', 'discont', 'rating', 'quantity', 'available', 'sale_information', 'feedback_information')
-
-    feedback_information = serializers.SerializerMethodField('get_feedback')
-    def get_feedback(self, instance):
-        votes = instance.votes.all()
-        votes_context = {}
-        for vote in votes:
-            votes_context.setdefault(vote.stars, [])
-            votes_context[vote.stars] .append({
-                'name': vote.name,
-                'user': str(vote.user),
-                'grade': f"*{vote.stars}",
-                'review': vote.review
-            })
-        posts = instance.posts.all()
-        posts_context = [{'name': post.name, 'user': post.user.email, 'review': post.review} for post in posts]
-        return {
-            f"votes < {len(votes)} >": dict(sorted(votes_context.items(), reverse=True)),
-            f"posts < {len(posts)} >": posts_context
-        }
-
-    sale_information = serializers.SerializerMethodField('get_sale_information')
-    def get_sale_information(self, instance):
-        try:
-            instance.sale_information
-            return {
-                'sold_count': instance.sale_information.sold_count,
-                'viewed_count': instance.sale_information.viewed_count,
-                'rating': instance.sale_information.rating / instance.sale_information.voted_count if instance.sale_information.voted_count else instance.sale_information.rating
-            }
-        except:
-            return None
+        model = UserTools
+        fields = ('user',)
 
 
-
-class ProductSerializer(ProductFullSerializer):
+class PersonSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product
-        fields = ('id', 'title', 'available', 'quantity', 'sold')
+        model = Person
+        fields = ('id', 'user', 'name', 'surname', 'company_name')
 
-    sold = serializers.SerializerMethodField('get_sold')
-    def get_sold(self, instance):
-        try:
-            return instance.sale_information.sold_count
-        except:
-            return 0
+    user = serializers.SerializerMethodField('get_short_user')
+    def get_short_user(self, instance):
+        queryset = instance.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
 
-class ProductDetailSerializer(ProductFullSerializer):
+class PersonInSerializer(PersonSerializer):
     class Meta:
-        model = Product
-        fields = ('id', 'title', 'slug', 'brand', 'description', 'additional_information', 'images', 'price', 'start_price', 'discont', 'rating', 'quantity', 'available',
-                  'sale_information', 'feedback_information', 'orders')
-
-    additional_information = serializers.SerializerMethodField('get_additional_information')
-    def get_additional_information(self, instance):
-        try:
-            instance.additional_information
-            return {
-                'weight': instance.additional_information.weight,
-                'dimensions': instance.additional_information.dimensions,
-                'size' : instance.additional_information.size,
-            }
-        except:
-            return None
-
-    images = serializers.SerializerMethodField('get_images')
-    def get_images(self, instance):
-        return [image.image.url for image in instance.images.all()]
-
-    description = serializers.SerializerMethodField('get_description')
-    def get_description(self, instance):
-        return [word.strip().strip('\t') for word in instance.description.split('\r\n')]
-
-    orders = serializers.SerializerMethodField('get_orders')
-    def get_orders(self, instance):
-        result = []
-        for order in Order.objects.all():
-            if order.status != 2:
-                order_content = json.loads(order.order_content)
-                for item in order_content:
-                    if item['id'] == instance.pk:
-                        person = json.loads(order.person_content)
-                        address = json.loads(order.address_content)
-                        result.append({
-                            'id': order.id,
-                            'time_placed': order.time_placed,
-                            'status': order.get_status_display(),
-                            'total_price': order.total_price,
-                            'time_delivered': order.time_delivered,
-                            'person': person,
-                            'address': address,
-                            'payment_conditions': order.get_payment_conditions_display(),
-                            'move_to': order.get_move_to_display(),
-                            'content': item
-                        })
-        return result
+        model = Person
+        fields = ('id', 'name', 'surname', 'company_name')
 
 
-class ProductDetailFreeSerializer(ProductDetailSerializer):
+class AddressSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product
-        fields = ('id', 'title', 'slug', 'brand', 'description', 'additional_information', 'images', 'price', 'start_price', 'discont', 'rating', 'available', 'feedback_information')
+        model = Address
+        fields = ('id', 'user', 'address', 'city',  'phonenumber')
 
-    feedback_information = serializers.SerializerMethodField('get_feedback')
-    def get_feedback(self, instance):
-        fbi = super().get_feedback(instance)
-        votes, posts = tuple(fbi.items())
-        votes = list(votes[1].values())
-        if votes:
-            for vote in votes:
-                if 'user' in vote[0]: del vote[0]['user']
-        posts = list(posts[1])
-        if posts:
-            for post in posts:
-                if 'user' in post: del post['user']
-        return fbi
+    user = serializers.SerializerMethodField('get_short_user')
+    def get_short_user(self, instance):
+        queryset = instance.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
 
 
-class OrderFullSerializer(serializers.ModelSerializer):
+class AddressInSerializer(AddressSerializer):
+    class Meta:
+        model = Address
+        fields = ('id', 'address', 'city',  'phonenumber')
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('id', 'user', 'name', 'product', 'review', 'time_published')
+
+    user = serializers.SerializerMethodField('get_short_user')
+    def get_short_user(self, instance):
+        queryset = instance.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
+
+    product = serializers.SerializerMethodField('get_short_product')
+    def get_short_product(self, instance):
+        queryset = instance.product
+        serializer = ProductTitlesSerializer(queryset)
+        return serializer.data
+
+class PostInUserSerializer(PostSerializer):
+    class Meta:
+        model = Post
+        fields = ('id', 'name', 'product', 'review', 'time_published')
+
+class PostInProductSerializer(PostSerializer):
+    class Meta:
+        model = Post
+        fields = ('id', 'user', 'name', 'review', 'time_published')
+
+class VoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = ('id', 'user', 'name', 'product', 'stars', 'review', 'time_published')
+
+    user = serializers.SerializerMethodField('get_short_user')
+    def get_short_user(self, instance):
+        queryset = instance.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
+
+    product = serializers.SerializerMethodField('get_short_product')
+    def get_short_product(self, instance):
+        queryset = instance.product
+        serializer = ProductTitlesSerializer(queryset)
+        return serializer.data
+
+class VoteInUserSerializer(VoteSerializer):
+    class Meta:
+        model = Vote
+        fields = ('id', 'name', 'product', 'stars', 'review', 'time_published')
+
+class VoteInProductSerializer(VoteSerializer):
+    class Meta:
+        model = Vote
+        fields = ('id', 'user', 'name', 'stars', 'review', 'time_published')
+
+class RubricInSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rubric
+        fields = ('id', 'title')
+
+class RubricSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rubric
+        fields = ('id', 'title', 'slug', 'description', 'image', 'products')
+
+    products = serializers.SerializerMethodField('get_short_products')
+    def get_short_products(self, instance):
+        queryset = instance.products.all()
+        serializer = ProductTitlesSerializer(queryset, many=True)
+        return serializer.data
+
+class BrandInSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ('id', 'title')
+
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ('id', 'title', 'description', 'image', 'products')
+
+    products = serializers.SerializerMethodField('get_short_products')
+    def get_short_products(self, instance):
+        queryset = instance.items.all()
+        serializer = ProductTitlesSerializer(queryset, many=True)
+        return serializer.data
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'is_active', 'is_staff', 'is_superuser')
+
+
+class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ('id', 'time_placed', 'status', 'total_price', 'time_delivered', 'person', 'address', 'payment_conditions', 'move_to', 'content')
+        fields = ('id', 'user', 'phonenumber', 'order_content', 'person_content', 'address_content', 'total_price', 'move_to', 'payment_conditions', 'status', 'time_placed', 'time_delivered')
 
-    status = serializers.SerializerMethodField('get_status')
-    def get_status(self, instance):
-        return instance.get_status_display()
+    user = serializers.SerializerMethodField('get_short_user')
+    def get_short_user(self, instance):
+        queryset = instance.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
+
+class OrderInSerializer(OrderSerializer):
+    class Meta:
+        model = Order
+        fields = (
+            'id', 'phonenumber', 'order_content', 'person_content', 'address_content', 'total_price', 'move_to',
+            'payment_conditions', 'status', 'time_placed', 'time_delivered',
+        )
+
+class CartItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ('product', 'quantity', 'price', 'total_price')
+
+    product = serializers.SerializerMethodField('get_short_product')
+    def get_short_product(self, instance):
+        queryset = instance.product
+        serializer = ProductTitlesSerializer(queryset)
+        return serializer.data
+
+class CartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = ('id', 'user', 'total_price', 'cart_items')
+
+    user = serializers.SerializerMethodField('get_short_user')
+    def get_short_user(self, instance):
+        queryset = instance.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
 
 
-    total_price = serializers.SerializerMethodField('get_total_price')
-    def get_total_price(self, instance):
-        return Decimal(_separator_normalize(instance.total_price))
+    cart_items = serializers.SerializerMethodField('get_cart_items')
+    def get_cart_items(self, instance):
+        queryset = instance.cart_items.all()
+        serializer = CartItemSerializer(queryset, many=True)
+        return serializer.data
+
+
+class WishlistItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WishlistItem
+        fields = ('id', 'product')
+
+    product = serializers.SerializerMethodField('get_short_product')
+    def get_short_product(self, instance):
+        queryset = instance.product
+        serializer = ProductTitlesSerializer(queryset)
+        return serializer.data
+
+class ComparisonItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ComparisonItem
+        fields = ('id', 'product')
+
+    product = serializers.SerializerMethodField('get_short_product')
+    def get_short_product(self, instance):
+        queryset = instance.product
+        serializer = ProductTitlesSerializer(queryset)
+        return serializer.data
+
+class RecentlyViewedItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RecentlyViewedItem
+        fields = ('id', 'product')
+
+    product = serializers.SerializerMethodField('get_short_product')
+    def get_short_product(self, instance):
+        queryset = instance.product
+        serializer = ProductTitlesSerializer(queryset)
+        return serializer.data
+
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'id', 'email', 'is_active', 'is_staff', 'is_superuser', 'person', 'address', 'posts_count', 'posts',
+            'votes_count', 'votes', 'orders_count', 'total_paid', 'orders', 'cart', 'usertools',
+            'wishlist', 'comparison', 'recently_viewed',
+        )
+
+    usertools = serializers.SerializerMethodField('get_usertools')
+    def get_usertools(self, instance):
+        queryset = instance.usertools
+        serializer = UserToolsSerializer(queryset)
+        return serializer.data
 
     person = serializers.SerializerMethodField('get_person')
     def get_person(self, instance):
-        return json.loads(instance.person_content)
+        queryset = instance.person
+        serializer = PersonInSerializer(queryset)
+        return serializer.data
 
     address = serializers.SerializerMethodField('get_address')
     def get_address(self, instance):
-        return json.loads(instance.address_content)
-
-    move_to = serializers.SerializerMethodField('get_move_to')
-    def get_move_to(self, instance):
-        return instance.get_move_to_display()
-
-    payment_conditions = serializers.SerializerMethodField('get_payment_conditions')
-    def get_payment_conditions(self, instance):
-        return instance.get_payment_conditions_display()
-
-    content = serializers.SerializerMethodField('get_content')
-    def get_content(self, instance):
-        return json.loads(instance.order_content)
-
-
-class UserFullSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'email', 'username', 'is_active', 'is_staff', 'is_superuser', 'votes_count', 'posts_count', 'total_spended', 'orders_count', 'orders')
+        queryset = instance.address
+        serializer = AddressInSerializer(queryset)
+        return serializer.data
 
     votes_count = serializers.SerializerMethodField('get_votes_count')
     def get_votes_count(self, instance):
         return len(instance.votes.all())
 
+    votes = serializers.SerializerMethodField('get_votes')
+    def get_votes(self, instance):
+        queryset = instance.votes
+        serializer = VoteInUserSerializer(queryset, many=True)
+        return serializer.data
+
     posts_count = serializers.SerializerMethodField('get_posts_count')
     def get_posts_count(self, instance):
         return len(instance.posts.all())
+
+    posts = serializers.SerializerMethodField('get_posts')
+    def get_posts(self, instance):
+        queryset = instance.posts.all()
+        serializer = PostInUserSerializer(queryset, many=True)
+        return serializer.data
 
     orders_count = serializers.SerializerMethodField('get_orders_count')
     def get_orders_count(self, instance):
         return len(instance.order_set.filter(status__in=(0, 1)))
 
-    total_spended = serializers.SerializerMethodField('get_total_spended')
-    def get_total_spended(self, instance):
-        return sum(order.total_price for order in instance.order_set.filter(status=1))
-
     orders = serializers.SerializerMethodField('get_orders')
     def get_orders(self, instance):
-        orders = instance.order_set.all()
-        serializer = OrderFullSerializer(orders, many=True)
+        queryset =  instance.order_set.filter(status__in=(0, 1))
+        serializer = OrderInSerializer(queryset, many=True)
         return serializer.data
 
-class UserSerializer(UserFullSerializer):
+    total_paid = serializers.SerializerMethodField('get_total_paid')
+    def get_total_paid(self, instance):
+        return sum(order.total_price for order in instance.order_set.filter(status=1))
+
+    cart = serializers.SerializerMethodField('get_cart')
+    def get_cart(self, instance):
+        queryset = instance.cart
+        serializer = CartSerializer(queryset)
+        return serializer.data
+
+    wishlist = serializers.SerializerMethodField('get_wishlist')
+    def get_wishlist(self, instance):
+        queryset = instance.usertools.w_items.all()
+        serializer = WishlistItemSerializer(queryset, many=True)
+        return serializer.data
+
+    comparison = serializers.SerializerMethodField('get_comparison')
+    def get_comparison(self, instance):
+        queryset = instance.usertools.c_items.all()
+        serializer = ComparisonItemSerializer(queryset, many=True)
+        return serializer.data
+
+    recently_viewed = serializers.SerializerMethodField('get_recently_viewed')
+    def get_recently_viewed(self, instance):
+        queryset = instance.usertools.rv_items.all()
+        serializer = RecentlyViewedItemSerializer(queryset, many=True)
+        return serializer.data
+
+
+class ProductSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('id', 'email', 'username', 'is_active', 'is_staff', 'is_superuser', 'orders_count', 'total_spended')
+        model = Product
+        fields = ('id', 'title', 'slug', 'brand', 'rubrics', 'start_price', 'discont', 'price', 'rating', 'available', 'quantity')
+
+class ProductDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = (
+            'id', 'title', 'slug', 'brand', 'description', 'rubrics', 'start_price', 'discont', 'price', 'rating',
+            'available', 'quantity', 'images', 'additional_information', 'sale_information', 'posts', 'votes', 'orders',
+            'wishlists', 'comparisons', 'cartitems',
+        )
+
+        brand = serializers.SerializerMethodField('get_brand')
+        def get_brand(self, instance):
+            queryset = instance.brand
+            serializer = BrandInSerializer(queryset)
+            return serializer.data
+
+        rubrics = serializers.SerializerMethodField('get_rubrics')
+        def get_rubrics(self, instance):
+            queryset = instance.rubrics.all()
+            serializer - RubricInSerializer(queryset, many=True)
+            return serializer.data

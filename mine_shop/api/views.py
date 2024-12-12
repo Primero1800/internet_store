@@ -1,123 +1,76 @@
-from django.shortcuts import get_object_or_404
-from rest_framework.generics import RetrieveAPIView
-from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.generics import RetrieveAPIView, DestroyAPIView
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAdminUser
+from rest_framework.viewsets import ModelViewSet
 
-from orders.models import Order
-from store.models import Product
+from cart.models import Cart
+from orders.models import Person, Address, Order
+from posts.models import Post
+from store.info_classes import Vote
+from store.models import Product, Brand, Rubric
 from users.models import User
-from .inner_functions import filters
-from .serializers import ProductFullSerializer, ProductSerializer, ProductDetailSerializer, ProductFreeFullSerializer, \
-    ProductDetailFreeSerializer, OrderFullSerializer, UserFullSerializer, UserSerializer
+from .serializers import UserSerializer, UserDetailSerializer, PersonSerializer, AddressSerializer, CartSerializer, \
+    PostSerializer, VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer
 
 
-@api_view(['GET'])
-def products_short_free(request, count=None, sort_by=None):
-    if request.method == 'GET':
-        products = Product.objects.all()
-        serializer = ProductFreeFullSerializer(products, many=True)
-        data = filters(queryset=serializer.data, count=count, sort_by=sort_by, x_filters_mapping={
-            'id': None, 'title': 'title', 'available': 'available', 'price': 'price', 'start_price': 'start_price',
-            'discont': 'discont', 'rating': 'rating', 'brand': 'brand',
-        }, other='id')
-        return Response(data)
-
-
-@api_view(['GET'])
-@permission_classes((IsAdminUser,))
-def products_short(request, count=None, sort_by=None):
-    if request.method == 'GET':
-        products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
-
-        data = filters(queryset=serializer.data, count=count, sort_by=sort_by, x_filters_mapping={
-            'id': None, 'sold': 'sold', 'title': 'title', 'available': 'available',
-        }, other='quantity')
-
-        return Response(data)
-
-
-@api_view(['GET'])
-@permission_classes((IsAdminUser,))
-def products_full(request, count=None, sort_by=None):
-    if request.method == 'GET':
-        products = Product.objects.all()
-        serializer = ProductFullSerializer(products, many=True)
-
-        data = filters(queryset=serializer.data, count=count, sort_by=sort_by, x_filters_mapping={
-            'id': None,
-            'title': 'title',
-            'brand': 'brand',
-            'price': 'price',
-            'discont': 'discont',
-            'rating': 'rating',
-            'available': 'available',
-            'quantity': 'quantity',
-            'start_price': 'start_price',
-        },
-                       dict_mapping={
-                           'sale_information': 'sold_count',
-                           'feedback_information': None,
-                       },
-                       other=None)
-
-        return Response(data)
-
-
-@permission_classes((IsAdminUser,))
-class ProductDetailView(RetrieveAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductDetailSerializer
-
-
-class ProductDetailFreeView(RetrieveAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductDetailFreeSerializer
-
-
-@api_view(['GET'])
-@permission_classes((IsAdminUser,))
-def orders(request, count=None, sort_by=None):
-    if request.method == 'GET':
-        orders = Order.objects.all()
-        serializer = OrderFullSerializer(orders, many=True)
-
-        data = filters(queryset=serializer.data, count=count, sort_by=sort_by, x_filters_mapping={
-            'id': None, 'status': 'status', 'total_price': 'total_price', 'time_placed': 'time_placed',
-            'content': 'total_price',
-        },
-                       dict_mapping={
-                           'person': 'name',
-                           'address': 'phonenumber',
-                       },
-                       other='id')
-
-        return Response(data)
-
-
-@permission_classes((IsAdminUser,))
-class UserDetailView(RetrieveAPIView):
+@permission_classes((IsAdminUser, ))
+class APIUserViewSet(ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserFullSerializer
+    serializer_class = UserSerializer
 
 
-@api_view(['GET'])
+@permission_classes((IsAdminUser, ))
+class APIPersonViewSet(ModelViewSet):
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
+
+
+@permission_classes((IsAdminUser, ))
+class APIAddressViewSet(ModelViewSet):
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer
+
+
 @permission_classes((IsAdminUser,))
-def users(request, count=None, sort_by=None):
-    if request.method == 'GET':
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-
-        data = filters(queryset=serializer.data, count=count, sort_by=sort_by, x_filters_mapping={
-            'id': None, 'email': 'email', 'username': 'username', 'is_active': 'is_active',
-            'is_superuser': 'is_superuser', 'is_staff': 'is_staff', 'orders_count': 'orders_count',
-            'total_spended': 'total_spended',
-        }, other='id')
-
-        return Response(data)
+class APICartViewSet(ModelViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
 
 
-from django.shortcuts import render
+@permission_classes((IsAdminUser,))
+class APIPostViewSet(ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
-# Create your views here.
+
+@permission_classes((IsAdminUser,))
+class APIVoteViewSet(ModelViewSet):
+    queryset = Vote.objects.all()
+    serializer_class = VoteSerializer
+
+@permission_classes((IsAdminUser,))
+class APIBrandViewSet(ModelViewSet):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+
+@permission_classes((IsAdminUser,))
+class APIRubricViewSet(ModelViewSet):
+    queryset = Rubric.objects.all()
+    serializer_class = RubricSerializer
+
+@permission_classes((IsAdminUser,))
+class APIOrderViewSet(ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
+@permission_classes((IsAdminUser,))
+class APIProductViewSet(ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+
+@permission_classes((IsAdminUser, ))
+class APIUserView(RetrieveAPIView, DestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserDetailSerializer
