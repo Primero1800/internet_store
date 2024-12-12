@@ -3,8 +3,8 @@ from rest_framework import serializers
 from cart.models import Cart, CartItem
 from orders.models import Order, Person, Address
 from posts.models import Post
-from store.info_classes import Vote
-from store.models import Product, Brand, Rubric
+from store.info_classes import Vote, Sale_information
+from store.models import Product, Brand, Rubric, Image, Additional_information
 from users.models import User, WishlistItem, ComparisonItem, RecentlyViewedItem, UserTools
 
 
@@ -131,6 +131,34 @@ class RubricSerializer(serializers.ModelSerializer):
         queryset = instance.products.all()
         serializer = ProductTitlesSerializer(queryset, many=True)
         return serializer.data
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('id', 'image')
+
+
+class SaleInformationInSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sale_information
+        fields = ('id', 'sold_count', 'viewed_count', 'voted_count')
+
+
+class SaleInformationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sale_information
+        fields = ('id', 'product', 'sold_count', 'viewed_count', 'voted_count')
+
+    product = serializers.SerializerMethodField('get_short_product')
+    def get_short_product(self, instance):
+        queryset = instance.product
+        serializer = ProductTitlesSerializer(queryset)
+        return serializer.data
+
+class AdditionalInformationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Additional_information
+        fields = ('id', 'weight', 'dimensions', 'size', 'guarantee')
 
 class BrandInSerializer(serializers.ModelSerializer):
     class Meta:
@@ -347,5 +375,23 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         rubrics = serializers.SerializerMethodField('get_rubrics')
         def get_rubrics(self, instance):
             queryset = instance.rubrics.all()
-            serializer - RubricInSerializer(queryset, many=True)
+            serializer = RubricInSerializer(queryset, many=True)
+            return serializer.data
+
+        images = serializers.SerializerMethodField('get_images')
+        def get_images(self, instance):
+            queryset = instance.images.all()
+            serializer = ImageSerializer(queryset, many=True)
+            return serializer.data
+
+        additional_information = serializers.SerializerMethodField('get_additional_information')
+        def get_additional_information(self, instance):
+            queryset = instance.additional_information
+            serializer = AdditionalInformationSerializer(queryset)
+            return serializer.data
+
+        sale_information = serializers.SerializerMethodField('get_sale_information')
+        def get_sale_information(self, instance):
+            queryset = instance.sale_information
+            serializer = SaleInformationInSerializer(queryset)
             return serializer.data

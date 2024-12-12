@@ -6,11 +6,12 @@ from rest_framework.viewsets import ModelViewSet
 from cart.models import Cart
 from orders.models import Person, Address, Order
 from posts.models import Post
-from store.info_classes import Vote
+from store.info_classes import Vote, Sale_information
 from store.models import Product, Brand, Rubric
 from users.models import User
 from .serializers import UserSerializer, UserDetailSerializer, PersonSerializer, AddressSerializer, CartSerializer, \
-    PostSerializer, VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer
+    PostSerializer, VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer, \
+    SaleInformationSerializer
 
 
 @permission_classes((IsAdminUser, ))
@@ -52,6 +53,11 @@ class APIVoteViewSet(ModelViewSet):
 class APIBrandViewSet(ModelViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
+
+@permission_classes((IsAdminUser,))
+class APISaleInformationViewSet(ModelViewSet):
+    queryset = Sale_information.objects.all()
+    serializer_class = SaleInformationSerializer
 
 @permission_classes((IsAdminUser,))
 class APIRubricViewSet(ModelViewSet):
