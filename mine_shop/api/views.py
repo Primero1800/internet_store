@@ -1,4 +1,4 @@
-from rest_framework.generics import RetrieveAPIView, DestroyAPIView
+from rest_framework.generics import RetrieveAPIView, DestroyAPIView, RetrieveDestroyAPIView
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet
@@ -79,12 +79,12 @@ class APIProductViewSet(ModelViewSet):
 
 
 @permission_classes((IsAdminUser, ))
-class APIUserView(RetrieveAPIView, DestroyAPIView):
+class APIUserView(RetrieveDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
 
 
 @permission_classes((IsAdminUser, ))
-class APIProductView(RetrieveAPIView, DestroyAPIView):
+class APIProductView(RetrieveDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductDetailSerializer

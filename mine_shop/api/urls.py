@@ -6,6 +6,7 @@ from .views import APIUserViewSet, APIUserView, APIPersonViewSet, APIAddressView
     APIProductView
 
 app_name = 'api'
+VERSION = 'v1'
 
 router = DefaultRouter()
 
@@ -24,9 +25,9 @@ router.register('sale_information', APISaleInformationViewSet)
 
 urlpatterns = [
 
-    path('users/<int:pk>/detail/', APIUserView.as_view(), name='user_detail'),
-    path('products/<int:pk>/detail/', APIProductView.as_view(), name='product_detail'),
-    path('', include(router.urls)),
+    path(f'{VERSION}/users/<int:pk>/detail/', APIUserView.as_view(), name='user_detail'),
+    path(f'{VERSION}/products/<int:pk>/detail/', APIProductView.as_view(), name='product_detail'),
+    path(f'{VERSION}/', include(router.urls)),
 
 
 
