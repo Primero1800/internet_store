@@ -14,6 +14,7 @@ router.register('addresses', APIAddressViewSet)
 router.register('brands', APIBrandViewSet)
 router.register('carts', APICartViewSet)
 router.register('cartitems', APICartItemViewSet)
+router.register('orders', APIOrderViewSet)
 
 
 
@@ -23,7 +24,6 @@ router.register('persons', APIPersonViewSet)
 
 router.register('posts', APIPostViewSet)
 router.register('votes', APIVoteViewSet)
-router.register('orders', APIOrderViewSet)
 
 router.register('rubrics', APIRubricViewSet)
 router.register('sale_information', APISaleInformationViewSet)
@@ -33,6 +33,7 @@ urlpatterns = [
 
     path(f'{VERSION}/addresses/<int:pk>/', APIAddressView.as_view(), name='address_detail'),
     path(f'{VERSION}/carts/<int:pk>/', APICartView.as_view(), name='cart_detail'),
+
 
 
     path(f'{VERSION}/users/<int:pk>/detail/', APIUserView.as_view(), name='user_detail'),

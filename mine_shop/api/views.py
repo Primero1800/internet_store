@@ -48,13 +48,19 @@ class APICartView(RetrieveDestroyAPIView):
     serializer_class = CartSerializerRaw
 
 
-
-
-
 @permission_classes((IsAdminUser,))
 class APICartItemViewSet(ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = CartItemSerializer
+
+
+@permission_classes((IsAdminUser,))
+class APIOrderViewSet(ReadOnlyModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
+
 
 
 @permission_classes((IsAdminUser, ))
@@ -67,7 +73,6 @@ class APIUserViewSet(ModelViewSet):
 class APIPersonViewSet(ModelViewSet):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
-
 
 
 
@@ -93,10 +98,6 @@ class APIRubricViewSet(ModelViewSet):
     queryset = Rubric.objects.all()
     serializer_class = RubricSerializer
 
-@permission_classes((IsAdminUser,))
-class APIOrderViewSet(ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
 
 
 @permission_classes((IsAdminUser,))

@@ -78,7 +78,6 @@ class AddressSerializerRaw(serializers.ModelSerializer):
     })
 
 
-
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
@@ -169,6 +168,50 @@ class CartItemSerializer(serializers.ModelSerializer):
     },
     )
 
+
+class CartItemInUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ('product', 'quantity', 'price', 'total_price')
+
+    product = serializers.SerializerMethodField('get_short_product')
+    def get_short_product(self, instance):
+        queryset = instance.product
+        serializer = ProductTitlesSerializer(queryset)
+        return serializer.data
+
+
+class CartItemInProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ('user', 'quantity', 'price', 'total_price')
+
+    user = serializers.SerializerMethodField('get_cart_user')
+    def get_cart_user(self, instance):
+        queryset = instance.cart.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ('id', 'user', 'phonenumber', 'order_content', 'person_content', 'address_content', 'total_price', 'move_to', 'payment_conditions', 'status', 'time_placed', 'time_delivered')
+
+    user = serializers.SerializerMethodField('get_short_user')
+    def get_short_user(self, instance):
+        queryset = instance.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
+
+
+class OrderInSerializer(OrderSerializer):
+    class Meta:
+        model = Order
+        fields = (
+            'id', 'phonenumber', 'order_content', 'person_content', 'address_content', 'total_price', 'move_to',
+            'payment_conditions', 'status', 'time_placed', 'time_delivered',
+        )
 
 
 
@@ -311,46 +354,9 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'is_active', 'is_staff', 'is_superuser')
 
 
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = ('id', 'user', 'phonenumber', 'order_content', 'person_content', 'address_content', 'total_price', 'move_to', 'payment_conditions', 'status', 'time_placed', 'time_delivered')
 
-    user = serializers.SerializerMethodField('get_short_user')
-    def get_short_user(self, instance):
-        queryset = instance.user
-        serializer = UserTitlesSerializer(queryset)
-        return serializer.data
 
-class OrderInSerializer(OrderSerializer):
-    class Meta:
-        model = Order
-        fields = (
-            'id', 'phonenumber', 'order_content', 'person_content', 'address_content', 'total_price', 'move_to',
-            'payment_conditions', 'status', 'time_placed', 'time_delivered',
-        )
 
-class CartItemInUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CartItem
-        fields = ('product', 'quantity', 'price', 'total_price')
-
-    product = serializers.SerializerMethodField('get_short_product')
-    def get_short_product(self, instance):
-        queryset = instance.product
-        serializer = ProductTitlesSerializer(queryset)
-        return serializer.data
-
-class CartItemInProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CartItem
-        fields = ('user', 'quantity', 'price', 'total_price')
-
-    user = serializers.SerializerMethodField('get_cart_user')
-    def get_cart_user(self, instance):
-        queryset = instance.cart.user
-        serializer = UserTitlesSerializer(queryset)
-        return serializer.data
 
 
 
