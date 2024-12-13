@@ -75,7 +75,95 @@ class AddressSerializerRaw(serializers.ModelSerializer):
 
 
 
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ('id', 'title', 'description', 'image', 'products')
 
+    products = serializers.SerializerMethodField('get_short_products')
+    def get_short_products(self, instance):
+        queryset = instance.items.all()
+        serializer = ProductTitlesSerializer(queryset, many=True)
+        return serializer.data
+
+
+class BrandInSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ('id', 'title')
+
+
+class CartSerializerRaw(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = ('id', 'user', 'total_price', 'cart_items')
+
+    user = serializers.SerializerMethodField('get_short_user')
+    def get_short_user(self, instance):
+        queryset = instance.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
+
+
+    cart_items = serializers.SerializerMethodField('get_cart_items')
+    def get_cart_items(self, instance):
+        queryset = instance.cart_items.all()
+        serializer = CartItemInUserSerializer(queryset, many=True)
+        return serializer.data
+
+class CartSerializerInUser(CartSerializerRaw):
+    class Meta:
+        model = Cart
+        fields = ('id', 'total_price', 'cart_items')
+
+
+class CartItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = '__all__'
+        read_only_fields = ('price',)
+
+    def _get_product(self):
+        try:
+            self.product
+        except:
+            self.product = None
+        if not self.product:
+            self.product = Product.objects.get(id=int(self.context['request'].POST['product']))
+
+    class PriceField(serializers.CharField):
+        def to_internal_value(self, data):
+            d = 2
+            if data:
+                data = str(data)
+            if 'product' in self.context['request'].POST:
+                self.parent._get_product()
+                data = str(self.parent.product.price)
+            return data
+
+    class QuantityField(serializers.IntegerField):
+        def to_internal_value(self, data):
+            if not data:
+                self.fail('invalid')
+            try:
+                data = int(data.strip())
+            except:
+                self.fail('invalid')
+            if data < 1:
+                self.fail('negative')
+            if 'product' in self.context['request'].POST:
+                self.parent._get_product()
+                data = min(self.parent.product.quantity, data)
+                if data == 0:
+                    self.fail('not in stock')
+            return data
+
+    price = PriceField(initial='0', allow_blank=True, allow_null=True)
+    quantity = QuantityField(initial=1, error_messages={
+        'negative': "A positive integer is required",
+        'not in stock': "Chosen product not in stock, try another one"
+    },
+    )
 
 
 
@@ -214,21 +302,7 @@ class AdditionalInformationSerializer(serializers.ModelSerializer):
         model = Additional_information
         fields = ('id', 'weight', 'dimensions', 'size', 'guarantee')
 
-class BrandInSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Brand
-        fields = ('id', 'title')
 
-class BrandSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Brand
-        fields = ('id', 'title', 'description', 'image', 'products')
-
-    products = serializers.SerializerMethodField('get_short_products')
-    def get_short_products(self, instance):
-        queryset = instance.items.all()
-        serializer = ProductTitlesSerializer(queryset, many=True)
-        return serializer.data
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -278,28 +352,7 @@ class CartItemInProductSerializer(serializers.ModelSerializer):
         serializer = UserTitlesSerializer(queryset)
         return serializer.data
 
-class CartSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cart
-        fields = ('id', 'user', 'total_price', 'cart_items')
 
-    user = serializers.SerializerMethodField('get_short_user')
-    def get_short_user(self, instance):
-        queryset = instance.user
-        serializer = UserTitlesSerializer(queryset)
-        return serializer.data
-
-
-    cart_items = serializers.SerializerMethodField('get_cart_items')
-    def get_cart_items(self, instance):
-        queryset = instance.cart_items.all()
-        serializer = CartItemInUserSerializer(queryset, many=True)
-        return serializer.data
-
-class CartSerializerInUser(CartSerializer):
-    class Meta:
-        model = Cart
-        fields = ('id', 'total_price', 'cart_items')
 
 class WishlistItemSerializer(serializers.ModelSerializer):
     class Meta:

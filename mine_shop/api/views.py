@@ -5,16 +5,16 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from cart.models import Cart
+from cart.models import Cart, CartItem
 from orders.models import Person, Address, Order
 from posts.models import Post
 from store.info_classes import Vote, Sale_information
 from store.models import Product, Brand, Rubric
 from users.models import User
 from .serializers import (
-    UserSerializer, UserDetailSerializer, PersonSerializer, AddressSerializer, CartSerializer,
+    UserSerializer, UserDetailSerializer, PersonSerializer, AddressSerializer,
     PostSerializer, VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer,
-    SaleInformationSerializer, ProductDetailSerializer, AddressSerializerRaw,
+    SaleInformationSerializer, ProductDetailSerializer, AddressSerializerRaw, CartSerializerRaw, CartItemSerializer,
 )
 
 
@@ -29,6 +29,32 @@ class APIAddressView(RetrieveUpdateDestroyAPIView):
     queryset = Address.objects.all()
     serializer_class = AddressSerializerRaw
 
+
+@permission_classes((IsAdminUser,))
+class APIBrandViewSet(ModelViewSet):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+
+
+@permission_classes((IsAdminUser,))
+class APICartViewSet(ReadOnlyModelViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializerRaw
+
+
+@permission_classes((IsAdminUser, ))
+class APICartView(RetrieveDestroyAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializerRaw
+
+
+
+
+
+@permission_classes((IsAdminUser,))
+class APICartItemViewSet(ModelViewSet):
+    queryset = CartItem.objects.all()
+    serializer_class = CartItemSerializer
 
 
 @permission_classes((IsAdminUser, ))
@@ -46,12 +72,6 @@ class APIPersonViewSet(ModelViewSet):
 
 
 @permission_classes((IsAdminUser,))
-class APICartViewSet(ModelViewSet):
-    queryset = Cart.objects.all()
-    serializer_class = CartSerializer
-
-
-@permission_classes((IsAdminUser,))
 class APIPostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -62,10 +82,6 @@ class APIVoteViewSet(ModelViewSet):
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
 
-@permission_classes((IsAdminUser,))
-class APIBrandViewSet(ModelViewSet):
-    queryset = Brand.objects.all()
-    serializer_class = BrandSerializer
 
 @permission_classes((IsAdminUser,))
 class APISaleInformationViewSet(ModelViewSet):
