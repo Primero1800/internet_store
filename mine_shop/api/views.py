@@ -1,7 +1,9 @@
-from rest_framework.generics import RetrieveAPIView, DestroyAPIView, RetrieveDestroyAPIView
+from rest_framework import status
+from rest_framework.generics import RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAdminUser
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from cart.models import Cart
 from orders.models import Person, Address, Order
@@ -12,8 +14,21 @@ from users.models import User
 from .serializers import (
     UserSerializer, UserDetailSerializer, PersonSerializer, AddressSerializer, CartSerializer,
     PostSerializer, VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer,
-    SaleInformationSerializer, ProductDetailSerializer,
+    SaleInformationSerializer, ProductDetailSerializer, AddressSerializerRaw,
 )
+
+
+@permission_classes((IsAdminUser, ))
+class APIAddressViewSet(ReadOnlyModelViewSet):
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer
+
+
+@permission_classes((IsAdminUser, ))
+class APIAddressView(RetrieveUpdateDestroyAPIView):
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializerRaw
+
 
 
 @permission_classes((IsAdminUser, ))
@@ -28,10 +43,6 @@ class APIPersonViewSet(ModelViewSet):
     serializer_class = PersonSerializer
 
 
-@permission_classes((IsAdminUser, ))
-class APIAddressViewSet(ModelViewSet):
-    queryset = Address.objects.all()
-    serializer_class = AddressSerializer
 
 
 @permission_classes((IsAdminUser,))

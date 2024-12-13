@@ -1,11 +1,83 @@
+from django.conf import settings
 from rest_framework import serializers
 
 from cart.models import Cart, CartItem
+from orders.inner_functions import get_complex_phonenumber
 from orders.models import Order, Person, Address
 from posts.models import Post
 from store.info_classes import Vote, Sale_information
 from store.models import Product, Brand, Rubric, Image, Additional_information
 from users.models import User, WishlistItem, ComparisonItem, RecentlyViewedItem, UserTools
+
+from phonenumber_field.serializerfields import PhoneNumberField
+
+
+
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = ('id', 'user', 'address', 'city',  'phonenumber', 'postcode')
+
+    user = serializers.SerializerMethodField('get_short_user')
+
+    def get_short_user(self, instance):
+        queryset = instance.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
+
+
+class AddressInSerializer(AddressSerializer):
+    class Meta:
+        model = Address
+        fields = ('id', 'address', 'city',  'phonenumber')
+
+
+class AddressSerializerRaw(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = ('id', 'address', 'city', 'postcode', 'email', 'phonenumber')
+        read_only_fields = ('user', 'id', 'email')
+
+    email = serializers.SerializerMethodField('get_email')
+    def get_email(self, instance):
+        return instance.user.email
+
+    class FormNumberField(serializers.CharField):
+        """ Класс для валидации, приведения к общему виду и сериализации телефонного номера и определения региона"""
+        def to_internal_value(self, data):
+            if not data or isinstance(data, bool) or not isinstance(data, (str, int, float,)):
+                self.fail('invalid')
+            value = str(data).split(settings.PHONE_NUMBER_DATABASE_SEPARATOR.strip())
+            _region = ''.join(symbol.upper() for symbol in value[0] if symbol.isalpha())[:2]
+            _number = ''.join([digit for digit in value[-1] if digit.isdigit()])
+            if not _region or not _number:
+                self.fail('invalid')
+            if _region not in settings.PHONE_NUMBER_ALOWED_REGIONS:
+                self.fail('not allowed')
+            _region_prefix = settings.PHONE_NUMBER_ALOWED_REGIONS[_region]
+
+            class PhoneNumberSerializer(serializers.Serializer):
+                """Класс для проверки телефонного номера, принадлежности его к установленному региону и извлечению регионального номера"""
+                number = PhoneNumberField(region=_region)
+
+            _serializer = PhoneNumberSerializer(data={"number": _number})
+            if _serializer.is_valid():
+                _data = _serializer.validated_data
+                return get_complex_phonenumber(country_code=_region, phone_number=str(_data['number'].national_number))
+            else:
+                self.fail('not number')
+
+
+    phonenumber = FormNumberField(error_messages={
+        'not allowed': "Invalid or not allowed region",
+        'not number': "Not valid phone number",
+    })
+
+
+
+
+
+
 
 
 class UserTitlesSerializer(serializers.ModelSerializer):
@@ -43,36 +115,19 @@ class PersonInSerializer(PersonSerializer):
         fields = ('id', 'name', 'surname', 'company_name')
 
 
-class AddressSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Address
-        fields = ('id', 'user', 'address', 'city',  'phonenumber')
-
-    user = serializers.SerializerMethodField('get_short_user')
-    def get_short_user(self, instance):
-        queryset = instance.user
-        serializer = UserTitlesSerializer(queryset)
-        return serializer.data
-
-
-class AddressInSerializer(AddressSerializer):
-    class Meta:
-        model = Address
-        fields = ('id', 'address', 'city',  'phonenumber')
-
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ('id', 'user', 'name', 'product', 'review', 'time_published')
 
-    user = serializers.SerializerMethodField('get_short_user')
+    #user = serializers.SerializerMethodField('get_short_user')
     def get_short_user(self, instance):
         queryset = instance.user
         serializer = UserTitlesSerializer(queryset)
         return serializer.data
 
-    product = serializers.SerializerMethodField('get_short_product')
+    #product = serializers.SerializerMethodField('get_short_product')
     def get_short_product(self, instance):
         queryset = instance.product
         serializer = ProductTitlesSerializer(queryset)
