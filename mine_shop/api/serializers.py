@@ -1,6 +1,7 @@
 from django.conf import settings
 from rest_framework import serializers
 
+
 from cart.models import Cart, CartItem
 from orders.inner_functions import get_complex_phonenumber
 from orders.models import Order, Person, Address
@@ -10,6 +11,8 @@ from store.models import Product, Brand, Rubric, Image, Additional_information
 from users.models import User, WishlistItem, ComparisonItem, RecentlyViewedItem, UserTools
 
 from phonenumber_field.serializerfields import PhoneNumberField
+
+
 
 class AdditionalInformationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -242,6 +245,46 @@ class PersonInSerializer(serializers.ModelSerializer):
 
 
 
+class PostSerializerRaw(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('id', 'user', 'name', 'product', 'review', 'time_published')
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('id', 'user', 'name', 'product', 'review', 'time_published')
+
+    user = serializers.SerializerMethodField('get_short_user')
+    def get_short_user(self, instance):
+        queryset = instance.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
+
+    product = serializers.SerializerMethodField('get_short_product')
+    def get_short_product(self, instance):
+        queryset = instance.product
+        serializer = ProductTitlesSerializer(queryset)
+        return serializer.data
+
+
+class PostInUserSerializer(PostSerializer):
+    class Meta:
+        model = Post
+        fields = ('id', 'name', 'product', 'review', 'time_published')
+
+
+class PostInProductSerializer(PostSerializer):
+    class Meta:
+        model = Post
+        fields = ('id', 'user', 'name', 'review', 'time_published')
+
+
+
+
+
+
 class UserTitlesSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -264,32 +307,7 @@ class UserToolsSerializer(serializers.ModelSerializer):
 
 
 
-class PostSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Post
-        fields = ('id', 'user', 'name', 'product', 'review', 'time_published')
 
-    #user = serializers.SerializerMethodField('get_short_user')
-    def get_short_user(self, instance):
-        queryset = instance.user
-        serializer = UserTitlesSerializer(queryset)
-        return serializer.data
-
-    #product = serializers.SerializerMethodField('get_short_product')
-    def get_short_product(self, instance):
-        queryset = instance.product
-        serializer = ProductTitlesSerializer(queryset)
-        return serializer.data
-
-class PostInUserSerializer(PostSerializer):
-    class Meta:
-        model = Post
-        fields = ('id', 'name', 'product', 'review', 'time_published')
-
-class PostInProductSerializer(PostSerializer):
-    class Meta:
-        model = Post
-        fields = ('id', 'user', 'name', 'review', 'time_published')
 
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -542,10 +560,16 @@ class UserDetailSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
-class ProductSerializer(serializers.ModelSerializer):
+class ProductSerializerRaw(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('id', 'title', 'slug', 'brand', 'rubrics', 'start_price', 'discont', 'price', 'rating', 'available', 'quantity')
+
+
+class ProductSerializer(ProductSerializerRaw):
+    rubrics = serializers.SlugRelatedField(slug_field='title', read_only=True, many=True)
+    brand = serializers.SlugRelatedField(slug_field='title', read_only=True)
+
 
 class ProductDetailSerializer(serializers.ModelSerializer):
     class Meta:

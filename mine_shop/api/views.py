@@ -1,9 +1,10 @@
 from rest_framework import status
 from rest_framework.generics import RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.decorators import permission_classes
+from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveModelMixin
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
 from cart.models import Cart, CartItem
 from orders.models import Person, Address, Order
@@ -13,11 +14,19 @@ from store.models import Product, Brand, Rubric
 from users.models import User
 from .serializers import (
     UserSerializer, UserDetailSerializer, PersonSerializerRaw, AddressSerializer,
-    PostSerializer, VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer,
+    VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer,
     SaleInformationSerializer, ProductDetailSerializer, AddressSerializerRaw, CartSerializerRaw, CartItemSerializer,
-    PersonSerializer,
+    PersonSerializer, PostSerializerRaw, ProductSerializerRaw,
 )
 
+
+class ReadUpdateModelViewSet(
+    RetrieveModelMixin,
+    UpdateModelMixin,
+    ListModelMixin,
+    GenericViewSet,
+):
+    pass
 
 @permission_classes((IsAdminUser, ))
 class APIAddressViewSet(ReadOnlyModelViewSet):
@@ -73,6 +82,29 @@ class APIPersonView(RetrieveUpdateDestroyAPIView):
     serializer_class = PersonSerializerRaw
 
 
+@permission_classes((IsAdminUser,))
+class APIPostViewSet(ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializerRaw
+
+
+@permission_classes((IsAdminUser,))
+class APIProductViewSet(ReadUpdateModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializerRaw
+    serializer_class_list = ProductSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+             return self.serializer_class_list
+        return self.serializer_class
+
+@permission_classes((IsAdminUser, ))
+class APIProductView(RetrieveDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductDetailSerializer
+
+
 
 
 
@@ -82,14 +114,6 @@ class APIUserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-
-
-
-
-@permission_classes((IsAdminUser,))
-class APIPostViewSet(ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
 
 
 @permission_classes((IsAdminUser,))
@@ -110,19 +134,9 @@ class APIRubricViewSet(ModelViewSet):
 
 
 
-@permission_classes((IsAdminUser,))
-class APIProductViewSet(ModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-
-
 @permission_classes((IsAdminUser, ))
 class APIUserView(RetrieveDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
 
 
-@permission_classes((IsAdminUser, ))
-class APIProductView(RetrieveDestroyAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductDetailSerializer
