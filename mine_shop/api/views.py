@@ -12,9 +12,10 @@ from store.info_classes import Vote, Sale_information
 from store.models import Product, Brand, Rubric
 from users.models import User
 from .serializers import (
-    UserSerializer, UserDetailSerializer, PersonSerializer, AddressSerializer,
+    UserSerializer, UserDetailSerializer, PersonSerializerRaw, AddressSerializer,
     PostSerializer, VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer,
     SaleInformationSerializer, ProductDetailSerializer, AddressSerializerRaw, CartSerializerRaw, CartItemSerializer,
+    PersonSerializer,
 )
 
 
@@ -60,6 +61,19 @@ class APIOrderViewSet(ReadOnlyModelViewSet):
     serializer_class = OrderSerializer
 
 
+@permission_classes((IsAdminUser, ))
+class APIPersonViewSet(ReadOnlyModelViewSet):
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
+
+
+@permission_classes((IsAdminUser, ))
+class APIPersonView(RetrieveUpdateDestroyAPIView):
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializerRaw
+
+
+
 
 
 
@@ -69,10 +83,6 @@ class APIUserViewSet(ModelViewSet):
     serializer_class = UserSerializer
 
 
-@permission_classes((IsAdminUser, ))
-class APIPersonViewSet(ModelViewSet):
-    queryset = Person.objects.all()
-    serializer_class = PersonSerializer
 
 
 

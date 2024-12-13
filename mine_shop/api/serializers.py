@@ -214,6 +214,33 @@ class OrderInSerializer(OrderSerializer):
         )
 
 
+class PersonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = ('id', 'user', 'name', 'surname', 'company_name')
+
+    user = serializers.SerializerMethodField('get_short_user')
+    def get_short_user(self, instance):
+        queryset = instance.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
+
+
+class PersonSerializerRaw(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = ('id', 'name', 'surname', 'company_name')
+        read_only_fields = ('user', )
+
+
+class PersonInSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = ('id', 'name', 'surname', 'company_name')
+
+
+
+
 
 class UserTitlesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -233,21 +260,7 @@ class UserToolsSerializer(serializers.ModelSerializer):
         fields = ('user',)
 
 
-class PersonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Person
-        fields = ('id', 'user', 'name', 'surname', 'company_name')
 
-    user = serializers.SerializerMethodField('get_short_user')
-    def get_short_user(self, instance):
-        queryset = instance.user
-        serializer = UserTitlesSerializer(queryset)
-        return serializer.data
-
-class PersonInSerializer(PersonSerializer):
-    class Meta:
-        model = Person
-        fields = ('id', 'name', 'surname', 'company_name')
 
 
 
