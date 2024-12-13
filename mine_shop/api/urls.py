@@ -13,8 +13,6 @@ router = DefaultRouter()
 router.register('addresses', APIAddressViewSet)
 router.register('brands', APIBrandViewSet)
 router.register('carts', APICartViewSet)
-
-
 router.register('cartitems', APICartItemViewSet)
 
 

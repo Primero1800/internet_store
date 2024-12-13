@@ -11,6 +11,10 @@ from users.models import User, WishlistItem, ComparisonItem, RecentlyViewedItem,
 
 from phonenumber_field.serializerfields import PhoneNumberField
 
+class AdditionalInformationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Additional_information
+        fields = ('id', 'weight', 'dimensions', 'size', 'guarantee')
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -111,6 +115,7 @@ class CartSerializerRaw(serializers.ModelSerializer):
         serializer = CartItemInUserSerializer(queryset, many=True)
         return serializer.data
 
+
 class CartSerializerInUser(CartSerializerRaw):
     class Meta:
         model = Cart
@@ -133,7 +138,6 @@ class CartItemSerializer(serializers.ModelSerializer):
 
     class PriceField(serializers.CharField):
         def to_internal_value(self, data):
-            d = 2
             if data:
                 data = str(data)
             if 'product' in self.context['request'].POST:
@@ -297,10 +301,6 @@ class SaleInformationSerializer(serializers.ModelSerializer):
         serializer = ProductTitlesSerializer(queryset)
         return serializer.data
 
-class AdditionalInformationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Additional_information
-        fields = ('id', 'weight', 'dimensions', 'size', 'guarantee')
 
 
 
