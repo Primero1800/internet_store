@@ -118,6 +118,13 @@ class APIRubricViewSet(ModelViewSet):
         return self.serializer_class_raw
 
 
+@permission_classes((IsAdminUser,))
+class APISaleInformationViewSet(ReadOnlyModelViewSet):
+    queryset = Sale_information.objects.all()
+    serializer_class = SaleInformationSerializer
+
+
+
 
 
 
@@ -135,10 +142,7 @@ class APIVoteViewSet(ModelViewSet):
     serializer_class = VoteSerializer
 
 
-@permission_classes((IsAdminUser,))
-class APISaleInformationViewSet(ModelViewSet):
-    queryset = Sale_information.objects.all()
-    serializer_class = SaleInformationSerializer
+
 
 
 

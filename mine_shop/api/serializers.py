@@ -398,6 +398,39 @@ class RubricSerializer(RubricSerializerRaw):
 
 
 
+class SaleInformationInSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sale_information
+        fields = ('id', 'sold_count', 'viewed_count', 'voted_count')
+
+
+class SaleInformationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sale_information
+        fields = ('id', 'product', 'sold_count', 'viewed_count', 'voted_count')
+
+    product = serializers.SerializerMethodField('get_short_product')
+    def get_short_product(self, instance):
+        queryset = instance.product
+        serializer = ProductTitlesSerializer(queryset)
+        return serializer.data
+
+
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('id', 'image')
+
+
+
+
+
+
+
+
+
 
 
 
@@ -458,28 +491,7 @@ class VoteInProductSerializer(VoteSerializer):
 
 
 
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = ('id', 'image')
 
-
-class SaleInformationInSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Sale_information
-        fields = ('id', 'sold_count', 'viewed_count', 'voted_count')
-
-
-class SaleInformationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Sale_information
-        fields = ('id', 'product', 'sold_count', 'viewed_count', 'voted_count')
-
-    product = serializers.SerializerMethodField('get_short_product')
-    def get_short_product(self, instance):
-        queryset = instance.product
-        serializer = ProductTitlesSerializer(queryset)
-        return serializer.data
 
 
 

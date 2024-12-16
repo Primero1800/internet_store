@@ -19,10 +19,9 @@ router.register('persons', APIPersonViewSet)
 router.register('posts', APIPostViewSet)
 router.register('products', APIProductViewSet)
 router.register('rubrics', APIRubricViewSet)
-
-
-
 router.register('sale_information', APISaleInformationViewSet)
+
+
 
 
 
