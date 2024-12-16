@@ -21,11 +21,11 @@ router.register('products', APIProductViewSet)
 router.register('rubrics', APIRubricViewSet)
 router.register('sale_information', APISaleInformationViewSet)
 
-
-
-
-
 router.register('users', APIUserViewSet)
+
+
+
+
 
 router.register('votes', APIVoteViewSet)
 
@@ -39,7 +39,6 @@ urlpatterns = [
     path(f'{VERSION}/carts/<int:pk>/', APICartView.as_view(), name='cart_detail'),
     path(f'{VERSION}/persons/<int:pk>/', APIPersonView.as_view(), name='person_detail'),
     path(f'{VERSION}/products/<int:pk>/detail/', APIProductView.as_view(), name='product_detail'),
-
 
     path(f'{VERSION}/users/<int:pk>/detail/', APIUserView.as_view(), name='user_detail'),
 

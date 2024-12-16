@@ -417,15 +417,25 @@ class SaleInformationSerializer(serializers.ModelSerializer):
 
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'is_active', 'is_staff', 'is_superuser')
+
+
+class UserCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'password', 'is_active', 'is_staff', 'is_superuser')
+
+    password = serializers.CharField(min_length=8, required=True)
+
+
 
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = ('id', 'image')
-
-
-
-
 
 
 
@@ -497,10 +507,7 @@ class VoteInProductSerializer(VoteSerializer):
 
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'email', 'is_active', 'is_staff', 'is_superuser')
+
 
 
 
@@ -590,6 +597,8 @@ class RecentlyViewedItemInProductSerializer(RecentlyViewedItemSerializer):
     class Meta:
         model = RecentlyViewedItem
         fields = ('id', 'user')
+
+
 
 
 class UserDetailSerializer(serializers.ModelSerializer):

@@ -16,7 +16,7 @@ from .serializers import (
     UserSerializer, UserDetailSerializer, PersonSerializerRaw, AddressSerializer,
     VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer,
     SaleInformationSerializer, ProductDetailSerializer, AddressSerializerRaw, CartSerializerRaw, CartItemSerializer,
-    PersonSerializer, PostSerializerRaw, ProductSerializerRaw, RubricSerializerRaw,
+    PersonSerializer, PostSerializerRaw, ProductSerializerRaw, RubricSerializerRaw, UserCreateUpdateSerializer,
 )
 
 
@@ -124,15 +124,18 @@ class APISaleInformationViewSet(ReadOnlyModelViewSet):
     serializer_class = SaleInformationSerializer
 
 
-
-
-
-
-
 @permission_classes((IsAdminUser, ))
 class APIUserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    serializer_class_update_create = UserCreateUpdateSerializer
+
+    def get_serializer_class(self):
+        if self.action in ('list', 'retrieve', 'get'):
+             return self.serializer_class
+        return self.serializer_class_update_create
+
+
 
 
 
