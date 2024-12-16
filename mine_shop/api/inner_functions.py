@@ -1,3 +1,21 @@
+ALPHABET = {
+    'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
+    'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't',
+    'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'shch', 'ы': 'i', 'э': 'e', 'ю': 'yu',
+    'я': 'ya', '-': '-',
+}
+
+def sym_cyr2lat(sym):
+    if sym.isdigit():
+        return sym
+    if sym not in ALPHABET:
+        return '_'
+    return ALPHABET[sym]
+
+def cyr_to_lat(text):
+    return ''.join(sym_cyr2lat(sym) for sym in text)
+
+
 def filters(queryset, count, sort_by, x_filters_mapping, other, dict_mapping=None):
     data = None
     for case, value in x_filters_mapping.items():
@@ -31,3 +49,6 @@ def filters(queryset, count, sort_by, x_filters_mapping, other, dict_mapping=Non
             pass
 
     return data
+
+
+

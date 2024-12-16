@@ -16,7 +16,7 @@ from .serializers import (
     UserSerializer, UserDetailSerializer, PersonSerializerRaw, AddressSerializer,
     VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer,
     SaleInformationSerializer, ProductDetailSerializer, AddressSerializerRaw, CartSerializerRaw, CartItemSerializer,
-    PersonSerializer, PostSerializerRaw, ProductSerializerRaw,
+    PersonSerializer, PostSerializerRaw, ProductSerializerRaw, RubricSerializerRaw,
 )
 
 
@@ -106,6 +106,19 @@ class APIProductView(RetrieveDestroyAPIView):
 
 
 
+@permission_classes((IsAdminUser,))
+class APIRubricViewSet(ModelViewSet):
+    queryset = Rubric.objects.all()
+    serializer_class = RubricSerializer
+    serializer_class_raw = RubricSerializerRaw
+
+    def get_serializer_class(self):
+        if self.action in ('list', 'retrieve', 'get'):
+             return self.serializer_class
+        return self.serializer_class_raw
+
+
+
 
 
 
@@ -127,10 +140,7 @@ class APISaleInformationViewSet(ModelViewSet):
     queryset = Sale_information.objects.all()
     serializer_class = SaleInformationSerializer
 
-@permission_classes((IsAdminUser,))
-class APIRubricViewSet(ModelViewSet):
-    queryset = Rubric.objects.all()
-    serializer_class = RubricSerializer
+
 
 
 
