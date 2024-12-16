@@ -416,19 +416,126 @@ class SaleInformationSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'is_active', 'is_staff', 'is_superuser')
+        fields = ('id', 'email', 'password', 'is_active', 'is_staff', 'is_superuser')
+        write_only_fields = ('password',)
+
+    password = serializers.CharField(
+        min_length=8, required=True, write_only=True,
+        style={'input_type': 'password', 'placeholder': 'Password'}
+    )
 
 
-class UserCreateUpdateSerializer(serializers.ModelSerializer):
+class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'is_active', 'is_staff', 'is_superuser')
+        fields = (
+            'id', 'email', 'is_active', 'is_staff', 'is_superuser', 'person', 'address', 'posts_count', 'posts',
+            'votes_count', 'votes', 'orders_count', 'total_paid', 'orders', 'cart', 'usertools',
+            'wishlist', 'comparison', 'recently_viewed',
+        )
 
-    password = serializers.CharField(min_length=8, required=True)
+    usertools = serializers.SerializerMethodField('get_usertools')
+    def get_usertools(self, instance):
+        try:
+            queryset = instance.usertools
+        except:
+            return None
+        serializer = UserToolsSerializer(queryset)
+        return serializer.data
+
+    person = serializers.SerializerMethodField('get_person')
+    def get_person(self, instance):
+        try:
+            queryset = instance.person
+        except:
+            return None
+        serializer = PersonInSerializer(queryset)
+        return serializer.data
+
+    address = serializers.SerializerMethodField('get_address')
+    def get_address(self, instance):
+        try:
+            queryset = instance.address
+        except:
+            return None
+        serializer = AddressInSerializer(queryset)
+        return serializer.data
+
+    votes_count = serializers.SerializerMethodField('get_votes_count')
+    def get_votes_count(self, instance):
+        return len(instance.votes.all())
+
+    votes = serializers.SerializerMethodField('get_votes')
+    def get_votes(self, instance):
+        queryset = instance.votes
+        serializer = VoteInUserSerializer(queryset, many=True)
+        return serializer.data
+
+    posts_count = serializers.SerializerMethodField('get_posts_count')
+    def get_posts_count(self, instance):
+        return len(instance.posts.all())
+
+    posts = serializers.SerializerMethodField('get_posts')
+    def get_posts(self, instance):
+        queryset = instance.posts.all()
+        serializer = PostInUserSerializer(queryset, many=True)
+        return serializer.data
+
+    orders_count = serializers.SerializerMethodField('get_orders_count')
+    def get_orders_count(self, instance):
+        return len(instance.order_set.filter(status__in=(0, 1)))
+
+    orders = serializers.SerializerMethodField('get_orders')
+    def get_orders(self, instance):
+        queryset =  instance.order_set.filter(status__in=(0, 1))
+        serializer = OrderInSerializer(queryset, many=True)
+        return serializer.data
+
+    total_paid = serializers.SerializerMethodField('get_total_paid')
+    def get_total_paid(self, instance):
+        return sum(order.total_price for order in instance.order_set.filter(status=1))
+
+    cart = serializers.SerializerMethodField('get_cart')
+    def get_cart(self, instance):
+        try:
+            queryset = instance.cart
+        except:
+            return None
+        serializer = CartSerializerInUser(queryset)
+        return serializer.data
+
+    wishlist = serializers.SerializerMethodField('get_wishlist')
+    def get_wishlist(self, instance):
+        try:
+            queryset = instance.usertools.w_items.all()
+        except:
+            return None
+        serializer = WishlistItemInUserSerializer(queryset, many=True)
+        return serializer.data
+
+    comparison = serializers.SerializerMethodField('get_comparison')
+    def get_comparison(self, instance):
+        try:
+            queryset = instance.usertools.c_items.all()
+        except:
+            return None
+        serializer = ComparisonItemInUserSerializer(queryset, many=True)
+        return serializer.data
+
+    recently_viewed = serializers.SerializerMethodField('get_recently_viewed')
+    def get_recently_viewed(self, instance):
+        try:
+            queryset = instance.usertools.rv_items.all()
+        except:
+            return None
+        serializer = RecentlyViewedItemInUserSerializer(queryset, many=True)
+        return serializer.data
+
+
+
 
 
 
@@ -601,90 +708,7 @@ class RecentlyViewedItemInProductSerializer(RecentlyViewedItemSerializer):
 
 
 
-class UserDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = (
-            'id', 'email', 'is_active', 'is_staff', 'is_superuser', 'person', 'address', 'posts_count', 'posts',
-            'votes_count', 'votes', 'orders_count', 'total_paid', 'orders', 'cart', 'usertools',
-            'wishlist', 'comparison', 'recently_viewed',
-        )
 
-    usertools = serializers.SerializerMethodField('get_usertools')
-    def get_usertools(self, instance):
-        queryset = instance.usertools
-        serializer = UserToolsSerializer(queryset)
-        return serializer.data
-
-    person = serializers.SerializerMethodField('get_person')
-    def get_person(self, instance):
-        queryset = instance.person
-        serializer = PersonInSerializer(queryset)
-        return serializer.data
-
-    address = serializers.SerializerMethodField('get_address')
-    def get_address(self, instance):
-        queryset = instance.address
-        serializer = AddressInSerializer(queryset)
-        return serializer.data
-
-    votes_count = serializers.SerializerMethodField('get_votes_count')
-    def get_votes_count(self, instance):
-        return len(instance.votes.all())
-
-    votes = serializers.SerializerMethodField('get_votes')
-    def get_votes(self, instance):
-        queryset = instance.votes
-        serializer = VoteInUserSerializer(queryset, many=True)
-        return serializer.data
-
-    posts_count = serializers.SerializerMethodField('get_posts_count')
-    def get_posts_count(self, instance):
-        return len(instance.posts.all())
-
-    posts = serializers.SerializerMethodField('get_posts')
-    def get_posts(self, instance):
-        queryset = instance.posts.all()
-        serializer = PostInUserSerializer(queryset, many=True)
-        return serializer.data
-
-    orders_count = serializers.SerializerMethodField('get_orders_count')
-    def get_orders_count(self, instance):
-        return len(instance.order_set.filter(status__in=(0, 1)))
-
-    orders = serializers.SerializerMethodField('get_orders')
-    def get_orders(self, instance):
-        queryset =  instance.order_set.filter(status__in=(0, 1))
-        serializer = OrderInSerializer(queryset, many=True)
-        return serializer.data
-
-    total_paid = serializers.SerializerMethodField('get_total_paid')
-    def get_total_paid(self, instance):
-        return sum(order.total_price for order in instance.order_set.filter(status=1))
-
-    cart = serializers.SerializerMethodField('get_cart')
-    def get_cart(self, instance):
-        queryset = instance.cart
-        serializer = CartSerializerInUser(queryset)
-        return serializer.data
-
-    wishlist = serializers.SerializerMethodField('get_wishlist')
-    def get_wishlist(self, instance):
-        queryset = instance.usertools.w_items.all()
-        serializer = WishlistItemInUserSerializer(queryset, many=True)
-        return serializer.data
-
-    comparison = serializers.SerializerMethodField('get_comparison')
-    def get_comparison(self, instance):
-        queryset = instance.usertools.c_items.all()
-        serializer = ComparisonItemInUserSerializer(queryset, many=True)
-        return serializer.data
-
-    recently_viewed = serializers.SerializerMethodField('get_recently_viewed')
-    def get_recently_viewed(self, instance):
-        queryset = instance.usertools.rv_items.all()
-        serializer = RecentlyViewedItemInUserSerializer(queryset, many=True)
-        return serializer.data
 
 
 
