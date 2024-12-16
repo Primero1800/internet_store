@@ -136,21 +136,8 @@ class APIUserView(RetrieveDestroyAPIView):
     serializer_class = UserDetailSerializer
 
 
-
-
-
-
 @permission_classes((IsAdminUser,))
-class APIVoteViewSet(ModelViewSet):
+class APIVoteViewSet(ReadOnlyModelViewSet):
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
-
-
-
-
-
-
-
-
-
 

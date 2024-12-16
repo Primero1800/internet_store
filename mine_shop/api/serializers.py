@@ -394,10 +394,6 @@ class RubricSerializer(RubricSerializerRaw):
     products = serializers.SlugRelatedField(slug_field='title', read_only=True, many=True)
 
 
-
-
-
-
 class SaleInformationInSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sale_information
@@ -537,6 +533,42 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
 
 
+class VoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = ('id', 'user', 'name', 'product', 'stars', 'review', 'time_published')
+
+    user = serializers.SerializerMethodField('get_short_user')
+    def get_short_user(self, instance):
+        queryset = instance.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
+
+    product = serializers.SerializerMethodField('get_short_product')
+    def get_short_product(self, instance):
+        queryset = instance.product
+        serializer = ProductTitlesSerializer(queryset)
+        return serializer.data
+
+class VoteInUserSerializer(VoteSerializer):
+    class Meta:
+        model = Vote
+        fields = ('id', 'name', 'product', 'stars', 'review', 'time_published')
+
+class VoteInProductSerializer(VoteSerializer):
+    class Meta:
+        model = Vote
+        fields = ('id', 'user', 'name', 'stars', 'review', 'time_published')
+
+
+
+
+
+
+
+
+
+
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -575,32 +607,7 @@ class UserToolsSerializer(serializers.ModelSerializer):
 
 
 
-class VoteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Vote
-        fields = ('id', 'user', 'name', 'product', 'stars', 'review', 'time_published')
 
-    user = serializers.SerializerMethodField('get_short_user')
-    def get_short_user(self, instance):
-        queryset = instance.user
-        serializer = UserTitlesSerializer(queryset)
-        return serializer.data
-
-    product = serializers.SerializerMethodField('get_short_product')
-    def get_short_product(self, instance):
-        queryset = instance.product
-        serializer = ProductTitlesSerializer(queryset)
-        return serializer.data
-
-class VoteInUserSerializer(VoteSerializer):
-    class Meta:
-        model = Vote
-        fields = ('id', 'name', 'product', 'stars', 'review', 'time_published')
-
-class VoteInProductSerializer(VoteSerializer):
-    class Meta:
-        model = Vote
-        fields = ('id', 'user', 'name', 'stars', 'review', 'time_published')
 
 
 
