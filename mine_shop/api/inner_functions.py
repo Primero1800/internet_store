@@ -5,12 +5,14 @@ ALPHABET = {
     'я': 'ya', '-': '-',
 }
 
+
 def sym_cyr2lat(sym):
     if sym.isdigit():
         return sym
     if sym not in ALPHABET:
         return '_'
     return ALPHABET[sym]
+
 
 def cyr_to_lat(text):
     return ''.join(sym_cyr2lat(sym) for sym in text)
@@ -49,6 +51,3 @@ def filters(queryset, count, sort_by, x_filters_mapping, other, dict_mapping=Non
             pass
 
     return data
-
-
-

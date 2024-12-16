@@ -26,6 +26,7 @@ class ReadUpdateModelViewSet(
 ):
     pass
 
+
 @permission_classes((IsAdminUser, ))
 class APIAddressViewSet(ReadOnlyModelViewSet):
     queryset = Address.objects.all()
@@ -97,11 +98,11 @@ class APIProductViewSet(ReadUpdateModelViewSet):
              return self.serializer_class_list
         return self.serializer_class
 
+
 @permission_classes((IsAdminUser, ))
 class APIProductView(RetrieveDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductDetailSerializer
-
 
 
 @permission_classes((IsAdminUser,))
@@ -138,4 +139,3 @@ class APIUserView(RetrieveDestroyAPIView):
 class APIVoteViewSet(ReadOnlyModelViewSet):
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
-
