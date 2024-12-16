@@ -16,7 +16,6 @@ from users.models import User, WishlistItem, ComparisonItem, RecentlyViewedItem,
 from phonenumber_field.serializerfields import PhoneNumberField
 
 
-
 class AdditionalInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Additional_information
@@ -199,6 +198,42 @@ class CartItemInProductSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
+class ComparisonItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ComparisonItem
+        fields = ('id', 'product', 'user')
+
+    product = serializers.SerializerMethodField('get_short_product')
+    def get_short_product(self, instance):
+        queryset = instance.product
+        serializer = ProductTitlesSerializer(queryset)
+        return serializer.data
+
+    user = serializers.SerializerMethodField('get_short_user')
+    def get_short_user(self, instance):
+        queryset = instance.recently_viewed.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
+
+
+class ComparisonItemInUserSerializer(ComparisonItemSerializer):
+    class Meta:
+        model = ComparisonItem
+        fields = ('id', 'product')
+
+
+class ComparisonItemInProductSerializer(ComparisonItemSerializer):
+    class Meta:
+        model = ComparisonItem
+        fields = ('id', 'user')
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('id', 'image')
+
+
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
@@ -368,6 +403,42 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
+class ProductTitlesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ('id', 'title')
+
+
+class RecentlyViewedItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RecentlyViewedItem
+        fields = ('id', 'product', 'user')
+
+    product = serializers.SerializerMethodField('get_short_product')
+    def get_short_product(self, instance):
+        queryset = instance.product
+        serializer = ProductTitlesSerializer(queryset)
+        return serializer.data
+
+    user = serializers.SerializerMethodField('get_short_user')
+    def get_short_user(self, instance):
+        queryset = instance.recently_viewed.user
+        serializer = UserTitlesSerializer(queryset)
+        return serializer.data
+
+
+class RecentlyViewedItemInUserSerializer(RecentlyViewedItemSerializer):
+    class Meta:
+        model = RecentlyViewedItem
+        fields = ('id', 'product', )
+
+
+class RecentlyViewedItemInProductSerializer(RecentlyViewedItemSerializer):
+    class Meta:
+        model = RecentlyViewedItem
+        fields = ('id', 'user')
+
+
 class RubricInSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rubric
@@ -531,6 +602,16 @@ class UserDetailSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
+class UserTitlesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email')
+
+
+class UserToolsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserTools
+        fields = ('user',)
 
 
 class VoteSerializer(serializers.ModelSerializer):
@@ -550,84 +631,17 @@ class VoteSerializer(serializers.ModelSerializer):
         serializer = ProductTitlesSerializer(queryset)
         return serializer.data
 
+
 class VoteInUserSerializer(VoteSerializer):
     class Meta:
         model = Vote
         fields = ('id', 'name', 'product', 'stars', 'review', 'time_published')
 
+
 class VoteInProductSerializer(VoteSerializer):
     class Meta:
         model = Vote
         fields = ('id', 'user', 'name', 'stars', 'review', 'time_published')
-
-
-
-
-
-
-
-
-
-
-
-
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = ('id', 'image')
-
-
-
-
-
-
-
-
-class UserTitlesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'email')
-
-
-class ProductTitlesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = ('id', 'title')
-
-
-class UserToolsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserTools
-        fields = ('user',)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 class WishlistItemSerializer(serializers.ModelSerializer):
@@ -647,75 +661,14 @@ class WishlistItemSerializer(serializers.ModelSerializer):
         serializer = UserTitlesSerializer(queryset)
         return serializer.data
 
+
 class WishlistItemInUserSerializer(WishlistItemSerializer):
     class Meta:
         model = WishlistItem
         fields = ('id', 'product')
 
+
 class WishlistItemInProductSerializer(WishlistItemSerializer):
     class Meta:
         model = WishlistItem
         fields = ('id', 'user')
-
-
-class ComparisonItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ComparisonItem
-        fields = ('id', 'product', 'user')
-
-    product = serializers.SerializerMethodField('get_short_product')
-    def get_short_product(self, instance):
-        queryset = instance.product
-        serializer = ProductTitlesSerializer(queryset)
-        return serializer.data
-
-    user = serializers.SerializerMethodField('get_short_user')
-    def get_short_user(self, instance):
-        queryset = instance.recently_viewed.user
-        serializer = UserTitlesSerializer(queryset)
-        return serializer.data
-
-class ComparisonItemInUserSerializer(ComparisonItemSerializer):
-    class Meta:
-        model = ComparisonItem
-        fields = ('id', 'product')
-
-class ComparisonItemInProductSerializer(ComparisonItemSerializer):
-    class Meta:
-        model = ComparisonItem
-        fields = ('id', 'user')
-
-class RecentlyViewedItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RecentlyViewedItem
-        fields = ('id', 'product', 'user')
-
-    product = serializers.SerializerMethodField('get_short_product')
-    def get_short_product(self, instance):
-        queryset = instance.product
-        serializer = ProductTitlesSerializer(queryset)
-        return serializer.data
-
-    user = serializers.SerializerMethodField('get_short_user')
-    def get_short_user(self, instance):
-        queryset = instance.recently_viewed.user
-        serializer = UserTitlesSerializer(queryset)
-        return serializer.data
-
-class RecentlyViewedItemInUserSerializer(RecentlyViewedItemSerializer):
-    class Meta:
-        model = RecentlyViewedItem
-        fields = ('id', 'product', )
-
-class RecentlyViewedItemInProductSerializer(RecentlyViewedItemSerializer):
-    class Meta:
-        model = RecentlyViewedItem
-        fields = ('id', 'user')
-
-
-
-
-
-
-
-

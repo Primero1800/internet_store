@@ -1,9 +1,7 @@
-from rest_framework import status
 from rest_framework.generics import RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.decorators import permission_classes
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveModelMixin
 from rest_framework.permissions import IsAdminUser
-from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
 from cart.models import Cart, CartItem
