@@ -102,6 +102,9 @@ class APIPostViewSet(ModelViewSet):
     serializer_class = PostSerializerRaw
     pagination_class = StandardResultsSetPagination
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 @permission_classes((IsAdminUser,))
 class APIProductViewSet(ReadUpdateModelViewSet):

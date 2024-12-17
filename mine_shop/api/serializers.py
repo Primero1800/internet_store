@@ -87,7 +87,7 @@ class AddressSerializerRaw(serializers.ModelSerializer):
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = ('id', 'title', 'description', 'image', 'products')
+        fields = ('id', 'title', 'description', 'image', 'products', 'items')
 
     products = serializers.SerializerMethodField('get_short_products')
 
@@ -296,6 +296,7 @@ class PostSerializerRaw(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ('id', 'user', 'name', 'product', 'review', 'time_published')
+        read_only_fields = ('user', )
 
 
 class PostSerializer(serializers.ModelSerializer):
