@@ -66,6 +66,7 @@ class Address(models.Model):
 
     class Meta:
         verbose_name = _("Адрес")
+        ordering = ('id', )
 
     def get_phonenumber(self):
         return self.phonenumber
