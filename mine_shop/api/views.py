@@ -2,7 +2,7 @@
 
 from rest_framework.generics import RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.decorators import permission_classes
-from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveModelMixin
+from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveModelMixin, DestroyModelMixin
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
@@ -35,18 +35,24 @@ class ReadUpdateModelViewSet(
 ):
     pass
 
+class ReadUpdateDestroyModelViewSet(
+    DestroyModelMixin,
+    ReadUpdateModelViewSet,
+):
+    pass
+
 
 @permission_classes((IsAdminUser, ))
-class APIAddressViewSet(ReadOnlyModelViewSet):
+class APIAddressViewSet(ReadUpdateDestroyModelViewSet):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
+    serializer_class_raw = AddressSerializerRaw
     pagination_class = StandardResultsSetPagination
 
-
-@permission_classes((IsAdminUser, ))
-class APIAddressView(RetrieveUpdateDestroyAPIView):
-    queryset = Address.objects.all()
-    serializer_class = AddressSerializerRaw
+    def get_serializer_class(self):
+        if self.action in ('delete', 'retrieve', 'update', 'partial_update', ):
+             return self.serializer_class_raw
+        return self.serializer_class
 
 
 @permission_classes((IsAdminUser,))
