@@ -1,6 +1,7 @@
 from rest_framework.generics import RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.decorators import permission_classes
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveModelMixin
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
@@ -18,6 +19,12 @@ from .serializers import (
 )
 
 
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+
+
 class ReadUpdateModelViewSet(
     RetrieveModelMixin,
     UpdateModelMixin,
@@ -31,6 +38,7 @@ class ReadUpdateModelViewSet(
 class APIAddressViewSet(ReadOnlyModelViewSet):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
+    pagination_class = StandardResultsSetPagination
 
 
 @permission_classes((IsAdminUser, ))
@@ -43,12 +51,14 @@ class APIAddressView(RetrieveUpdateDestroyAPIView):
 class APIBrandViewSet(ModelViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
+    pagination_class = StandardResultsSetPagination
 
 
 @permission_classes((IsAdminUser,))
 class APICartViewSet(ReadOnlyModelViewSet):
     queryset = Cart.objects.all()
     serializer_class = CartSerializerRaw
+    pagination_class = StandardResultsSetPagination
 
 
 @permission_classes((IsAdminUser, ))
@@ -61,18 +71,21 @@ class APICartView(RetrieveDestroyAPIView):
 class APICartItemViewSet(ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = CartItemSerializer
+    pagination_class = StandardResultsSetPagination
 
 
 @permission_classes((IsAdminUser,))
 class APIOrderViewSet(ReadOnlyModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    pagination_class = StandardResultsSetPagination
 
 
 @permission_classes((IsAdminUser, ))
 class APIPersonViewSet(ReadOnlyModelViewSet):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
+    pagination_class = StandardResultsSetPagination
 
 
 @permission_classes((IsAdminUser, ))
@@ -85,6 +98,7 @@ class APIPersonView(RetrieveUpdateDestroyAPIView):
 class APIPostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializerRaw
+    pagination_class = StandardResultsSetPagination
 
 
 @permission_classes((IsAdminUser,))
@@ -92,6 +106,7 @@ class APIProductViewSet(ReadUpdateModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializerRaw
     serializer_class_list = ProductSerializer
+    pagination_class = StandardResultsSetPagination
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -110,6 +125,7 @@ class APIRubricViewSet(ModelViewSet):
     queryset = Rubric.objects.all()
     serializer_class = RubricSerializer
     serializer_class_raw = RubricSerializerRaw
+    pagination_class = StandardResultsSetPagination
 
     def get_serializer_class(self):
         if self.action in ('list', 'retrieve', 'get'):
@@ -121,12 +137,14 @@ class APIRubricViewSet(ModelViewSet):
 class APISaleInformationViewSet(ReadOnlyModelViewSet):
     queryset = Sale_information.objects.all()
     serializer_class = SaleInformationSerializer
+    pagination_class = StandardResultsSetPagination
 
 
 @permission_classes((IsAdminUser, ))
 class APIUserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    pagination_class = StandardResultsSetPagination
 
 
 @permission_classes((IsAdminUser, ))
@@ -139,3 +157,4 @@ class APIUserView(RetrieveDestroyAPIView):
 class APIVoteViewSet(ReadOnlyModelViewSet):
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
+    pagination_class = StandardResultsSetPagination
