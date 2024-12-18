@@ -1,4 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import RetrieveDestroyAPIView
 from rest_framework.decorators import permission_classes
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveModelMixin, DestroyModelMixin
@@ -94,9 +95,10 @@ class APIOrderViewSet(ReadOnlyModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     pagination_class = StandardResultsSetPagination
-    filter_backends = [DjangoFilterBackend, ]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = OrderFilter
     search_fields = ('order_content', )
+    ordering_fields = ('id', 'total_price', 'time_placed', 'time_delivered')
 
 
 @permission_classes((IsAdminUser, ))
