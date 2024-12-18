@@ -1,4 +1,5 @@
-from rest_framework.generics import RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.generics import RetrieveDestroyAPIView
 from rest_framework.decorators import permission_classes
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveModelMixin, DestroyModelMixin
 from rest_framework.pagination import PageNumberPagination
@@ -6,6 +7,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
 from cart.models import Cart, CartItem
+from .filters import AddressFilter
 from orders.models import Person, Address, Order
 from posts.models import Post
 from store.info_classes import Vote, Sale_information
@@ -55,11 +57,34 @@ class APIAddressViewSet(ReadUpdateDestroyModelViewSet):
     serializer_class = AddressSerializer
     serializer_class_raw = AddressSerializerRaw
     pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend, ]
+    filterset_class = AddressFilter
 
     def get_serializer_class(self):
         if self.action in ('destroy', 'retrieve', 'update', 'partial_update', ):
              return self.serializer_class_raw
         return self.serializer_class
+
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     if self.action == 'list' and self.request.query_params:
+    #
+    #         if self.request.query_params:
+    #             for parameter in self.request.query_params
+    #                 try:
+    #                     queryset = queryset.filter(parameter='')
+    #                 except Exception as ex:
+    #                     pass
+    #
+    #         if 'order' in self.request.query_params:
+    #             order = self.request.query_params['order']
+    #             try:
+    #                 queryset = queryset.order_by(order)
+    #             except Exception as ex:
+    #                 pass
+    #
+    #     return queryset
+
 
 
 @permission_classes((IsAdminUser,))
