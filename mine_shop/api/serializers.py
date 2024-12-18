@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.conf import settings
 from django.utils.datastructures import MultiValueDict
 from django.utils.text import slugify
@@ -6,7 +8,7 @@ from rest_framework import serializers
 
 from api.inner_functions import cyr_to_lat
 from cart.models import Cart, CartItem
-from orders.inner_functions import get_complex_phonenumber
+from orders.inner_functions import get_complex_phonenumber, _separator_normalize
 from orders.models import Order, Person, Address
 from posts.models import Post
 from store.info_classes import Vote, Sale_information
@@ -250,11 +252,15 @@ class OrderSerializer(serializers.ModelSerializer):
         )
 
     user = serializers.SerializerMethodField('get_short_user')
+    total_price = serializers.SerializerMethodField('get_total_price')
 
     def get_short_user(self, instance):
         queryset = instance.user
         serializer = UserTitlesSerializer(queryset)
         return serializer.data
+
+    def get_total_price(self, instance):
+        return Decimal(_separator_normalize(instance.total_price))
 
 
 class OrderInSerializer(OrderSerializer):

@@ -46,5 +46,3 @@ def _separator_normalize(value):
     if isinstance(value, str):
         value = value.replace(',', '.')
     return value
-
-

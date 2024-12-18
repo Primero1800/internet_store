@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
 from cart.models import Cart, CartItem
-from .filters import AddressFilter, BrandFilter
+from .filters import AddressFilter, BrandFilter, OrderFilter
 from orders.models import Person, Address, Order
 from posts.models import Post
 from store.info_classes import Vote, Sale_information
@@ -94,6 +94,9 @@ class APIOrderViewSet(ReadOnlyModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend, ]
+    filterset_class = OrderFilter
+    search_fields = ('order_content', )
 
 
 @permission_classes((IsAdminUser, ))
