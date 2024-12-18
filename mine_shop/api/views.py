@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
 from cart.models import Cart, CartItem
-from .filters import AddressFilter
+from .filters import AddressFilter, BrandFilter
 from orders.models import Person, Address, Order
 from posts.models import Post
 from store.info_classes import Vote, Sale_information
@@ -65,33 +65,14 @@ class APIAddressViewSet(ReadUpdateDestroyModelViewSet):
              return self.serializer_class_raw
         return self.serializer_class
 
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     if self.action == 'list' and self.request.query_params:
-    #
-    #         if self.request.query_params:
-    #             for parameter in self.request.query_params
-    #                 try:
-    #                     queryset = queryset.filter(parameter='')
-    #                 except Exception as ex:
-    #                     pass
-    #
-    #         if 'order' in self.request.query_params:
-    #             order = self.request.query_params['order']
-    #             try:
-    #                 queryset = queryset.order_by(order)
-    #             except Exception as ex:
-    #                 pass
-    #
-    #     return queryset
-
-
 
 @permission_classes((IsAdminUser,))
 class APIBrandViewSet(ModelViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
     pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend, ]
+    filterset_class = BrandFilter
 
 
 @permission_classes((IsAdminUser,))
