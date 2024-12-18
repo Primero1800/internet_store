@@ -282,8 +282,10 @@ class PersonSerializer(serializers.ModelSerializer):
 class PersonSerializerRaw(serializers.ModelSerializer):
     class Meta:
         model = Person
-        fields = ('id', 'name', 'surname', 'company_name')
+        fields = ('id', 'user', 'name', 'surname', 'company_name')
         read_only_fields = ('user', )
+
+    user = serializers.SlugRelatedField(slug_field='email', read_only=True)
 
 
 class PersonInSerializer(serializers.ModelSerializer):

@@ -27,6 +27,7 @@ class Person(models.Model):
 
     class Meta:
         verbose_name = _("Персона")
+        ordering = ('id', )
 
 
     def set_attributes(self, name=None, surname=None, company_name=None):

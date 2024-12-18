@@ -1,5 +1,3 @@
-
-
 from rest_framework.generics import RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.decorators import permission_classes
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveModelMixin, DestroyModelMixin
@@ -14,9 +12,9 @@ from store.info_classes import Vote, Sale_information
 from store.models import Product, Brand, Rubric
 from users.models import User
 from .serializers import (
-    UserSerializer, UserDetailSerializer, PersonSerializerRaw, AddressSerializer,
-    VoteSerializer, OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer,
-    SaleInformationSerializer, ProductDetailSerializer, AddressSerializerRaw, CartSerializerRaw, CartItemSerializer,
+    UserSerializer, UserDetailSerializer, PersonSerializerRaw, AddressSerializer, VoteSerializer,
+    OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer, SaleInformationSerializer,
+    ProductDetailSerializer, AddressSerializerRaw, CartSerializerRaw, CartItemSerializer,
     PersonSerializer, PostSerializerRaw, ProductSerializerRaw, RubricSerializerRaw
 )
 
@@ -93,16 +91,16 @@ class APIOrderViewSet(ReadOnlyModelViewSet):
 
 
 @permission_classes((IsAdminUser, ))
-class APIPersonViewSet(ReadOnlyModelViewSet):
+class APIPersonViewSet(ReadUpdateDestroyModelViewSet):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
+    serializer_class_raw = PersonSerializerRaw
     pagination_class = StandardResultsSetPagination
 
-
-@permission_classes((IsAdminUser, ))
-class APIPersonView(RetrieveUpdateDestroyAPIView):
-    queryset = Person.objects.all()
-    serializer_class = PersonSerializerRaw
+    def get_serializer_class(self):
+        if self.action in ('destroy', 'retrieve', 'update', 'partial_update', ):
+             return self.serializer_class_raw
+        return self.serializer_class
 
 
 @permission_classes((IsAdminUser,))

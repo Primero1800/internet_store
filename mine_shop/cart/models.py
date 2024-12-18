@@ -17,6 +17,7 @@ class Cart(models.Model):
 
     class Meta:
         verbose_name = _("Корзина")
+        ordering = ('id', )
 
     @property
     def total_price(self):
