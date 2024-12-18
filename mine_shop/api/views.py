@@ -42,6 +42,15 @@ class ReadUpdateDestroyModelViewSet(
     pass
 
 
+class ReadDestroyModelViewSet(
+    DestroyModelMixin,
+    RetrieveModelMixin,
+    ListModelMixin,
+    GenericViewSet,
+):
+    pass
+
+
 @permission_classes((IsAdminUser, ))
 class APIAddressViewSet(ReadUpdateDestroyModelViewSet):
     queryset = Address.objects.all()
@@ -50,7 +59,7 @@ class APIAddressViewSet(ReadUpdateDestroyModelViewSet):
     pagination_class = StandardResultsSetPagination
 
     def get_serializer_class(self):
-        if self.action in ('delete', 'retrieve', 'update', 'partial_update', ):
+        if self.action in ('destroy', 'retrieve', 'update', 'partial_update', ):
              return self.serializer_class_raw
         return self.serializer_class
 
@@ -63,16 +72,10 @@ class APIBrandViewSet(ModelViewSet):
 
 
 @permission_classes((IsAdminUser,))
-class APICartViewSet(ReadOnlyModelViewSet):
+class APICartViewSet(ReadDestroyModelViewSet):
     queryset = Cart.objects.all()
     serializer_class = CartSerializerRaw
     pagination_class = StandardResultsSetPagination
-
-
-@permission_classes((IsAdminUser, ))
-class APICartView(RetrieveDestroyAPIView):
-    queryset = Cart.objects.all()
-    serializer_class = CartSerializerRaw
 
 
 @permission_classes((IsAdminUser,))
