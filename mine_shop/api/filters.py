@@ -8,7 +8,7 @@ from django_filters.filters import OrderingFilter
 from orders.inner_functions import _separator_normalize
 from orders.models import Address, Order, Person
 from posts.models import Post
-from store.models import Brand, Product
+from store.models import Brand, Product, Rubric
 
 
 class AddressOrderingFilter(OrderingFilter):
@@ -172,4 +172,34 @@ class ProductFilter(django_filters.FilterSet):
             'rubrics': ['exact', ],
             'discont': ['gte', ],
             'quantity': ['lte',],
+        }
+
+
+class RubricOrderingFilter(OrderingFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra['choices'] += [
+             ('id', 'id'), ('-id', 'id (descending)'),
+             ('title', 'title'), ('-title', 'title (descending)'),
+             ('products__count', 'products_count'), ('-products__count', 'products_count (descending)'),
+        ]
+
+    def filter(self, query_set, values):
+        if not values:
+            return super().filter(query_set, values)
+        for value in values:
+            if value in ('products__count', '-products__count'):
+                return query_set.annotate(Count('products')).order_by(value)
+            else:
+                return query_set.order_by(value)
+        return super().filter(query_set, values)
+
+
+class RubricFilter(django_filters.FilterSet):
+    o = RubricOrderingFilter()
+
+    class Meta:
+        model = Rubric
+        fields = {
+             'products': ['exact', ],
         }
