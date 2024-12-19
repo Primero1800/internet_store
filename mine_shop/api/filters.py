@@ -5,9 +5,18 @@ from django_filters.filters import OrderingFilter
 
 from orders.models import Address, Order
 from store.models import Brand
+class AddressOrderingFilter(OrderingFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra['choices'] += [
+            ('id', 'id'), ('-id', 'id (descending)'),
+            ('user', 'user'), ('-user', 'user (descending)'),
+            ('phonenumber', 'phonenumber'), ('-phonenumber', 'phonenumber (descending)'),
+        ]
 
 
 class AddressFilter(django_filters.FilterSet):
+    o = AddressOrderingFilter()
     class Meta:
         model = Address
         fields = {
@@ -22,13 +31,11 @@ class BrandOrderingFilter(OrderingFilter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.extra['choices'] += [
-            ('items__count', 'products_count'),
-            ('-items__count', 'products_count (descending)'),
-            ('id', 'id'),
-            ('-id', 'id (descending)'),
-            ('title', 'title'),
-            ('-title', 'title (descending)'),
+            ('items__count', 'products_count'), ('-items__count', 'products_count (descending)'),
+            ('id', 'id'), ('-id', 'id (descending)'),
+            ('title', 'title'), ('-title', 'title (descending)'),
         ]
+
     def filter(self, query_set, values):
         if not values:
             return super().filter(query_set, values)
