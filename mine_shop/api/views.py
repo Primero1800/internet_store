@@ -96,10 +96,10 @@ class APIOrderViewSet(ReadOnlyModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     pagination_class = StandardResultsSetPagination
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = OrderFilter
     search_fields = ('order_content', )
-    ordering_fields = ('id', 'total_price', 'time_placed', 'time_delivered')
+    #ordering_fields = ('id', 'total_price', 'time_placed', 'time_delivered')
 
 
 @permission_classes((IsAdminUser, ))

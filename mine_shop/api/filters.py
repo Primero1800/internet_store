@@ -5,6 +5,8 @@ from django_filters.filters import OrderingFilter
 
 from orders.models import Address, Order
 from store.models import Brand
+
+
 class AddressOrderingFilter(OrderingFilter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -60,7 +62,19 @@ class BrandFilter(django_filters.FilterSet):
         }
 
 
+class OrderOrderingFilter(OrderingFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra['choices'] += [
+            ('total_price', 'total_price'), ('-total_price', 'total_price (descending)'),
+            ('id', 'id'), ('-id', 'id (descending)'),
+            ('time_placed', 'time_placed'), ('-time_placed', 'time_placed (descending)'),
+            ('time_delivered', 'time_delivered'), ('-time_delivered', 'time_delivered (descending)'),
+        ]
+
+
 class OrderFilter(django_filters.FilterSet):
+    o = OrderOrderingFilter()
     class Meta:
         model = Order
         fields = {
