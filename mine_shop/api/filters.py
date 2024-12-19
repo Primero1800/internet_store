@@ -1,13 +1,13 @@
 import django_filters
 from django.db import models
-from django_filters import filters
+from django.db.models import QuerySet, Count
+from django_filters.filters import OrderingFilter
 
 from orders.models import Address, Order
 from store.models import Brand
 
 
 class AddressFilter(django_filters.FilterSet):
-    city = filters.CharFilter()
     class Meta:
         model = Address
         fields = {
@@ -18,7 +18,32 @@ class AddressFilter(django_filters.FilterSet):
         }
 
 
+class BrandOrderingFilter(OrderingFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra['choices'] += [
+            ('items__count', 'products_count'),
+            ('-items__count', 'products_count (descending)'),
+            ('id', 'id'),
+            ('-id', 'id (descending)'),
+            ('title', 'title'),
+            ('-title', 'title (descending)'),
+        ]
+    def filter(self, query_set, values):
+        if not values:
+            return super().filter(query_set, values)
+
+        for value in values:
+            if value in ('items__count', '-items__count'):
+                return query_set.annotate(Count('items')).order_by(value)
+            else:
+                return query_set.order_by(value)
+        return super().filter(query_set, values)
+
+
 class BrandFilter(django_filters.FilterSet):
+    o = BrandOrderingFilter()
+
     class Meta:
         model = Brand
         fields = {

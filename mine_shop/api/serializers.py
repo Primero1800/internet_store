@@ -89,14 +89,18 @@ class AddressSerializerRaw(serializers.ModelSerializer):
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = ('id', 'title', 'description', 'image', 'products', )
+        fields = ('id', 'title', 'description', 'image', 'products_count', 'products', )
 
+    products_count = serializers.SerializerMethodField('get_products_count')
     products = serializers.SerializerMethodField('get_short_products')
 
     def get_short_products(self, instance):
         queryset = instance.items.all()
         serializer = ProductTitlesSerializer(queryset, many=True)
         return serializer.data
+
+    def get_products_count(self, instance):
+        return instance.get_products_count()
 
 
 class BrandInSerializer(serializers.ModelSerializer):
