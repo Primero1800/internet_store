@@ -4,6 +4,7 @@ from django.db.models import QuerySet, Count
 from django_filters.filters import OrderingFilter
 
 from orders.models import Address, Order, Person
+from posts.models import Post
 from store.models import Brand
 
 
@@ -107,3 +108,24 @@ class PersonFilter(django_filters.FilterSet):
     class Meta:
         model = Person
         fields = ('user', )
+
+
+class PostOrderingFilter(OrderingFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra['choices'] += [
+            ('id', 'id'), ('-id', 'id (descending)'),
+            ('user', 'user'), ('-user', 'user (descending)'),
+            ('product', 'product'), ('-product', 'product (descending)'),
+        ]
+
+
+class PostFilter(django_filters.FilterSet):
+    o = PostOrderingFilter()
+    class Meta:
+        model = Post
+        fields = {
+            'id': ['exact', ],
+            'user': ['exact'],
+            'product': ['exact']
+        }

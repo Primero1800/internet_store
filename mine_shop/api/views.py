@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
 from cart.models import Cart, CartItem
-from .filters import AddressFilter, BrandFilter, OrderFilter, BrandOrderingFilter, PersonFilter
+from .filters import AddressFilter, BrandFilter, OrderFilter, BrandOrderingFilter, PersonFilter, PostFilter
 from orders.models import Person, Address, Order
 from posts.models import Post
 from store.info_classes import Vote, Sale_information
@@ -121,6 +121,8 @@ class APIPostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializerRaw
     pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = PostFilter
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
