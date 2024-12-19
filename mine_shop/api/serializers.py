@@ -348,8 +348,18 @@ class ProductSerializerRaw(serializers.ModelSerializer):
         model = Product
         fields = (
             'id', 'title', 'slug', 'brand', 'rubrics', 'start_price', 'discont',
-            'price', 'rating', 'available', 'quantity'
+            'price', 'rating', 'calculated_rating', 'available', 'quantity'
         )
+        read_only_fields = ('rating', )
+
+    calculated_rating = serializers.SerializerMethodField('get_calculated_rating')
+
+    def get_calculated_rating(self, instance):
+        try:
+            result = instance.sale_information.rating / instance.sale_information.voted_count if instance.sale_information.voted_count else instance.sale_information.rating
+            return Decimal(result)
+        except:
+            return None
 
 
 class ProductSerializer(ProductSerializerRaw):
@@ -508,23 +518,28 @@ class RubricSerializer(RubricSerializerRaw):
     products = serializers.SlugRelatedField(slug_field='title', read_only=True, many=True)
 
 
-class SaleInformationInSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Sale_information
-        fields = ('id', 'sold_count', 'viewed_count', 'voted_count')
-
-
 class SaleInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sale_information
-        fields = ('id', 'product', 'sold_count', 'viewed_count', 'voted_count')
+        fields = ('id', 'product', 'calculated_rating', 'sold_count', 'viewed_count', 'voted_count')
 
     product = serializers.SerializerMethodField('get_short_product')
+    calculated_rating = serializers.SerializerMethodField('get_calculated_rating')
 
     def get_short_product(self, instance):
         queryset = instance.product
         serializer = ProductTitlesSerializer(queryset)
         return serializer.data
+
+    def get_calculated_rating(self, instance):
+        result = instance.rating if not instance.voted_count else instance.rating / instance.voted_count
+        return Decimal(result)
+
+
+class SaleInformationInSerializer(SaleInformationSerializer):
+    class Meta:
+        model = Sale_information
+        fields = ('id', 'calculated_rating', 'sold_count', 'viewed_count', 'voted_count')
 
 
 class UserSerializer(serializers.ModelSerializer):

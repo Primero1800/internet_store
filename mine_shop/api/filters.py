@@ -1,11 +1,14 @@
+from decimal import Decimal
+
 import django_filters
 from django.db import models
-from django.db.models import QuerySet, Count
+from django.db.models import QuerySet, Count, F
 from django_filters.filters import OrderingFilter
 
+from orders.inner_functions import _separator_normalize
 from orders.models import Address, Order, Person
 from posts.models import Post
-from store.models import Brand
+from store.models import Brand, Product
 
 
 class AddressOrderingFilter(OrderingFilter):
@@ -128,4 +131,45 @@ class PostFilter(django_filters.FilterSet):
             'id': ['exact', ],
             'user': ['exact'],
             'product': ['exact']
+        }
+
+
+class ProductOrderingFilter(OrderingFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra['choices'] += [
+            ('id', 'id'), ('-id', 'id (descending)'),
+            ('title', 'title'), ('-title', 'title (descending)'),
+            ('brand', 'brand'), ('-brand', 'brand (descending)'),
+            ('calculated_price', 'price'), ('-calculated_price', 'price (descending)'),
+            ('discont', 'discont'), ('-discont', 'discont (descending)'),
+            ('quantity', 'quantity'), ('-quantity', 'quantity (descending)'),
+            ('rating', 'rating'), ('-rating', 'rating (descending)'),
+            ('rubrics__count', 'rubrics_count'), ('-rubrics__count', 'rubrics_count (descending)'),
+        ]
+
+    def filter(self, query_set, values):
+        if not values:
+            return super().filter(query_set, values)
+        for value in values:
+            if value in ('rubrics__count', '-rubrics__count'):
+                return query_set.annotate(Count('rubrics')).order_by(value)
+            elif value in ('calculated_price', '-calculated_price'):
+                return query_set.annotate(calculated_price=(100-F('discont'))*F('start_price')/100).order_by(value)
+            else:
+                return query_set.order_by(value)
+        return super().filter(query_set, values)
+
+
+class ProductFilter(django_filters.FilterSet):
+    o = ProductOrderingFilter()
+
+    class Meta:
+        model = Product
+        fields = {
+            'title': ['contains', ],
+            'brand': ['exact', ],
+            'rubrics': ['exact', ],
+            'discont': ['gte', ],
+            'quantity': ['lte',],
         }
