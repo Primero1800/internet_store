@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
 from cart.models import Cart, CartItem
-from .filters import AddressFilter, BrandFilter, OrderFilter, BrandOrderingFilter
+from .filters import AddressFilter, BrandFilter, OrderFilter, BrandOrderingFilter, PersonFilter
 from orders.models import Person, Address, Order
 from posts.models import Post
 from store.info_classes import Vote, Sale_information
@@ -99,7 +99,6 @@ class APIOrderViewSet(ReadOnlyModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = OrderFilter
     search_fields = ('order_content', )
-    #ordering_fields = ('id', 'total_price', 'time_placed', 'time_delivered')
 
 
 @permission_classes((IsAdminUser, ))
@@ -108,6 +107,8 @@ class APIPersonViewSet(ReadUpdateDestroyModelViewSet):
     serializer_class = PersonSerializer
     serializer_class_raw = PersonSerializerRaw
     pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = PersonFilter
 
     def get_serializer_class(self):
         if self.action in ('destroy', 'retrieve', 'update', 'partial_update', ):

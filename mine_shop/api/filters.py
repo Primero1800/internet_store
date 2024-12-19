@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import QuerySet, Count
 from django_filters.filters import OrderingFilter
 
-from orders.models import Address, Order
+from orders.models import Address, Order, Person
 from store.models import Brand
 
 
@@ -91,3 +91,19 @@ class OrderFilter(django_filters.FilterSet):
         if isinstance(f, models.DateTimeField) and lookup_type == 'range':
             return django_filters.DateFromToRangeFilter, {}
         return super().filter_for_lookup(f, lookup_type)
+
+
+class PersonOrderingFilter(OrderingFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra['choices'] += [
+            ('id', 'id'), ('-id', 'id (descending)'),
+            ('user', 'user'), ('-user', 'user (descending)'),
+        ]
+
+
+class PersonFilter(django_filters.FilterSet):
+    o = PersonOrderingFilter()
+    class Meta:
+        model = Person
+        fields = ('user', )
