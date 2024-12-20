@@ -1,5 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.filters import SearchFilter
 from rest_framework.generics import RetrieveDestroyAPIView
 from rest_framework.decorators import permission_classes
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, RetrieveModelMixin, DestroyModelMixin
@@ -8,13 +8,14 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
 from cart.models import Cart, CartItem
-from .filters import AddressFilter, BrandFilter, OrderFilter, BrandOrderingFilter, PersonFilter, PostFilter, \
+from .filters import AddressFilter, BrandFilter, OrderFilter, PersonFilter, PostFilter, \
     ProductFilter, RubricFilter, SaleInformationFilter, UserFilter, VoteFilter
 from orders.models import Person, Address, Order
 from posts.models import Post
 from store.info_classes import Vote, Sale_information
 from store.models import Product, Brand, Rubric
 from users.models import User
+from .permissions import IsAdminAndOwnerOrReadOnly, IsPosterAdminAndOwnerOrReadOnly
 from .serializers import (
     UserSerializer, UserDetailSerializer, PersonSerializerRaw, AddressSerializer, VoteSerializer,
     OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer, SaleInformationSerializer,
@@ -68,7 +69,7 @@ class APIAddressViewSet(ReadUpdateDestroyModelViewSet):
         return self.serializer_class
 
 
-@permission_classes((IsAdminUser,))
+@permission_classes((IsAdminAndOwnerOrReadOnly,))
 class APIBrandViewSet(ModelViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
@@ -92,7 +93,7 @@ class APICartItemViewSet(ModelViewSet):
     pagination_class = StandardResultsSetPagination
 
 
-@permission_classes((IsAdminUser,))
+@permission_classes((IsAdminUser, ))
 class APIOrderViewSet(ReadOnlyModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -117,7 +118,7 @@ class APIPersonViewSet(ReadUpdateDestroyModelViewSet):
         return self.serializer_class
 
 
-@permission_classes((IsAdminUser,))
+@permission_classes((IsPosterAdminAndOwnerOrReadOnly,))
 class APIPostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializerRaw
