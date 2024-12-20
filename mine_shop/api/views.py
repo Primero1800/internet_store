@@ -9,7 +9,7 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericV
 
 from cart.models import Cart, CartItem
 from .filters import AddressFilter, BrandFilter, OrderFilter, BrandOrderingFilter, PersonFilter, PostFilter, \
-    ProductFilter, RubricFilter
+    ProductFilter, RubricFilter, SaleInformationFilter
 from orders.models import Person, Address, Order
 from posts.models import Post
 from store.info_classes import Vote, Sale_information
@@ -171,6 +171,9 @@ class APISaleInformationViewSet(ReadOnlyModelViewSet):
     queryset = Sale_information.objects.all()
     serializer_class = SaleInformationSerializer
     pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_class = SaleInformationFilter
+    search_fields = ('product__title', )
 
 
 @permission_classes((IsAdminUser, ))

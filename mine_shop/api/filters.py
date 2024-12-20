@@ -1,14 +1,40 @@
-from decimal import Decimal
-
 import django_filters
 from django.db import models
-from django.db.models import QuerySet, Count, F
+from django.db.models import Count, F, Case, When
+from django_filters import filters
 from django_filters.filters import OrderingFilter
 
-from orders.inner_functions import _separator_normalize
 from orders.models import Address, Order, Person
 from posts.models import Post
+from store.info_classes import Sale_information
 from store.models import Brand, Product, Rubric
+
+
+class RatingGTEFilter(filters.NumberFilter):
+    def filter(self, qs, value):
+        if not value:
+            return qs
+        result = qs.annotate(
+            calculated_rating=Case(
+                When(voted_count__gt=0, then=100 * F('rating') / F('voted_count')),
+                When(voted_count=0, then=100 * F('rating')),
+            )
+        ).filter(calculated_rating__gte=value*100)
+        d = 2
+        return result
+
+
+class RatingLTEFilter(filters.NumberFilter):
+
+    def filter(self, qs, value):
+        if not value:
+            return qs
+        return qs.annotate(
+            calculated_rating=Case(
+                When(voted_count__gt=0, then=100 * F('rating') / F('voted_count')),
+                When(voted_count=0, then=100 * F('rating')),
+            )
+        ).filter(calculated_rating__lte=value*100)
 
 
 class AddressOrderingFilter(OrderingFilter):
@@ -203,3 +229,46 @@ class RubricFilter(django_filters.FilterSet):
         fields = {
              'products': ['exact', ],
         }
+
+
+class SaleInformationOrderingFilter(OrderingFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra['choices'] += [
+            ('id', 'id'), ('-id', 'id (descending)'),
+            ('product_id', 'product_id'), ('-product_id', 'product_id (descending)'),
+            ('product__title', 'product_title'), ('-product__title', 'product_title (descending)'),
+            ('sold_count', 'sold_count'), ('-sold_count', 'sold_count (descending)'),
+            ('viewed_count', 'viewed_count'), ('-viewed_count', 'viewed_count (descending)'),
+            ('calculated_rating', 'rating'), ('-calculated_rating', 'rating (descending)'),
+        ]
+
+    def filter(self, query_set, values):
+        if not values:
+            return super().filter(query_set, values)
+        for value in values:
+            if value in ('calculated_rating', '-calculated_rating'):
+                return query_set.annotate(
+                     calculated_rating=Case(
+                         When(voted_count__gt=0, then=100*F('rating')/F('voted_count')),
+                                         When(voted_count=0, then=100*F('rating')),
+                     )
+                 ).order_by(value)
+            else:
+                return query_set.order_by(value)
+        return super().filter(query_set, values)
+
+
+class SaleInformationFilter(django_filters.FilterSet):
+    class Meta:
+        model = Sale_information
+        fields = {
+            'sold_count': ['gte', 'lte',],
+            'viewed_count': ['gte', 'lte', ],
+        }
+
+    calculated_rating__gte = RatingGTEFilter(field_name='rating', lookup_expr='__gte')
+    calculated_rating__lte = RatingLTEFilter(field_name='rating', lookup_expr='__lte')
+
+    o = SaleInformationOrderingFilter()
+
