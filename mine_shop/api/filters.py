@@ -8,6 +8,7 @@ from orders.models import Address, Order, Person
 from posts.models import Post
 from store.info_classes import Sale_information
 from store.models import Brand, Product, Rubric
+from users.models import User
 
 
 class AddressOrderingFilter(OrderingFilter):
@@ -259,4 +260,25 @@ class SaleInformationFilter(django_filters.FilterSet):
     calculated_rating__lte = RatingFilter(field_name='rating', lookup_expr='__lte')
 
     o = SaleInformationOrderingFilter()
+
+
+class UserOrderingFilter(OrderingFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra['choices'] += [
+            ('id', 'id'), ('-id', 'id (descending)'),
+        ]
+
+
+class UserFilter(django_filters.FilterSet):
+    class Meta:
+        model = User
+        fields = {
+            "email": ['contains'],
+            "is_active": ['exact'],
+            "is_staff": ['exact'],
+            "is_superuser": ['exact'],
+        }
+
+    o = UserOrderingFilter()
 
