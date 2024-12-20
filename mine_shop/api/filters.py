@@ -240,31 +240,23 @@ class SaleInformationFilter(django_filters.FilterSet):
             'viewed_count': ['gte', 'lte', ],
         }
 
-    class RatingGTEFilter(filters.NumberFilter):
+    class RatingFilter(filters.NumberFilter):
         def filter(self, qs, value):
             if not value:
                 return qs
-            return qs.annotate(
+            result_qs = qs.annotate(
                 calculated_rating=Case(
                     When(voted_count__gt=0, then=100 * F('rating') / F('voted_count')),
                     When(voted_count=0, then=100 * F('rating')),
                 )
-            ).filter(calculated_rating__gte=value * 100)
+            )
+            if self.lookup_expr == '__gte':
+                return result_qs.filter(calculated_rating__gte=value * 100)
+            else:
+                return result_qs.filter(calculated_rating__lte=value * 100)
 
-    class RatingLTEFilter(filters.NumberFilter):
-
-        def filter(self, qs, value):
-            if not value:
-                return qs
-            return qs.annotate(
-                calculated_rating=Case(
-                    When(voted_count__gt=0, then=100 * F('rating') / F('voted_count')),
-                    When(voted_count=0, then=100 * F('rating')),
-                )
-            ).filter(calculated_rating__lte=value * 100)
-
-    calculated_rating__gte = RatingGTEFilter(field_name='rating', lookup_expr='__gte')
-    calculated_rating__lte = RatingLTEFilter(field_name='rating', lookup_expr='__lte')
+    calculated_rating__gte = RatingFilter(field_name='rating', lookup_expr='__gte')
+    calculated_rating__lte = RatingFilter(field_name='rating', lookup_expr='__lte')
 
     o = SaleInformationOrderingFilter()
 
