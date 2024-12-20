@@ -10,33 +10,6 @@ from store.info_classes import Sale_information
 from store.models import Brand, Product, Rubric
 
 
-class RatingGTEFilter(filters.NumberFilter):
-    def filter(self, qs, value):
-        if not value:
-            return qs
-        result = qs.annotate(
-            calculated_rating=Case(
-                When(voted_count__gt=0, then=100 * F('rating') / F('voted_count')),
-                When(voted_count=0, then=100 * F('rating')),
-            )
-        ).filter(calculated_rating__gte=value*100)
-        d = 2
-        return result
-
-
-class RatingLTEFilter(filters.NumberFilter):
-
-    def filter(self, qs, value):
-        if not value:
-            return qs
-        return qs.annotate(
-            calculated_rating=Case(
-                When(voted_count__gt=0, then=100 * F('rating') / F('voted_count')),
-                When(voted_count=0, then=100 * F('rating')),
-            )
-        ).filter(calculated_rating__lte=value*100)
-
-
 class AddressOrderingFilter(OrderingFilter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -266,6 +239,29 @@ class SaleInformationFilter(django_filters.FilterSet):
             'sold_count': ['gte', 'lte',],
             'viewed_count': ['gte', 'lte', ],
         }
+
+    class RatingGTEFilter(filters.NumberFilter):
+        def filter(self, qs, value):
+            if not value:
+                return qs
+            return qs.annotate(
+                calculated_rating=Case(
+                    When(voted_count__gt=0, then=100 * F('rating') / F('voted_count')),
+                    When(voted_count=0, then=100 * F('rating')),
+                )
+            ).filter(calculated_rating__gte=value * 100)
+
+    class RatingLTEFilter(filters.NumberFilter):
+
+        def filter(self, qs, value):
+            if not value:
+                return qs
+            return qs.annotate(
+                calculated_rating=Case(
+                    When(voted_count__gt=0, then=100 * F('rating') / F('voted_count')),
+                    When(voted_count=0, then=100 * F('rating')),
+                )
+            ).filter(calculated_rating__lte=value * 100)
 
     calculated_rating__gte = RatingGTEFilter(field_name='rating', lookup_expr='__gte')
     calculated_rating__lte = RatingLTEFilter(field_name='rating', lookup_expr='__lte')
