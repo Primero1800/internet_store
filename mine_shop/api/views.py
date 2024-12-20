@@ -15,7 +15,7 @@ from posts.models import Post
 from store.info_classes import Vote, Sale_information
 from store.models import Product, Brand, Rubric
 from users.models import User
-from .permissions import IsAdminAndOwnerOrReadOnly, IsPosterAdminAndOwnerOrReadOnly
+from .permissions import IsAdminAndOwnerOrReadOnly, IsPosterAdminAndOwnerOrReadOnly, IsAdminOrReadOnly
 from .serializers import (
     UserSerializer, UserDetailSerializer, PersonSerializerRaw, AddressSerializer, VoteSerializer,
     OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer, SaleInformationSerializer,
@@ -130,7 +130,7 @@ class APIPostViewSet(ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-@permission_classes((IsAdminUser,))
+@permission_classes((IsAdminOrReadOnly,))
 class APIProductViewSet(ReadUpdateModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializerRaw

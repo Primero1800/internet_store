@@ -1,4 +1,4 @@
-from rest_framework.permissions import BasePermission, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import BasePermission
 
 SAFE_METHODS = ('GET', 'HEAD', 'OPTIONS')
 SAFE_METHODS_AND_PUT = ('GET', 'PUT', 'HEAD', 'OPTIONS')
@@ -31,6 +31,10 @@ class IsAdminAndOwnerOrReadOnly(BasePermission):
 class IsPosterAdminAndOwnerOrReadOnly(IsAdminAndOwnerOrReadOnly):
     def additional_condition(self, request):
         return request.user.is_authenticated
+
+class IsAdminOrReadOnly(IsAdminAndOwnerOrReadOnly):
+    def isOwner(self, request, obj):
+        return False
 
 
 
