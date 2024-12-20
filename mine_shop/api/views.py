@@ -9,7 +9,7 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericV
 
 from cart.models import Cart, CartItem
 from .filters import AddressFilter, BrandFilter, OrderFilter, BrandOrderingFilter, PersonFilter, PostFilter, \
-    ProductFilter, RubricFilter, SaleInformationFilter, UserFilter
+    ProductFilter, RubricFilter, SaleInformationFilter, UserFilter, VoteFilter
 from orders.models import Person, Address, Order
 from posts.models import Post
 from store.info_classes import Vote, Sale_information
@@ -181,7 +181,7 @@ class APIUserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     pagination_class = StandardResultsSetPagination
-    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filter_backends = [DjangoFilterBackend, ]
     filterset_class = UserFilter
 
 
@@ -196,4 +196,7 @@ class APIVoteViewSet(ReadOnlyModelViewSet):
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
     pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_class = VoteFilter
+    search_fields = ('review', 'name')
 

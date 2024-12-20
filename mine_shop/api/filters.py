@@ -1,12 +1,9 @@
-import django_filters
-from django.db import models
-from django.db.models import Count, F, Case, When
-from django_filters import filters
-from django_filters.filters import OrderingFilter
-
+from django_filters import FilterSet
+from django.db.models import Count, F, Case, When, DateTimeField
+from django_filters.filters import OrderingFilter, NumberFilter, DateFromToRangeFilter
 from orders.models import Address, Order, Person
 from posts.models import Post
-from store.info_classes import Sale_information
+from store.info_classes import Sale_information, Vote
 from store.models import Brand, Product, Rubric
 from users.models import User
 
@@ -21,7 +18,7 @@ class AddressOrderingFilter(OrderingFilter):
         ]
 
 
-class AddressFilter(django_filters.FilterSet):
+class AddressFilter(FilterSet):
     o = AddressOrderingFilter()
     class Meta:
         model = Address
@@ -54,7 +51,7 @@ class BrandOrderingFilter(OrderingFilter):
         return super().filter(query_set, values)
 
 
-class BrandFilter(django_filters.FilterSet):
+class BrandFilter(FilterSet):
     o = BrandOrderingFilter()
 
     class Meta:
@@ -77,7 +74,7 @@ class OrderOrderingFilter(OrderingFilter):
         ]
 
 
-class OrderFilter(django_filters.FilterSet):
+class OrderFilter(FilterSet):
     o = OrderOrderingFilter()
     class Meta:
         model = Order
@@ -92,8 +89,8 @@ class OrderFilter(django_filters.FilterSet):
 
     @classmethod
     def filter_for_lookup(cls, f, lookup_type):
-        if isinstance(f, models.DateTimeField) and lookup_type == 'range':
-            return django_filters.DateFromToRangeFilter, {}
+        if isinstance(f, DateTimeField) and lookup_type == 'range':
+            return DateFromToRangeFilter, {}
         return super().filter_for_lookup(f, lookup_type)
 
 
@@ -106,7 +103,7 @@ class PersonOrderingFilter(OrderingFilter):
         ]
 
 
-class PersonFilter(django_filters.FilterSet):
+class PersonFilter(FilterSet):
     o = PersonOrderingFilter()
     class Meta:
         model = Person
@@ -123,7 +120,7 @@ class PostOrderingFilter(OrderingFilter):
         ]
 
 
-class PostFilter(django_filters.FilterSet):
+class PostFilter(FilterSet):
     o = PostOrderingFilter()
     class Meta:
         model = Post
@@ -161,7 +158,7 @@ class ProductOrderingFilter(OrderingFilter):
         return super().filter(query_set, values)
 
 
-class ProductFilter(django_filters.FilterSet):
+class ProductFilter(FilterSet):
     o = ProductOrderingFilter()
 
     class Meta:
@@ -195,7 +192,7 @@ class RubricOrderingFilter(OrderingFilter):
         return super().filter(query_set, values)
 
 
-class RubricFilter(django_filters.FilterSet):
+class RubricFilter(FilterSet):
     o = RubricOrderingFilter()
 
     class Meta:
@@ -233,7 +230,7 @@ class SaleInformationOrderingFilter(OrderingFilter):
         return super().filter(query_set, values)
 
 
-class SaleInformationFilter(django_filters.FilterSet):
+class SaleInformationFilter(FilterSet):
     class Meta:
         model = Sale_information
         fields = {
@@ -241,7 +238,7 @@ class SaleInformationFilter(django_filters.FilterSet):
             'viewed_count': ['gte', 'lte', ],
         }
 
-    class RatingFilter(filters.NumberFilter):
+    class RatingFilter(NumberFilter):
         def filter(self, qs, value):
             if not value:
                 return qs
@@ -270,7 +267,7 @@ class UserOrderingFilter(OrderingFilter):
         ]
 
 
-class UserFilter(django_filters.FilterSet):
+class UserFilter(FilterSet):
     class Meta:
         model = User
         fields = {
@@ -282,3 +279,32 @@ class UserFilter(django_filters.FilterSet):
 
     o = UserOrderingFilter()
 
+
+class VoteOrderingFilter(OrderingFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra['choices'] += [
+            ('id', 'id'), ('-id', 'id (descending)'),
+            ('stars', 'stars'), ('-stars', 'stars (descending)'),
+            ('user__id', 'user'), ('-user__id', 'user (descending)'),
+            ('product__id', 'product'), ('-product__id', 'product (descending)'),
+        ]
+
+
+class VoteFilter(FilterSet):
+    class Meta:
+        model = Vote
+        fields = {
+            'user': ['exact',],
+            'product': ['exact', ],
+            'stars': ['gte', 'lte'],
+            'time_published': ['range'],
+        }
+
+    o = VoteOrderingFilter()
+
+    @classmethod
+    def filter_for_lookup(cls, f, lookup_type):
+        if isinstance(f, DateTimeField) and lookup_type == 'range':
+            return DateFromToRangeFilter, {}
+        return super().filter_for_lookup(f, lookup_type)
