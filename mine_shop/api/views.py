@@ -38,6 +38,7 @@ class ReadUpdateModelViewSet(
 ):
     pass
 
+
 class ReadUpdateDestroyModelViewSet(
     DestroyModelMixin,
     ReadUpdateModelViewSet,
@@ -76,7 +77,6 @@ class APIBrandViewSet(ModelViewSet):
     pagination_class = StandardResultsSetPagination
     filter_backends = [DjangoFilterBackend, ]
     filterset_class = BrandFilter
-
 
 
 @permission_classes((IsAdminUser,))
@@ -192,7 +192,7 @@ class APIUserView(RetrieveDestroyAPIView):
     serializer_class = UserDetailSerializer
 
 
-@permission_classes((IsAdminUser,))
+@permission_classes((IsAdminOrReadOnly,))
 class APIVoteViewSet(ReadOnlyModelViewSet):
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
@@ -200,4 +200,3 @@ class APIVoteViewSet(ReadOnlyModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = VoteFilter
     search_fields = ('review', 'name')
-
