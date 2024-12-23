@@ -5,8 +5,7 @@ from .views import APIUserViewSet, APIUserView, APIPersonViewSet, APIAddressView
     APIVoteViewSet, APIOrderViewSet, APIProductViewSet, APIBrandViewSet, APIRubricViewSet, APISaleInformationViewSet, \
     APIProductView, APICartItemViewSet
 
-app_name = 'api'
-VERSION = 'v1'
+app_name = 'v1'
 
 router = DefaultRouter()
 
@@ -25,9 +24,9 @@ router.register('votes', APIVoteViewSet)
 
 urlpatterns = [
 
-    path(f'{VERSION}/products/<int:pk>/detail/', APIProductView.as_view(), name='product_detail'),
-    path(f'{VERSION}/users/<int:pk>/detail/', APIUserView.as_view(), name='user_detail'),
-    path(f'{VERSION}/', include(router.urls)),
+    path(f'products/<int:pk>/detail/', APIProductView.as_view(), name='product_detail'),
+    path(f'users/<int:pk>/detail/', APIUserView.as_view(), name='user_detail'),
+    path(f'', include(router.urls)),
 
 ]
 

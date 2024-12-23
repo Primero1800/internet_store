@@ -11,7 +11,7 @@ urlpatterns = [
     path('cart/', include('cart.urls', namespace='cart')),
     path('orders/', include('orders.urls', namespace='orders')),
     path('posts/', include('posts.urls', namespace='posts')),
-    path('api/', include('api.urls', namespace='api')),
+    path('api/v1/', include('api.urls', namespace='v1')),
     path(f'api-auth/', include("rest_framework.urls")),
 ]
 
