@@ -326,6 +326,14 @@ class APIRubricViewSet(ModelViewSet):
 
 
 @permission_classes((IsAdminUser,))
+@extend_schema_view(
+    list=extend_schema(
+            summary=_("Получить список таблиц движения товаров (доступно только для администрации сайта)"),
+        ),
+    retrieve=extend_schema(
+            summary=_("Получить выбранную таблицу движения товаров по ID (доступно только для администрации сайта)"),
+        ),
+)
 class APISaleInformationViewSet(ReadOnlyModelViewSet):
     queryset = Sale_information.objects.all()
     serializer_class = SaleInformationSerializer
@@ -336,6 +344,26 @@ class APISaleInformationViewSet(ReadOnlyModelViewSet):
 
 
 @permission_classes((IsAdminUser, ))
+@extend_schema_view(
+    list=extend_schema(
+            summary=_("Получить список существующих пользователей (доступно только для администрации сайта)"),
+        ),
+    retrieve=extend_schema(
+            summary=_("Получить пользователя по ID (доступно только для администрации сайта)"),
+        ),
+    create=extend_schema(
+        summary=_("Создание нового пользователя (доступно только для администрации сайта)"),
+    ),
+    update=extend_schema(
+        summary=_("Обновить выбранного пользователя (доступно только для администрации сайта)")
+    ),
+    partial_update=extend_schema(
+        summary=_("Обновить выбранного пользователя (доступно только для администрации сайта)")
+    ),
+    destroy=extend_schema(
+            summary=_("Удалить выбранного пользователя (доступно только для администрации сайта)")
+        ),
+)
 class APIUserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -345,12 +373,28 @@ class APIUserViewSet(ModelViewSet):
 
 
 @permission_classes((IsAdminUser, ))
+@extend_schema_view(
+    get=extend_schema(
+            summary=_("Детализация пользователя по ID с имеющимися зависимостями (доступно только для администрации сайта)"),
+        ),
+    delete=extend_schema(
+            summary=_("Удалить выбранного пользователя (доступно только для администрации сайта)")
+        ),
+)
 class APIUserView(RetrieveDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
 
 
 @permission_classes((IsAdminOrReadOnly,))
+@extend_schema_view(
+    list=extend_schema(
+            summary=_("Получить список отзывов и оценок товаров"),
+        ),
+    retrieve=extend_schema(
+            summary=_("выбрать отзыв о товаре по ID"),
+        ),
+)
 class APIVoteViewSet(ReadOnlyModelViewSet):
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
