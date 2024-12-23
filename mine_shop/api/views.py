@@ -215,6 +215,26 @@ class APIPersonViewSet(ReadUpdateDestroyModelViewSet):
 
 
 @permission_classes((IsPosterAdminAndOwnerOrReadOnly,))
+@extend_schema_view(
+    list=extend_schema(
+            summary=_("Получить текущие публикации на форуме"),
+        ),
+    retrieve=extend_schema(
+            summary=_("Получить выбранную позицию из публикаций по ID"),
+        ),
+    create=extend_schema(
+        summary=_("Создание новой публикации на форуме (доступно только для авторизованного пользователя сайта)"),
+    ),
+    update=extend_schema(
+        summary=_("Обновить текущий пост на форуме (доступно для администрации сайта и автора публикации)")
+    ),
+    partial_update=extend_schema(
+        summary=_("Обновить текущий пост на форуме (доступно для администрации сайта и автора публикации)")
+    ),
+    destroy=extend_schema(
+            summary=_("Удалить текущий пост на форуме (доступно для администрации сайта и автора публикации)")
+        ),
+)
 class APIPostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializerRaw
