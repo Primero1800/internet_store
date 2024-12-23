@@ -223,7 +223,7 @@ class APIPersonViewSet(ReadUpdateDestroyModelViewSet):
             summary=_("Получить выбранную позицию из публикаций по ID"),
         ),
     create=extend_schema(
-        summary=_("Создание новой публикации на форуме (доступно только для авторизованного пользователя сайта)"),
+        summary=_("Создание новой публикации на форуме (доступно только для авторизованного пользователя)"),
     ),
     update=extend_schema(
         summary=_("Обновить текущий пост на форуме (доступно для администрации сайта и автора публикации)")
@@ -247,6 +247,20 @@ class APIPostViewSet(ModelViewSet):
 
 
 @permission_classes((IsAdminOrReadOnly,))
+@extend_schema_view(
+    list=extend_schema(
+            summary=_("Получить текущие продукты"),
+        ),
+    retrieve=extend_schema(
+            summary=_("Получить выбранный продукт по ID"),
+        ),
+    update=extend_schema(
+        summary=_("Обновить текущий продукт (доступно только для администрации сайта)")
+    ),
+    partial_update=extend_schema(
+        summary=_("Обновить текущий продукт (доступно только для администрации сайта)")
+    ),
+)
 class APIProductViewSet(ReadUpdateModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializerRaw
@@ -263,12 +277,40 @@ class APIProductViewSet(ReadUpdateModelViewSet):
 
 
 @permission_classes((IsAdminUser, ))
+@extend_schema_view(
+    get=extend_schema(
+            summary=_("Получить детализацию выбранного продукта с зависимостями (доступно только для администрации сайта)"),
+        ),
+    delete=extend_schema(
+            summary=_("Удалить выбранный продукт (доступно только для администрации сайта)"),
+        ),
+)
 class APIProductView(RetrieveDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductDetailSerializer
 
 
 @permission_classes((IsAdminUser,))
+@extend_schema_view(
+    list=extend_schema(
+            summary=_("Получить список существующих категорий (доступно только для администрации сайта)"),
+        ),
+    retrieve=extend_schema(
+            summary=_("Получить категорию по ID (доступно только для администрации сайта)"),
+        ),
+    create=extend_schema(
+        summary=_("Создание новой категории (доступно только для администрации сайта)"),
+    ),
+    update=extend_schema(
+        summary=_("Обновить выбранную категорию (доступно только для администрации сайта)")
+    ),
+    partial_update=extend_schema(
+        summary=_("Обновить выбранную категорию (доступно только для администрации сайта)")
+    ),
+    destroy=extend_schema(
+            summary=_("Удалить выбранную категорию (доступно только для администрации сайта)")
+        ),
+)
 class APIRubricViewSet(ModelViewSet):
     queryset = Rubric.objects.all()
     serializer_class = RubricSerializer
