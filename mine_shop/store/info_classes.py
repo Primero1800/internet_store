@@ -35,7 +35,7 @@ class Sale_information(models.Model):
     def view(self):
         """Логика реализации фиксации просмотра страницы"""
         self.viewed_count += 1
-        self.save( )
+        self.save()
 
     def vote(self, stars):
         """Реализация логики голосования"""
@@ -45,7 +45,6 @@ class Sale_information(models.Model):
         self.rating = self.rating + stars
         self.product.vote(self.rating / self.voted_count)
         self.save()
-
 
     def del_vote(self, stars):
         self.voted_count -= 1
@@ -76,7 +75,6 @@ class Vote(models.Model):
     def vote(self):
         s_i, _ = Sale_information.objects.get_or_create(product=self.product)
         s_i.vote(self.stars)
-
 
     def del_vote(self):
         s_i, _ = Sale_information.objects.get_or_create(product=self.product)

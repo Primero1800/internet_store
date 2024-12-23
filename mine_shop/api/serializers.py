@@ -698,6 +698,7 @@ class VoteSerializer(serializers.ModelSerializer):
         model = Vote
         fields = ('id', 'user', 'name', 'product', 'stars', 'review', 'time_published')
 
+    stars = serializers.ChoiceField(choices=Product.RatingChoices)
     user = serializers.SerializerMethodField('get_short_user')
 
     def get_short_user(self, instance) -> ReturnDict:

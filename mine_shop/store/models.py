@@ -48,7 +48,10 @@ class Product(models.Model):
         D65 = 65, _("65% скидка")
         D70 = 70, _("70% скидка")
 
-    discont = models.PositiveIntegerField(choices=DiscontChoices.choices, default=DiscontChoices.D0, verbose_name=_("Скидка"))
+    discont = models.PositiveIntegerField(
+        choices=DiscontChoices.choices, default=DiscontChoices.D0,
+        verbose_name=_("Скидка")
+    )
 
     class RatingChoices(models.IntegerChoices):
         R0 = 0, _("Нет голосов")
@@ -58,7 +61,10 @@ class Product(models.Model):
         R4 = 4, _("Хорошо")
         R5 = 5, _("Отлично")
 
-    rating = models.PositiveIntegerField(choices=RatingChoices.choices, default=RatingChoices.R0, verbose_name=_("Рейтинг изделия"))
+    rating = models.PositiveIntegerField(
+        choices=RatingChoices.choices, default=RatingChoices.R0,
+        verbose_name=_("Рейтинг изделия")
+    )
 
     AVAILABLE_CHOICES = (
         ('0', _("в продаже")),
@@ -126,6 +132,7 @@ class Product(models.Model):
 class Image(models.Model):
     """ images 433 X 325 for Product"""
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+
     def get_image_path(self, filename):
         return f"images/{self.product.pk}/{filename}"
     image = models.ImageField(upload_to=get_image_path, verbose_name=_("Изображение"))
@@ -135,11 +142,11 @@ class Image(models.Model):
         verbose_name_plural = _("Изображения")
 
 
-
-
 class Additional_information(models.Model):
     """ Дополнительная информация для Product"""
-    weight = models.DecimalField(max_digits=6, decimal_places=2, verbose_name=_("Вес в упаковке"), blank=True, default=2.0)
+    weight = models.DecimalField(
+        max_digits=6, decimal_places=2, verbose_name=_("Вес в упаковке"), blank=True, default=2.0
+    )
     dimensions = models.CharField(max_length=30, default=_("Неизвестно"), verbose_name=_("Размер упаковки"))
     size = models.CharField(max_length=50, verbose_name=_("Доп.указания"), default=_("Неизвестно"))
     guarantee = models.CharField(max_length=50, verbose_name=_("Гарантия"), default=_("Без гарантийных обязательств"))
@@ -170,5 +177,3 @@ class Rubric(models.Model):
         verbose_name = _("Рубрика")
         verbose_name_plural = _("Рубрики")
         ordering = ('id', )
-
-
