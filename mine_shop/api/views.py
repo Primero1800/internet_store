@@ -122,6 +122,24 @@ class APIBrandViewSet(ModelViewSet):
 @permission_classes((IsAdminUser,))
 @extend_schema_view(
     list=extend_schema(
+            summary=_("Получить существующие корзины (доступно только для администрации сайта)"),
+        ),
+    retrieve=extend_schema(
+            summary=_("Получить выбранную корзину по ID (доступно только для администрации сайта)"),
+        ),
+    destroy=extend_schema(
+            summary=_("Удалить выбранную корзину (доступно только для администрации сайта)")
+        ),
+)
+class APICartViewSet(ReadDestroyModelViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializerRaw
+    pagination_class = StandardResultsSetPagination
+
+
+@permission_classes((IsAdminUser,))
+@extend_schema_view(
+    list=extend_schema(
             summary=_("Получить текущие позиции в корзинах (доступно только для администрации сайта)"),
         ),
     retrieve=extend_schema(
@@ -140,13 +158,6 @@ class APIBrandViewSet(ModelViewSet):
             summary=_("Удалить текущую позицию в корзине (доступно только для администрации сайта)")
         ),
 )
-class APICartViewSet(ReadDestroyModelViewSet):
-    queryset = Cart.objects.all()
-    serializer_class = CartSerializerRaw
-    pagination_class = StandardResultsSetPagination
-
-
-@permission_classes((IsAdminUser,))
 class APICartItemViewSet(ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = CartItemSerializer
@@ -154,6 +165,14 @@ class APICartItemViewSet(ModelViewSet):
 
 
 @permission_classes((IsAdminUser, ))
+@extend_schema_view(
+    list=extend_schema(
+            summary=_("Получить существующие заказы (доступно только для администрации сайта)"),
+        ),
+    retrieve=extend_schema(
+            summary=_("Получить выбранный заказ по ID (доступно только для администрации сайта)"),
+        ),
+)
 class APIOrderViewSet(ReadOnlyModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -164,6 +183,23 @@ class APIOrderViewSet(ReadOnlyModelViewSet):
 
 
 @permission_classes((IsAdminUser, ))
+@extend_schema_view(
+    list=extend_schema(
+            summary=_("Получить список персональных данных (доступно только для администрации сайта)"),
+        ),
+    retrieve=extend_schema(
+            summary=_("Получить персональные данные по ID (доступно только для администрации сайта)"),
+        ),
+    update=extend_schema(
+        summary=_("Обновить текущие персональные данные (доступно только для администрации сайта)")
+    ),
+    partial_update=extend_schema(
+        summary=_("Обновить текущие персональные данные (доступно только для администрации сайта)")
+    ),
+    destroy=extend_schema(
+            summary=_("Удалить текущие персональные данные (доступно только для администрации сайта)")
+        ),
+)
 class APIPersonViewSet(ReadUpdateDestroyModelViewSet):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
