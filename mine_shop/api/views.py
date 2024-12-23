@@ -1,4 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from django.utils.translation import gettext as _
+from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import RetrieveDestroyAPIView
 from rest_framework.decorators import permission_classes
@@ -56,6 +58,24 @@ class ReadDestroyModelViewSet(
 
 
 @permission_classes((IsAdminUser, ))
+@extend_schema_view(
+    list=extend_schema(
+            summary=_("Получить список связанных адресов (доступно только для администрации сайта)"),
+        ),
+    retrieve=extend_schema(
+            summary=_("Получить экземпляр связанного адреса по ID (доступно только для администрации сайта)"),
+        ),
+    create=extend_schema(),
+    update=extend_schema(
+        summary=_("Изменение существующего связанного адреса (доступно только для администрации сайта"),
+    ),
+    partial_update=extend_schema(
+        summary=_("Изменение существующего связанного адреса (доступно только для администрации сайта"),
+    ),
+    destroy=extend_schema(
+            summary=_("Удаление существующего связанного адреса (доступно только для администрации сайта"),
+        ),
+)
 class APIAddressViewSet(ReadUpdateDestroyModelViewSet):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
@@ -71,6 +91,26 @@ class APIAddressViewSet(ReadUpdateDestroyModelViewSet):
 
 
 @permission_classes((IsAdminAndOwnerOrReadOnly,))
+@extend_schema_view(
+    list=extend_schema(
+            summary=_("Получить список производителей"),
+        ),
+    retrieve=extend_schema(
+            summary=_("Получить экземпляр производителя по ID"),
+        ),
+    create=extend_schema(
+        summary=_("Создать нового производителя (доступно только для администрации сайта)")
+    ),
+    update=extend_schema(
+        summary=_("Изменение существующего производителя (доступно только для администрации сайта"),
+    ),
+    partial_update=extend_schema(
+        summary=_("Изменение существующего производителя (доступно только для администрации сайта"),
+    ),
+    destroy=extend_schema(
+            summary=_("Удаление существующего производителя (доступно только для администрации сайта"),
+        ),
+)
 class APIBrandViewSet(ModelViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
@@ -80,6 +120,26 @@ class APIBrandViewSet(ModelViewSet):
 
 
 @permission_classes((IsAdminUser,))
+@extend_schema_view(
+    list=extend_schema(
+            summary=_("Получить текущие позиции в корзинах (доступно только для администрации сайта)"),
+        ),
+    retrieve=extend_schema(
+            summary=_("Получить выбранную позицию из корзин по ID (доступно только для администрации сайта)"),
+        ),
+    create=extend_schema(
+        summary=_("Создание новой позиции в корзине (доступно только для администрации сайта)"),
+    ),
+    update=extend_schema(
+        summary=_("Обновить текущую позицию в корзине (доступно только для администрации сайта)")
+    ),
+    partial_update=extend_schema(
+        summary=_("Обновить текущею позицию в корзине (доступно только для администрации сайта)")
+    ),
+    destroy=extend_schema(
+            summary=_("Удалить текущую позицию в корзине (доступно только для администрации сайта)")
+        ),
+)
 class APICartViewSet(ReadDestroyModelViewSet):
     queryset = Cart.objects.all()
     serializer_class = CartSerializerRaw

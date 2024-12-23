@@ -95,6 +95,7 @@ class CartItem(models.Model):
     class Meta:
         verbose_name = _("Товар в корзине")
         verbose_name_plural = _("Товары в корзине")
+        ordering = ('id',)
 
     @property
     def total_price(self):
