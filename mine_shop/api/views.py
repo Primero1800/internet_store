@@ -65,7 +65,6 @@ class ReadDestroyModelViewSet(
     retrieve=extend_schema(
             summary=_("Получить экземпляр связанного адреса по ID (доступно только для администрации сайта)"),
         ),
-    create=extend_schema(),
     update=extend_schema(
         summary=_("Изменение существующего связанного адреса (доступно только для администрации сайта"),
     ),
@@ -279,7 +278,8 @@ class APIProductViewSet(ReadUpdateModelViewSet):
 @permission_classes((IsAdminUser, ))
 @extend_schema_view(
     get=extend_schema(
-            summary=_("Получить детализацию выбранного продукта с зависимостями (доступно только для администрации сайта)"),
+            summary=_(
+                "Получить детализацию выбранного продукта с зависимостями (доступно только для администрации сайта)"),
         ),
     delete=extend_schema(
             summary=_("Удалить выбранный продукт (доступно только для администрации сайта)"),
@@ -375,7 +375,8 @@ class APIUserViewSet(ModelViewSet):
 @permission_classes((IsAdminUser, ))
 @extend_schema_view(
     get=extend_schema(
-            summary=_("Детализация пользователя по ID с имеющимися зависимостями (доступно только для администрации сайта)"),
+            summary=_(
+                "Детализация пользователя по ID с имеющимися зависимостями (доступно только для администрации сайта)"),
         ),
     delete=extend_schema(
             summary=_("Удалить выбранного пользователя (доступно только для администрации сайта)")
