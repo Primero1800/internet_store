@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
     'posts.apps.PostsConfig',
+
     'api.apps.ApiConfig',
+    'drf_spectacular',
 
 ]
 
@@ -120,9 +122,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
+
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
     "DEFAULT_VERSION": 'v1',
     'ALLOWED_VERSIONS': ('v1', ),
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 
