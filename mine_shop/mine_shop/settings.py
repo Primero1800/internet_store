@@ -263,9 +263,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
-
-
 # USER_DEFAULTS
 
 STORE_TITLE = 'Элементарно!'                                    #      """ Используемое внутреннее главное название проекта"""
@@ -303,10 +300,27 @@ SEARCHING_KEYS_FOR_LINKS = [
     },
 ]
 
+
+# SPECTACULAR
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': STORE_TITLE,
+    'DESCRIPTION': '',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SERVE_AUTHENTICATION': None,
+
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+    },
+    "SWAGGER_UI_FAVICON_HREF": STATIC_URL + "assets/images/favicon.ico",
+}
+
+
 # USERS
 
 AUTH_USER_MODEL = 'users.User'
-
 
 
 # CART, PERSON AND ADDRESS
@@ -360,9 +374,8 @@ TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID')
 # Used libraries and frameworks
 
 LIBRARIES = [
-    'Django', 'Django REST', 'Redis', 'Postgres', 'Siteajax', 'Gettext', 'Babel', 'Phonenumber', 'Whitenoise', 'Pillow',
+    'Django', 'Django REST', 'Redis', 'Postgres', 'Siteajax', 'Gettext', 'Babel', 'Phonenumber', 'Whitenoise', 'Pillow', 'Spectacular',
 ]
-
 
 
 # LOGGING
