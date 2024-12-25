@@ -1,0 +1,1847 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-25 17:51+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: api/serializers.py:34 api/serializers.py:120 api/serializers.py:207
+#: api/serializers.py:227 api/serializers.py:261 api/serializers.py:287
+#: api/serializers.py:301 api/serializers.py:322 api/serializers.py:491
+#: api/serializers.py:713 api/serializers.py:752
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:179
+#: orders/models.py:26 orders/models.py:66 orders/models.py:108
+#: posts/models.py:23 store/info_classes.py:64
+msgid "Пользователь"
+msgstr ""
+
+#: api/serializers.py:54 orders/forms.py:39 orders/models.py:62
+#: store/forms.py:12 users/forms.py:8 users/forms.py:16 users/forms.py:22
+msgid "Адрес эл.почты"
+msgstr ""
+
+#: api/serializers.py:88 orders/models.py:64 orders/models.py:110
+msgid "Телефонный номер"
+msgstr ""
+
+#: api/serializers.py:96
+msgid "Число продуктов"
+msgstr ""
+
+#: api/serializers.py:97 api/serializers.py:534
+msgid "Продукты"
+msgstr ""
+
+#: api/serializers.py:119 api/serializers.py:262 orders/models.py:117
+msgid "Итоговая цена"
+msgstr ""
+
+#: api/serializers.py:127
+msgid "Элементы корзины"
+msgstr ""
+
+#: api/serializers.py:181 api/serializers.py:361 api/serializers.py:390
+#: cart/models.py:92
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:17
+#: store/models.py:118
+msgid "Цена"
+msgstr ""
+
+#: api/serializers.py:185 cart/models.py:93
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:230
+#: store/models.py:75
+msgid "Количество"
+msgstr ""
+
+#: api/serializers.py:194 api/serializers.py:220 api/serializers.py:329
+#: api/serializers.py:484 api/serializers.py:542 api/serializers.py:720
+#: api/serializers.py:745 cart/models.py:91 posts/models.py:20
+#: store/info_classes.py:63 store/models.py:127 store/models.py:135
+#: store/models.py:155
+msgid "Продукт"
+msgstr ""
+
+#: api/serializers.py:359 api/serializers.py:388 store/models.py:32
+msgid "Начальная цена"
+msgstr ""
+
+#: api/serializers.py:362 api/serializers.py:543 store/info_classes.py:22
+msgid "Рейтинг"
+msgstr ""
+
+#: api/serializers.py:391 store/models.py:15 store/models.py:30
+msgid "Производитель"
+msgstr ""
+
+#: api/serializers.py:398 store/models.py:31 store/models.py:180
+msgid "Рубрики"
+msgstr ""
+
+#: api/serializers.py:405 store/models.py:144
+msgid "Изображения"
+msgstr ""
+
+#: api/serializers.py:413
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:143
+#: store/admin.py:25 store/models.py:158
+msgid "Дополнительная информация"
+msgstr ""
+
+#: api/serializers.py:422 store/info_classes.py:26 store/info_classes.py:27
+msgid "Информация о движении изделия"
+msgstr ""
+
+#: api/serializers.py:430
+msgid "Публикации"
+msgstr ""
+
+#: api/serializers.py:437 api/serializers.py:618 store/info_classes.py:72
+msgid "Отзывы"
+msgstr ""
+
+#: api/serializers.py:444 api/serializers.py:664
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:49
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:332
+msgid "Избранное"
+msgstr ""
+
+#: api/serializers.py:451
+msgid "Списки сравнения"
+msgstr ""
+
+#: api/serializers.py:458
+msgid "Содержимое корзины"
+msgstr ""
+
+#: api/serializers.py:465 api/serializers.py:684
+msgid "Недавно просмотренное"
+msgstr ""
+
+#: api/serializers.py:570
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:23
+#: users/forms.py:17
+msgid "Пароль"
+msgstr ""
+
+#: api/serializers.py:583
+msgid "Инструменты пользователя"
+msgstr ""
+
+#: api/serializers.py:593 orders/models.py:29
+msgid "Персона"
+msgstr ""
+
+#: api/serializers.py:603 orders/models.py:69
+msgid "Адрес"
+msgstr ""
+
+#: api/serializers.py:613
+msgid "Количество отзывов"
+msgstr ""
+
+#: api/serializers.py:625
+msgid "Количество сообщений"
+msgstr ""
+
+#: api/serializers.py:630
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:289
+#: posts/models.py:32
+msgid "Сообщения"
+msgstr ""
+
+#: api/serializers.py:637
+msgid "Количество заказов"
+msgstr ""
+
+#: api/serializers.py:642
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:47
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:176
+#: orders/models.py:145
+msgid "Заказы"
+msgstr ""
+
+#: api/serializers.py:649
+msgid "Итого оплачено"
+msgstr ""
+
+#: api/serializers.py:654 cart/models.py:19 cart/models.py:90
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:34
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:44
+msgid "Корзина"
+msgstr ""
+
+#: api/serializers.py:674
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:50
+msgid "Список сравнения"
+msgstr ""
+
+#: api/serializers.py:712 posts/forms.py:10 store/forms.py:14
+#: store/info_classes.py:66
+msgid "Оценка"
+msgstr ""
+
+#: api/views.py:63
+msgid ""
+"Получить список связанных адресов (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:66
+msgid ""
+"Получить экземпляр связанного адреса по ID (доступно только для "
+"администрации сайта)"
+msgstr ""
+
+#: api/views.py:69 api/views.py:72
+msgid ""
+"Изменение существующего связанного адреса (доступно только для администрации "
+"сайта"
+msgstr ""
+
+#: api/views.py:75
+msgid ""
+"Удаление существующего связанного адреса (доступно только для администрации "
+"сайта"
+msgstr ""
+
+#: api/views.py:95
+msgid "Получить список производителей"
+msgstr ""
+
+#: api/views.py:98
+msgid "Получить экземпляр производителя по ID"
+msgstr ""
+
+#: api/views.py:101
+msgid "Создать нового производителя (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:104 api/views.py:107
+msgid ""
+"Изменение существующего производителя (доступно только для администрации "
+"сайта"
+msgstr ""
+
+#: api/views.py:110
+msgid ""
+"Удаление существующего производителя (доступно только для администрации сайта"
+msgstr ""
+
+#: api/views.py:124
+msgid "Получить существующие корзины (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:127
+msgid ""
+"Получить выбранную корзину по ID (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:130
+msgid "Удалить выбранную корзину (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:142
+msgid ""
+"Получить текущие позиции в корзинах (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:145
+msgid ""
+"Получить выбранную позицию из корзин по ID (доступно только для "
+"администрации сайта)"
+msgstr ""
+
+#: api/views.py:148
+msgid ""
+"Создание новой позиции в корзине (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:151
+msgid ""
+"Обновить текущую позицию в корзине (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:154
+msgid ""
+"Обновить текущею позицию в корзине (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:157
+msgid ""
+"Удалить текущую позицию в корзине (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:169
+msgid "Получить существующие заказы (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:172
+msgid ""
+"Получить выбранный заказ по ID (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:187
+msgid ""
+"Получить список персональных данных (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:190
+msgid ""
+"Получить персональные данные по ID (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:193 api/views.py:196
+msgid ""
+"Обновить текущие персональные данные (доступно только для администрации "
+"сайта)"
+msgstr ""
+
+#: api/views.py:199
+msgid ""
+"Удалить текущие персональные данные (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:219
+msgid "Получить текущие публикации на форуме"
+msgstr ""
+
+#: api/views.py:222
+msgid "Получить выбранную позицию из публикаций по ID"
+msgstr ""
+
+#: api/views.py:225
+msgid ""
+"Создание новой публикации на форуме (доступно только для авторизованного "
+"пользователя)"
+msgstr ""
+
+#: api/views.py:228 api/views.py:231
+msgid ""
+"Обновить текущий пост на форуме (доступно для администрации сайта и автора "
+"публикации)"
+msgstr ""
+
+#: api/views.py:234
+msgid ""
+"Удалить текущий пост на форуме (доступно для администрации сайта и автора "
+"публикации)"
+msgstr ""
+
+#: api/views.py:251
+msgid "Получить текущие продукты"
+msgstr ""
+
+#: api/views.py:254
+msgid "Получить выбранный продукт по ID"
+msgstr ""
+
+#: api/views.py:257 api/views.py:260
+msgid "Обновить текущий продукт (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:282
+msgid ""
+"Получить детализацию выбранного продукта с зависимостями (доступно только "
+"для администрации сайта)"
+msgstr ""
+
+#: api/views.py:285
+msgid "Удалить выбранный продукт (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:296
+msgid ""
+"Получить список существующих категорий (доступно только для администрации "
+"сайта)"
+msgstr ""
+
+#: api/views.py:299
+msgid "Получить категорию по ID (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:302
+msgid "Создание новой категории (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:305 api/views.py:308
+msgid "Обновить выбранную категорию (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:311
+msgid "Удалить выбранную категорию (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:331
+msgid ""
+"Получить список таблиц движения товаров (доступно только для администрации "
+"сайта)"
+msgstr ""
+
+#: api/views.py:334
+msgid ""
+"Получить выбранную таблицу движения товаров по ID (доступно только для "
+"администрации сайта)"
+msgstr ""
+
+#: api/views.py:349
+msgid ""
+"Получить список существующих пользователей (доступно только для "
+"администрации сайта)"
+msgstr ""
+
+#: api/views.py:352
+msgid "Получить пользователя по ID (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:355
+msgid "Создание нового пользователя (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:358 api/views.py:361
+msgid ""
+"Обновить выбранного пользователя (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:364 api/views.py:382
+msgid ""
+"Удалить выбранного пользователя (доступно только для администрации сайта)"
+msgstr ""
+
+#: api/views.py:379
+msgid ""
+"Детализация пользователя по ID с имеющимися зависимостями (доступно только "
+"для администрации сайта)"
+msgstr ""
+
+#: api/views.py:393
+msgid "Получить список отзывов и оценок товаров"
+msgstr ""
+
+#: api/views.py:396
+msgid "выбрать отзыв о товаре по ID"
+msgstr ""
+
+#: cart/models.py:15 users/models.py:43
+msgid "Покупатель"
+msgstr ""
+
+#: cart/models.py:16
+msgid "Дата и время создания"
+msgstr ""
+
+#: cart/models.py:96
+msgid "Товар в корзине"
+msgstr ""
+
+#: cart/models.py:97
+msgid "Товары в корзине"
+msgstr ""
+
+#: cart/templatetags/templatetags_cart.py:35
+msgid "бесплатно"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:13
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:204
+msgid "UNKNOWN"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:15
+msgid "ID"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:16
+msgid "Аноним"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:18
+msgid "Сравнить"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:19
+msgid "Выход"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:20
+msgid "Вход"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:21
+msgid "Войти"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:22
+msgid "Адрес электронной почты"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:24
+msgid "Регистрация"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:25
+msgid "Новинка"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:26
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:102
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:136
+msgid "Новинки"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:27
+#: store/models.py:53 store/views.py:75
+msgid "Скидка"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:28
+msgid "Бестселлер"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:29
+#: store/views.py:84
+msgid "Бестселлеры"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:30
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:135
+#: store/views.py:92
+msgid "Лидеры просмотров"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:31
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:137
+#: store/views.py:86
+msgid "Лидеры продаж"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:32
+#: store/views.py:89
+msgid "Лидеры рейтинга"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:33
+msgid "Нет в наличии"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:35
+msgid "В корзину"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:36
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:92
+msgid "Добавить"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:37
+msgid "Добавить в корзину"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:38
+#: users/models.py:108 users/models.py:118
+msgid "Добавлено"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:39
+msgid "Брэнды"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:40
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:100
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:334
+msgid "Фильтры"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:41
+#: store/views.py:55
+msgid "Все товары"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:42
+msgid "Все товары из категории"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:43
+msgid "Информация"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:45
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:166
+msgid "Корзина покупателя"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:46
+msgid "История заказов"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:48
+msgid "К заказу"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:51
+msgid "решетка"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:52
+msgid "список"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:53
+msgid "Администрация"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:54
+msgid "Категории"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:55
+msgid "Разделы"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:56
+msgid "Перейти к разделу"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:57
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:155
+msgid "Все категории"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:58
+msgid "Акционные товары"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:59
+msgid "Все скидки"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:60
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:103
+#: store/models.py:124
+msgid "На скидке"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:61
+msgid "Скидки более"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:62
+msgid "Инструменты"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:63
+msgid "ID продукта"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:64
+msgid "Популярное"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:65
+msgid "Недавно просмотренные"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:66
+msgid "Стартовая страница"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:67
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:285
+msgid "Форум"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:68
+msgid "Инструменты администрации"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:69
+msgid "Работа с заказами"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:70
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:226
+msgid "Итого"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:71
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:189
+msgid "Доставка"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:72
+msgid "Найти"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:77
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:81
+msgid "Показано"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:78
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:82
+msgid "результатов"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:86
+msgid "показать еще"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:89
+msgid "админ"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:90
+msgid "У выбранного товара еще нет отзывов и оценок"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:91
+msgid "Добавить отзыв"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:93
+msgid "Вы уже оценивали выбранный товар"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:94
+msgid "Оставлять отзывы могут только авторизованные пользователи"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:95
+msgid "Ваш отзыв"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:101
+msgid "Показать все"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:104
+msgid "Поиск по ключу"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:105
+msgid "в разделе"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:106
+msgid "Переход по ссылке"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:107
+msgid "Найдено товаров"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:108
+msgid "По умолчанию"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:109
+msgid "По поступлению"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:110
+msgid "По цене"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:111
+msgid "По рейтингу"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:112
+msgid "на странице"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:115
+msgid "Ошибка 404"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:116
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:220
+msgid "На домашнюю страницу"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:119
+msgid "Внутренняя ошибка сервера. Обновите страницу через минуту"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:120
+msgid "Ошибка 500"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:123
+msgid "Ошибка 403"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:124
+msgid "Страница недоступна неавторизованному пользователю"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:125
+msgid "На страницу авторизации"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:128
+msgid "Некорректный запрос"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:129
+msgid "Ошибка 400"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:133
+msgid "на выбранный товар"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:134
+msgid "Купить прямо сейчас"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:138
+msgid "Продажи отсутствуют"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:141
+msgid "Доступность"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:142
+#: store/models.py:11 store/models.py:29 store/models.py:172
+msgid "Описание"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:144
+msgid "Отзывы и оценки"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:145
+msgid "Движение товара"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:150
+msgid "Ищите нас в социальных сетях"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:151
+msgid "Быстрый переход"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:156
+msgid "Поиск товара"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:163
+msgid "Топ брэнды"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:167
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:177
+msgid "шт"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:168
+msgid "Корзина пуста"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:169
+msgid "Без учета доставки"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:170
+msgid "Оформить заказ"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:171
+msgid "Продолжить покупки"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:175
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:218
+msgid "Отмена заказа"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:178
+msgid "Заказать"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:182
+msgid "Пользовательские данные для доставки"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:183
+msgid "Отметка обязательных к заполнению полей"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:184
+msgid "Еще не закончили"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:185
+msgid "Перейдите по ссылке для продолжения покупок"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:186
+msgid "Ваш заказ"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:187
+msgid "в заказе уточнено наличие и количество продукции"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:188
+msgid "Редактировать"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:190
+msgid "Стоимость заказа"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:191
+msgid "Самовывоз"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:192
+msgid "Предварительная оплата на сайте"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:193
+msgid ""
+"Оплата на сайте посредством предварительного прямого банковского перевода "
+"или посредством системы ЕРИП"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:194
+msgid "Оплата картой при получении"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:195
+msgid ""
+"Оплата при получении товара от курьера или в точке самовывоза посредством "
+"банковской карты"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:196
+msgid "Оплата наличными при получении"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:197
+msgid ""
+"Оплата при получении товара от курьера или в точке самовывоза наличными "
+"денежными средствами"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:198
+msgid "Корзина пуста. Заказ невозможен"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:199
+msgid "перейдите по ссылке для совершения покупок"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:200
+msgid "Смотреть историю заказов"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:205
+msgid "Заказы. Информация"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:206
+msgid "Заказ принят в обработку"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:207
+msgid "История заказов пользователя"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:209
+#: orders/models.py:126
+msgid "Ожидает оплаты"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:210
+#: orders/models.py:127
+msgid "Оплачен"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:211
+msgid "Оплата при вручении, б/н"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:212
+msgid "Оплата при вручении, нал.д/с"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:214
+msgid "Инструмент недоступен для неавторизованного пользователя."
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:215
+msgid "Пройдите по ссылке для авторизации"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:219
+msgid "Заказ отменен"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:223
+msgid "Админ. Заказы"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:224
+msgid "отменить"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:225
+msgid "доставить"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:227
+msgid "Доставлено"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:228
+msgid "Ожидает"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:229
+msgid "Отменено"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:231
+msgid "Последняя доставка"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:232
+msgid "Длительное ожидание"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:233
+msgid "заказан"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:234
+msgid "доставлен"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:235
+msgid "отменен"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:236
+msgid "предоплата"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:237
+msgid "оплачено"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:238
+msgid "карта"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:239
+msgid "наличн."
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:242
+msgid "Итого к оплате"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:247
+msgid "Сравнение товаров"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:250
+msgid "Аутентификация"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:251
+msgid "Войти в существующий аккаунт"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:252
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:274
+msgid "Нет аккаунта? Зарегистрируйтесь"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:253
+msgid "!!!Sign in with facebook!!!"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:254
+msgid "!!!Sign in with twitter!!!"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:255
+msgid "Забыли пароль? Отправить новый на указанную почту"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:258
+msgid "Создать новый аккаунт"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:259
+msgid "Уже есть аккаунт? Выполните вход"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:260
+msgid "Согласен на обработку персональных данных"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:261
+msgid "Зарегистрироваться"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:262
+msgid "Зарегистрируйтесь сегодня и вы получите"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:263
+msgid ""
+"Хранение корзины заказов на сервере с возможностью доступа с различных "
+"устройств"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:264
+msgid "Ускорение оформления заказа с сохранением в истории"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:265
+msgid "Разделы сравнения товаров и добавления в избранное"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:266
+msgid "Возможность оценивать товары и участвовать в обсуждениях"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:267
+msgid "Возможность быстрого доступа к ранее просмотренным позициям"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:268
+msgid "Возможность оставлять комментарии на форуме сайта"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:271
+msgid "Восстановление пароля"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:272
+msgid "Изменить пароль"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:273
+msgid "Вспомнили пароль? Войти"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:275
+msgid "Выслать новый пароль"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:278
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:333
+msgid "Сравнение позиций"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:279
+msgid "Список для сравнения пуст"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:286
+msgid "Перейти"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:287
+msgid "Участие в дискуссии могут принимать только авторизованные пользователи."
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:288
+msgid "Сообщения отсутствуют"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:290
+msgid "О форуме"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:291
+msgid ""
+"Сообщения могут оставлять только авторизованные пользователи. Сообщения "
+"могут быть как на общие темы, так о какой-либо единице продукции. "
+"Пользователь может указать ее в выпадающем списке в виде ссылки на страницу "
+"продукта или используя наименование. При общении будьте вежливы друг с "
+"другом и корректны в своих сообщениях. Помните, что их читают тоже люди :)"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:292
+msgid "Оставить сообщение"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:293
+msgid "Опубликовать"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:294
+msgid "Введите ссылку или имя товара"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:295
+msgid "Товар не найден"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:296
+msgid "Товар не выбран"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:297
+msgid "О продукте"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:298
+msgid "Последнее в публикациях"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:301
+msgid "О сайте"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:302
+msgid "Информация / контакты"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:303
+msgid "Создатели"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:304
+msgid "Алексей Кулеш"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:305
+msgid "Контакты"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:306
+msgid "Использовались технологии"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:307
+msgid "Структура проекта"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:309
+msgid ""
+"Реализует основу интернет-магазина с экземплярами товаров в продаже, с "
+"системой поиска, фильтрации и различных способов отображения выбранных "
+"позиций. Дополнительно представлены брэнды, категории товаров, "
+"необязательная дополнительная информация о каждом экземпляре, информация о "
+"движении (продажа, просмотры и т.д), отдельный класс-модель изображений для "
+"продукции и отзывы, оставляемые авторизованными пользователями."
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:313
+msgid ""
+"Реализует корзину покупателя. Реализация для анонима и авторизованного "
+"пользователя различаются. Поведение корзины анонима из сессии при "
+"авторизации пользователя реализуется двумя различными способами, выбор между "
+"которыми осуществляется в файле настроек проекта."
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:315
+msgid ""
+"Аутентификация пользователей осуществляется по адресу почтового ящика, куда "
+"высылается пароль при регистрации на сайте. В случае утери пароля есть "
+"механизм восстановления. После регистрации пользователю необходимо "
+"активировать свой аккаунт. Зарегистрированный пользователь получает "
+"возможность участвовать в дискуссиях, оценивать продукцию, добавлять позиции "
+"в избранное и список сравнения, просматривать свою историю заказов. Кроме "
+"того сохраняются персональны данные, что упрощает саму процедуру заказа."
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:319
+msgid ""
+"Реализует систему заказов. Зарегистрированные пользователи сохраняют свои "
+"данные для автоматического заполнения при последующих обращениях. Кроме "
+"того, имеется возможность просматривать историю заказов, а для "
+"адмнинистрации сайта - удобные инструменты для обработки заказов. Данные о "
+"заказаных позициях и пользователях хранятся в БД в сериализованном виде."
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:322
+msgid ""
+"Реализация простого форума с возможностью для зарегистрированных "
+"пользователей оставлять комментарии как на общую тему, так и касательно "
+"определенного экземпляра продукции (благодаря системе поиска и выбора)"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:324
+msgid "Фрагмент стартовой страницы"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:325
+msgid "Фрагмент страницы экземпляра"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:326
+msgid "Фрагмент страницы категории"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:327
+msgid "Фрагмент страницы форума"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:328
+msgid "Фрагмент страницы обработки заказов"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:329
+msgid "Фрагмент страницы истории заказов"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:330
+msgid "Корзина в меню"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:331
+msgid "Корзина изнутри"
+msgstr ""
+
+#: mine_shop/templatetags/templatetags_mine_shop_constants.py:335
+msgid "Страница заказа"
+msgstr ""
+
+#: orders/admin.py:11
+msgid "Заказы доставлены"
+msgstr ""
+
+#: orders/admin.py:13
+msgid "Доставить"
+msgstr ""
+
+#: orders/admin.py:19
+msgid "Заказы отменены"
+msgstr ""
+
+#: orders/admin.py:21
+msgid "Отменить заказ"
+msgstr ""
+
+#: orders/admin.py:41
+msgid "Содержимое заказа"
+msgstr ""
+
+#: orders/forms.py:9
+msgid "Неверный номер для выбранного региона."
+msgstr ""
+
+#: orders/forms.py:14 orders/forms.py:43 orders/models.py:19 posts/forms.py:13
+#: store/forms.py:7 users/forms.py:7
+msgid "Обязательное условие"
+msgstr ""
+
+#: orders/forms.py:14 orders/models.py:19
+msgid "Имя"
+msgstr ""
+
+#: orders/forms.py:16 orders/forms.py:18
+msgid "Не более 50 символов"
+msgstr ""
+
+#: orders/forms.py:16 orders/models.py:20
+msgid "Фамилия"
+msgstr ""
+
+#: orders/forms.py:19 orders/forms.py:38 store/forms.py:11
+msgid "Не менее 3 символов"
+msgstr ""
+
+#: orders/forms.py:20 orders/models.py:25
+msgid "Компания"
+msgstr ""
+
+#: orders/forms.py:20
+msgid "*для юридических лиц"
+msgstr ""
+
+#: orders/forms.py:23 orders/forms.py:27 orders/forms.py:31
+msgid "Обязательно условие"
+msgstr ""
+
+#: orders/forms.py:24
+msgid "Не менее 5 символов"
+msgstr ""
+
+#: orders/forms.py:25 orders/models.py:56
+msgid "Адрес доставки"
+msgstr ""
+
+#: orders/forms.py:28 orders/forms.py:34
+msgid "Не менее 2 символов"
+msgstr ""
+
+#: orders/forms.py:29 orders/models.py:57
+msgid "Населенный пункт"
+msgstr ""
+
+#: orders/forms.py:32
+msgid "Неверное значение"
+msgstr ""
+
+#: orders/forms.py:33
+msgid "Не более 12 символов"
+msgstr ""
+
+#: orders/forms.py:35 orders/models.py:58
+msgid "Почтовый код"
+msgstr ""
+
+#: orders/forms.py:37 store/forms.py:10
+msgid "Не более 70 символов"
+msgstr ""
+
+#: orders/forms.py:45
+msgid "Код страны"
+msgstr ""
+
+#: orders/forms.py:45
+msgid "Номер телефона"
+msgstr ""
+
+#: orders/models.py:20 orders/models.py:22
+msgid "Атрибут не может состоять более чем из 50 символов"
+msgstr ""
+
+#: orders/models.py:23 orders/models.py:61
+msgid "Атрибут не может состоять менее чем из 3 символов"
+msgstr ""
+
+#: orders/models.py:60
+msgid "Атрибут не может состоять более чем из 70 символов"
+msgstr ""
+
+#: orders/models.py:63 orders/models.py:109
+msgid "Неверный телефонный номер"
+msgstr ""
+
+#: orders/models.py:111
+msgid "Ошибка в заказе"
+msgstr ""
+
+#: orders/models.py:112
+msgid "Данные заказа"
+msgstr ""
+
+#: orders/models.py:113 orders/models.py:115
+msgid "Ошибка в данных"
+msgstr ""
+
+#: orders/models.py:114
+msgid "Данные пользователя"
+msgstr ""
+
+#: orders/models.py:116
+msgid "Данные адреса доставки"
+msgstr ""
+
+#: orders/models.py:120
+msgid "Пункт выдачи"
+msgstr ""
+
+#: orders/models.py:121
+msgid "Адрес заказчика"
+msgstr ""
+
+#: orders/models.py:123
+msgid "Доставить на"
+msgstr ""
+
+#: orders/models.py:128
+msgid "При вручении, б/н"
+msgstr ""
+
+#: orders/models.py:129
+msgid "При вручении, нал.д/с"
+msgstr ""
+
+#: orders/models.py:131
+msgid "Статус оплаты"
+msgstr ""
+
+#: orders/models.py:134
+msgid "Заказан"
+msgstr ""
+
+#: orders/models.py:135
+msgid "Доставлен"
+msgstr ""
+
+#: orders/models.py:136
+msgid "Отменен"
+msgstr ""
+
+#: orders/models.py:138
+msgid "Статус заказа"
+msgstr ""
+
+#: orders/models.py:140
+msgid "Время заказа"
+msgstr ""
+
+#: orders/models.py:141
+msgid "Время доставки"
+msgstr ""
+
+#: orders/models.py:144 orders/models.py:201
+msgid "Заказ"
+msgstr ""
+
+#: orders/models.py:207
+msgid "Заказ удален"
+msgstr ""
+
+#: orders/views.py:38
+msgid ""
+"Во время заполнения данных заказа Ваша корзина претерпела изменения. "
+"Проверьте данные."
+msgstr ""
+
+#: posts/forms.py:14 store/forms.py:16
+msgid "Не более 500 символов"
+msgstr ""
+
+#: posts/forms.py:15 posts/models.py:31 posts/models.py:43
+msgid "Сообщение"
+msgstr ""
+
+#: posts/models.py:25 store/info_classes.py:65
+msgid "Имя пользователя"
+msgstr ""
+
+#: posts/models.py:26 store/forms.py:17 store/info_classes.py:67
+#: store/info_classes.py:71 store/info_classes.py:91
+msgid "Отзыв"
+msgstr ""
+
+#: posts/models.py:27
+msgid "Не менее одного символа"
+msgstr ""
+
+#: posts/models.py:28 store/info_classes.py:68
+msgid "Время публикации"
+msgstr ""
+
+#: posts/models.py:48
+msgid "Сообщение удалено"
+msgstr ""
+
+#: store/forms.py:8
+msgid "Отображаемое имя"
+msgstr ""
+
+#: store/info_classes.py:19
+msgid "Продажи"
+msgstr ""
+
+#: store/info_classes.py:20
+msgid "Просмотры"
+msgstr ""
+
+#: store/info_classes.py:21
+msgid "Количество оценок"
+msgstr ""
+
+#: store/info_classes.py:96
+msgid "Отзыв удален"
+msgstr ""
+
+#: store/models.py:10
+msgid "Название"
+msgstr ""
+
+#: store/models.py:12
+msgid "Логотип"
+msgstr ""
+
+#: store/models.py:16
+msgid "Производители"
+msgstr ""
+
+#: store/models.py:27 store/models.py:170
+msgid "Наименование"
+msgstr ""
+
+#: store/models.py:35
+msgid "без скидки"
+msgstr ""
+
+#: store/models.py:36
+msgid "5% скидка"
+msgstr ""
+
+#: store/models.py:37
+msgid "10% скидка"
+msgstr ""
+
+#: store/models.py:38
+msgid "15% скидка"
+msgstr ""
+
+#: store/models.py:39
+msgid "20% скидка"
+msgstr ""
+
+#: store/models.py:40
+msgid "25% скидка"
+msgstr ""
+
+#: store/models.py:41
+msgid "30% скидка"
+msgstr ""
+
+#: store/models.py:42
+msgid "35% скидка"
+msgstr ""
+
+#: store/models.py:43
+msgid "40% скидка"
+msgstr ""
+
+#: store/models.py:44
+msgid "45% скидка"
+msgstr ""
+
+#: store/models.py:45
+msgid "50% скидка"
+msgstr ""
+
+#: store/models.py:46
+msgid "55% скидка"
+msgstr ""
+
+#: store/models.py:47
+msgid "60% скидка"
+msgstr ""
+
+#: store/models.py:48
+msgid "65% скидка"
+msgstr ""
+
+#: store/models.py:49
+msgid "70% скидка"
+msgstr ""
+
+#: store/models.py:57
+msgid "Нет голосов"
+msgstr ""
+
+#: store/models.py:58
+msgid "Ужасно"
+msgstr ""
+
+#: store/models.py:59
+msgid "Плохо"
+msgstr ""
+
+#: store/models.py:60
+msgid "Средне"
+msgstr ""
+
+#: store/models.py:61
+msgid "Хорошо"
+msgstr ""
+
+#: store/models.py:62
+msgid "Отлично"
+msgstr ""
+
+#: store/models.py:66
+msgid "Рейтинг изделия"
+msgstr ""
+
+#: store/models.py:70
+msgid "в продаже"
+msgstr ""
+
+#: store/models.py:71
+msgid "нет в наличии"
+msgstr ""
+
+#: store/models.py:74
+msgid "Опубликовано"
+msgstr ""
+
+#: store/models.py:128
+msgid "Продукция"
+msgstr ""
+
+#: store/models.py:140 store/models.py:143 store/models.py:173
+msgid "Изображение"
+msgstr ""
+
+#: store/models.py:150
+msgid "Вес в упаковке"
+msgstr ""
+
+#: store/models.py:152 store/models.py:153
+msgid "Неизвестно"
+msgstr ""
+
+#: store/models.py:152
+msgid "Размер упаковки"
+msgstr ""
+
+#: store/models.py:153
+msgid "Доп.указания"
+msgstr ""
+
+#: store/models.py:154
+msgid "Гарантия"
+msgstr ""
+
+#: store/models.py:154
+msgid "Без гарантийных обязательств"
+msgstr ""
+
+#: store/models.py:179
+msgid "Рубрика"
+msgstr ""
+
+#: store/templatetags/templatetags_error_page.py:7
+msgid "Страница не найдена"
+msgstr ""
+
+#: store/templatetags/templatetags_error_page.py:8
+msgid "Для просмотра истории заказов пройдите по ссылке: "
+msgstr ""
+
+#: store/views.py:60
+msgid ". На скидке"
+msgstr ""
+
+#: store/views.py:65
+msgid ". Новинки"
+msgstr ""
+
+#: store/views.py:75
+msgid "Скидка более "
+msgstr ""
+
+#: store/views.py:129
+msgid "Поиск"
+msgstr ""
+
+#: store/views.py:181
+msgid "Ошибка"
+msgstr ""
+
+#: users/forms.py:7
+msgid "Согласие"
+msgstr ""
+
+#: users/forms.py:8 users/forms.py:16 users/forms.py:17 users/forms.py:22
+msgid "Не может быть пустым"
+msgstr ""
+
+#: users/forms.py:12
+msgid "Необходимо согласие на обработку персональных данных"
+msgstr ""
+
+#: users/models.py:12
+msgid "имя пользователя"
+msgstr ""
+
+#: users/models.py:14
+msgid ""
+"Обязательное. Не более 75 символов. Допустимы буквы, цифры и символы @/./+/-/"
+"_"
+msgstr ""
+
+#: users/models.py:17
+msgid "Пользователь с таким именем уже существует."
+msgstr ""
+
+#: users/models.py:23
+msgid "адрес электронной почты"
+msgstr ""
+
+#: users/models.py:26
+msgid "активный"
+msgstr ""
+
+#: users/models.py:29
+msgid ""
+"Отображает, является ли пользователь активным пользователем.Отметьте "
+"пользователя неактивнм вместо удаления аккаунта."
+msgstr ""
+
+#: users/models.py:46
+msgid "Максимальное число записей в категории 'Недавно просмотренное'"
+msgstr ""
+
+#: users/models.py:48
+msgid "Максимальное число записей в категории 'Избранное'"
+msgstr ""
+
+#: users/models.py:50
+msgid "Максимальное число записей в категории 'Сравнение'"
+msgstr ""
+
+#: users/models.py:54
+msgid "Инструменты авторизованного пользователя"
+msgstr ""
+
+#: users/models.py:98
+msgid "Просмотрено"
+msgstr ""
+
+#: users/models.py:99 users/models.py:109 users/models.py:119
+msgid "Идентификатор продукта"
+msgstr ""
+
+#: users/models.py:102
+msgid "Недавно просмотренный товар"
+msgstr ""
+
+#: users/models.py:112
+msgid "Избранный товар"
+msgstr ""
+
+#: users/models.py:122
+msgid "Товар к сравнению"
+msgstr ""
+
+#: users/views.py:69
+msgid "Для завершения регистрации и активации аккаунта \n"
+msgstr ""
+
+#: users/views.py:73
+#, python-brace-format
+msgid "Ваш новый пароль {new_password} \n"
+msgstr ""
+
+#: users/views.py:78
+#, python-brace-format
+msgid "{settings.STORE_TITLE} Пожалуйста, подтвердите регистрацию"
+msgstr ""
+
+#: users/views.py:132
+msgid "Проверьте имя и пароль"
+msgstr ""
+
+#: users/views.py:163
+#, python-brace-format
+msgid "Ваш новый пароль: {new_password}"
+msgstr ""
+
+#: users/views.py:167
+#, python-brace-format
+msgid "{settings.STORE_TITLE} Восстановление доступа"
+msgstr ""
