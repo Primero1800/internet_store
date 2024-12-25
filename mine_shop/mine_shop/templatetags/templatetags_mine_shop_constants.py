@@ -244,7 +244,7 @@ DICTIONARY ={
     ### USERS CONSTANTS
 
     # comparison
-    'uc_title': _("Сравнение тваров"),
+    'uc_title': _("Сравнение товаров"),
 
     # login
     'ul_title' :_("Аутентификация"),

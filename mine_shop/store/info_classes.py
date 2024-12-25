@@ -15,7 +15,7 @@ class Sale_information(models.Model):
     """
     Модель для хранения технической информации для администрации о продажах и популярности товара
     """
-    product = models.OneToOneField(to=Product, on_delete=models.CASCADE, related_name=_("sale_information"))
+    product = models.OneToOneField(to=Product, on_delete=models.CASCADE, related_name="sale_information")
     sold_count = models.PositiveIntegerField(default=0, blank=False, verbose_name=_("Продажи"))
     viewed_count = models.PositiveIntegerField(default=0, blank=0, verbose_name=_("Просмотры"))
     voted_count = models.PositiveIntegerField(default=0, blank=0, verbose_name=_("Количество оценок"))
