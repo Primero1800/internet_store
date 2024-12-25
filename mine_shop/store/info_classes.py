@@ -60,12 +60,12 @@ class Vote(models.Model):
     """
         Модель для хранения отзыва и оценки пользователя экземпляра продукции
     """
-    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, related_name='votes')
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='votes')
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE, related_name='votes', verbose_name=_("Продукт"))
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='votes', verbose_name=_("Пользователь"))
     name = models.CharField(max_length=75, verbose_name=_("Имя пользователя"))
     stars = models.PositiveSmallIntegerField(choices=Product.RatingChoices, verbose_name=_("Оценка"))
     review = models.TextField(blank=True, null=True, max_length=500, verbose_name=_("Отзыв"))
-    time_published = models.DateTimeField(auto_now_add=True)
+    time_published = models.DateTimeField(auto_now_add=True, verbose_name=_("Время публикации"))
 
     class Meta:
         verbose_name = _("Отзыв")
