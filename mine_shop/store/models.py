@@ -131,7 +131,9 @@ class Product(models.Model):
 
 class Image(models.Model):
     """ images 433 X 325 for Product"""
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name='images', verbose_name=_("Продукт")
+    )
 
     def get_image_path(self, filename):
         return f"images/{self.product.pk}/{filename}"
@@ -150,7 +152,7 @@ class Additional_information(models.Model):
     dimensions = models.CharField(max_length=30, default=_("Неизвестно"), verbose_name=_("Размер упаковки"))
     size = models.CharField(max_length=50, verbose_name=_("Доп.указания"), default=_("Неизвестно"))
     guarantee = models.CharField(max_length=50, verbose_name=_("Гарантия"), default=_("Без гарантийных обязательств"))
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, verbose_name=_("Продукт"))
 
     class Meta:
         verbose_name = _("Дополнительная информация")

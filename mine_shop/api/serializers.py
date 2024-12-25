@@ -566,7 +566,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(
         min_length=8, required=True, write_only=True,
-        style={'input_type': 'password', 'placeholder': 'Password'}
+        style={'input_type': 'password', 'placeholder': 'Password'},
+        label=_("Пароль")
     )
 
 

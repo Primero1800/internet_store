@@ -15,12 +15,17 @@ class Post(models.Model):
     """
         Модель для хранения сообщения на форуме
     """
-    product = models.ForeignKey(to=Product, blank=True, null=True, on_delete=models.CASCADE, related_name='posts')
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='posts')
+    product = models.ForeignKey(
+        to=Product, blank=True, null=True, on_delete=models.CASCADE,
+        related_name='posts', verbose_name=_("Продукт"),
+    )
+    user = models.ForeignKey(
+        to=User, on_delete=models.CASCADE, related_name='posts', verbose_name=_("Пользователь")
+    )
     name = models.CharField(max_length=75, verbose_name=_("Имя пользователя"))
     review = models.TextField(max_length=500, verbose_name=_("Отзыв"), validators=[
                                                             MinLengthValidator(1, _("Не менее одного символа"))])
-    time_published = models.DateTimeField(auto_now_add=True)
+    time_published = models.DateTimeField(auto_now_add=True, verbose_name=_("Время публикации"))
 
     class Meta:
         verbose_name = _("Сообщение")

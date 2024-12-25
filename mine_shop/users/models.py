@@ -23,7 +23,7 @@ class User(AbstractUser):
     email = models.EmailField(_("адрес электронной почты"), unique=True)
 
     is_active = models.BooleanField(
-            _("активный"),
+            verbose_name=_("активный"),
             default=False,
             help_text=_(
                 "Отображает, является ли пользователь активным пользователем."
