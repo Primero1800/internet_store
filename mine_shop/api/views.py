@@ -282,11 +282,28 @@ class APICartItemViewSet(ModelViewSet):
 @permission_classes((IsAdminUser, ))
 @extend_schema_view(
     list=extend_schema(
-            summary=_("Получить существующие заказы (доступно только для администрации сайта)"),
-        ),
+        summary=_("Получить существующие заказы (доступно только для администрации сайта)"),
+        parameters=[
+            OpenApiParameter(name='phonenumber__contains', description='Filter phonenumber__contains',),
+            OpenApiParameter(name='search', description="Search term. Searching in 'order_content'",),
+            OpenApiParameter(name='time_delivered__range_after', description='Filter time_delivered in range. yyyy-mm-dd',),
+            OpenApiParameter(name='time_placed__range_after', description='Filter time_placed in range. yyyy-mm-dd',),
+            OpenApiParameter(name='total_price__gte', description='Filter total_price >=',),
+            OpenApiParameter(name='total_price__lte', description='Filter total_price <=',),
+        ],
+        responses={
+            status.HTTP_200_OK: OrderSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+        },
+    ),
     retrieve=extend_schema(
-            summary=_("Получить выбранный заказ по ID (доступно только для администрации сайта)"),
-        ),
+        summary=_("Получить выбранный заказ по ID (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: OrderSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
+    ),
 )
 class APIOrderViewSet(ReadOnlyModelViewSet):
     queryset = Order.objects.all()
