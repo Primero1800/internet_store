@@ -378,19 +378,48 @@ class APIPersonViewSet(ReadUpdateDestroyModelViewSet):
 @permission_classes((IsPosterAdminAndOwnerOrReadOnly,))
 @extend_schema_view(
     list=extend_schema(
-            summary=_("Получить текущие публикации на форуме"),
-        ),
+        summary=_("Получить текущие публикации на форуме"),
+        parameters=[
+            OpenApiParameter(name='id', description='Filter id =', type=int),
+            OpenApiParameter(name='product', description="Filter product =", type=int),
+            OpenApiParameter(name='user', description='Filter user=', type=int),
+        ],
+        responses={
+            status.HTTP_200_OK: PostSerializerRaw,
+        },
+    ),
     retrieve=extend_schema(
-            summary=_("Получить выбранную позицию из публикаций по ID"),
-        ),
+        summary=_("Получить выбранную позицию из публикаций по ID"),
+        responses={
+            status.HTTP_200_OK: PostSerializerRaw,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
+    ),
     create=extend_schema(
         summary=_("Создание новой публикации на форуме (доступно только для авторизованного пользователя)"),
+        responses={
+            status.HTTP_201_CREATED: PostSerializerRaw,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+        }
     ),
     update=extend_schema(
-        summary=_("Обновить текущий пост на форуме (доступно для администрации сайта и автора публикации)")
+        summary=_("Обновить текущий пост на форуме (доступно для администрации сайта и автора публикации)"),
+        responses={
+            status.HTTP_200_OK: PostSerializerRaw,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
     ),
     partial_update=extend_schema(
-        summary=_("Обновить текущий пост на форуме (доступно для администрации сайта и автора публикации)")
+        summary=_("Обновить текущий пост на форуме (доступно для администрации сайта и автора публикации)"),
+        responses={
+            status.HTTP_200_OK: PostSerializerRaw,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
     ),
     destroy=extend_schema(
         summary=_("Удалить текущий пост на форуме (доступно для администрации сайта и автора публикации)"),
