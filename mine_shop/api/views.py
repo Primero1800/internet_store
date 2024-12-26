@@ -204,7 +204,7 @@ class APIBrandViewSet(ModelViewSet):
             status.HTTP_200_OK: CartSerializerRaw,
             status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
             status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
-        }
+        },
     ),
     destroy=extend_schema(
         summary=_("Удалить выбранную корзину (доступно только для администрации сайта)"),
@@ -224,19 +224,45 @@ class APICartViewSet(ReadDestroyModelViewSet):
 @permission_classes((IsAdminUser,))
 @extend_schema_view(
     list=extend_schema(
-            summary=_("Получить текущие позиции в корзинах (доступно только для администрации сайта)"),
-        ),
+        summary=_("Получить текущие позиции в корзинах (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: CartItemSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+        },
+    ),
     retrieve=extend_schema(
-            summary=_("Получить выбранную позицию из корзин по ID (доступно только для администрации сайта)"),
-        ),
+        summary=_("Получить выбранную позицию из корзин по ID (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: CartItemSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
+    ),
     create=extend_schema(
         summary=_("Создание новой позиции в корзине (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_201_CREATED: CartItemSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+        }
     ),
     update=extend_schema(
-        summary=_("Обновить текущую позицию в корзине (доступно только для администрации сайта)")
+        summary=_("Обновить текущую позицию в корзине (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_201_CREATED: CartItemSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
     ),
     partial_update=extend_schema(
-        summary=_("Обновить текущею позицию в корзине (доступно только для администрации сайта)")
+        summary=_("Обновить текущею позицию в корзине (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_201_CREATED: CartItemSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
     ),
     destroy=extend_schema(
         summary=_("Удалить текущую позицию в корзине (доступно только для администрации сайта)"),
