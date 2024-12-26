@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from django.utils.translation import gettext as _
 from drf_spectacular.utils import extend_schema_view, extend_schema
+from rest_framework import status
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import RetrieveDestroyAPIView
 from rest_framework.decorators import permission_classes
@@ -22,7 +23,7 @@ from .serializers import (
     UserSerializer, UserDetailSerializer, PersonSerializerRaw, AddressSerializer, VoteSerializer,
     OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer, SaleInformationSerializer,
     ProductDetailSerializer, AddressSerializerRaw, CartSerializerRaw, CartItemSerializer,
-    PersonSerializer, PostSerializerRaw, ProductSerializerRaw, RubricSerializerRaw
+    PersonSerializer, PostSerializerRaw, ProductSerializerRaw, RubricSerializerRaw, ErrorSerializer
 )
 
 
@@ -61,6 +62,12 @@ class ReadDestroyModelViewSet(
 @extend_schema_view(
     list=extend_schema(
             summary=_("Получить список связанных адресов (доступно только для администрации сайта)"),
+            responses={
+                        status.HTTP_200_OK: AddressSerializer,
+                        status.HTTP_400_BAD_REQUEST: ErrorSerializer,
+                        status.HTTP_401_UNAUTHORIZED: ErrorSerializer,
+                        status.HTTP_403_FORBIDDEN: ErrorSerializer,
+            }
         ),
     retrieve=extend_schema(
             summary=_("Получить экземпляр связанного адреса по ID (доступно только для администрации сайта)"),

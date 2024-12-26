@@ -20,6 +20,11 @@ from users.models import User, WishlistItem, ComparisonItem, RecentlyViewedItem,
 from phonenumber_field.serializerfields import PhoneNumberField
 
 
+class ErrorSerializer(serializers.Serializer):
+    status = serializers.IntegerField()
+    details = serializers.CharField()
+
+
 class AdditionalInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Additional_information

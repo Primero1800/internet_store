@@ -117,10 +117,10 @@ WSGI_APPLICATION = 'mine_shop.wsgi.application'
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
-    ),
+        'rest_framework.authentication.BasicAuthentication',
+    ],
 
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
     "DEFAULT_VERSION": 'v1',
@@ -303,17 +303,20 @@ SEARCHING_KEYS_FOR_LINKS = [
 # SPECTACULAR
 
 SPECTACULAR_SETTINGS = {
+
     'TITLE': STORE_TITLE,
     'DESCRIPTION': '',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'SERVE_AUTHENTICATION': None,
+    'AUTHENTICATION_WHITELIST': ['rest_framework.authentication.BasicAuthentication',],
 
     "SWAGGER_UI_SETTINGS": {
         "deepLinking": True,
-        "persistAuthorization": True,
+        "persistAuthorization": False,
     },
     "SWAGGER_UI_FAVICON_HREF": STATIC_URL + "assets/images/favicon.ico",
+    'COMPONENT_SPLIT_REQUEST': True,
 }
 
 
