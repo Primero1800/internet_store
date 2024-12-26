@@ -444,16 +444,42 @@ class APIPostViewSet(ModelViewSet):
 @permission_classes((IsAdminOrReadOnly,))
 @extend_schema_view(
     list=extend_schema(
-            summary=_("Получить текущие продукты"),
-        ),
+        summary=_("Получить текущие продукты"),
+        parameters=[
+            OpenApiParameter(name='brand', description='Filter brand =', type=int),
+            OpenApiParameter(name='discont__gte', description="Filter discont >=", type=int),
+            OpenApiParameter(name='quantity__lte', description="Filter quantity <=", type=int),
+            OpenApiParameter(name='search', description='Search term. Searching in title and description', ),
+            OpenApiParameter(name='title__contains', description='Filter title__contains',),
+        ],
+        responses={
+            status.HTTP_200_OK: ProductSerializer,
+        },
+    ),
     retrieve=extend_schema(
-            summary=_("Получить выбранный продукт по ID"),
-        ),
+        summary=_("Получить выбранный продукт по ID"),
+        responses={
+            status.HTTP_200_OK: ProductSerializerRaw,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
+    ),
     update=extend_schema(
-        summary=_("Обновить текущий продукт (доступно только для администрации сайта)")
+        summary=_("Обновить текущий продукт (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: ProductSerializerRaw,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
     ),
     partial_update=extend_schema(
-        summary=_("Обновить текущий продукт (доступно только для администрации сайта)")
+        summary=_("Обновить текущий продукт (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: ProductSerializerRaw,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
     ),
 )
 class APIProductViewSet(ReadUpdateModelViewSet):
@@ -474,8 +500,13 @@ class APIProductViewSet(ReadUpdateModelViewSet):
 @permission_classes((IsAdminUser, ))
 @extend_schema_view(
     get=extend_schema(
-            summary=_(
-                "Получить детализацию выбранного продукта с зависимостями (доступно только для администрации сайта)"),
+        summary=_(
+            "Получить детализацию выбранного продукта с зависимостями (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: ProductDetailSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
         ),
     delete=extend_schema(
         summary=_("Удалить выбранный продукт (доступно только для администрации сайта)"),
