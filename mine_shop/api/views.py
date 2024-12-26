@@ -1,6 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from django.utils.translation import gettext as _
-from drf_spectacular.utils import extend_schema_view, extend_schema
+from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter
 from rest_framework import status
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import RetrieveDestroyAPIView
@@ -23,7 +23,7 @@ from .serializers import (
     UserSerializer, UserDetailSerializer, PersonSerializerRaw, AddressSerializer, VoteSerializer,
     OrderSerializer, ProductSerializer, BrandSerializer, RubricSerializer, SaleInformationSerializer,
     ProductDetailSerializer, AddressSerializerRaw, CartSerializerRaw, CartItemSerializer,
-    PersonSerializer, PostSerializerRaw, ProductSerializerRaw, RubricSerializerRaw, ErrorSerializer
+    PersonSerializer, PostSerializerRaw, ProductSerializerRaw, RubricSerializerRaw, ApiErrorSerializer
 )
 
 
@@ -61,26 +61,55 @@ class ReadDestroyModelViewSet(
 @permission_classes((IsAdminUser, ))
 @extend_schema_view(
     list=extend_schema(
-            summary=_("Получить список связанных адресов (доступно только для администрации сайта)"),
-            responses={
-                        status.HTTP_200_OK: AddressSerializer,
-                        status.HTTP_400_BAD_REQUEST: ErrorSerializer,
-                        status.HTTP_401_UNAUTHORIZED: ErrorSerializer,
-                        status.HTTP_403_FORBIDDEN: ErrorSerializer,
-            }
-        ),
+        summary=_("Получить список связанных адресов (доступно только для администрации сайта)"),
+        parameters=[
+            OpenApiParameter(name='city', description='Filter city =',),
+            OpenApiParameter(name='id', description='Filter id =',),
+            OpenApiParameter(name='id__gte', description='Filter id >=',),
+            OpenApiParameter(name='id__lte', description='Filter id <=',),
+            OpenApiParameter(name='phonenumber', description='Filter phonenumber =',),
+            OpenApiParameter(name='phonenumber__contains', description='Filter phonumber__contains',),
+            OpenApiParameter(name='user', description='Filter user =',),
+        ],
+        responses={
+            status.HTTP_200_OK: AddressSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+        }
+    ),
     retrieve=extend_schema(
-            summary=_("Получить экземпляр связанного адреса по ID (доступно только для администрации сайта)"),
-        ),
+        summary=_("Получить экземпляр связанного адреса по ID (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: AddressSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        }
+    ),
     update=extend_schema(
         summary=_("Изменение существующего связанного адреса (доступно только для администрации сайта"),
+        responses={
+            status.HTTP_200_OK: AddressSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        }
     ),
     partial_update=extend_schema(
         summary=_("Изменение существующего связанного адреса (доступно только для администрации сайта"),
+        responses={
+            status.HTTP_200_OK: AddressSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        }
     ),
     destroy=extend_schema(
-            summary=_("Удаление существующего связанного адреса (доступно только для администрации сайта"),
-        ),
+        summary=_("Удаление существующего связанного адреса (доступно только для администрации сайта"),
+        responses={
+            status.HTTP_204_NO_CONTENT: None,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        }
+    ),
 )
 class APIAddressViewSet(ReadUpdateDestroyModelViewSet):
     queryset = Address.objects.all()

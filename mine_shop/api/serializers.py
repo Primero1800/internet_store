@@ -20,9 +20,10 @@ from users.models import User, WishlistItem, ComparisonItem, RecentlyViewedItem,
 from phonenumber_field.serializerfields import PhoneNumberField
 
 
-class ErrorSerializer(serializers.Serializer):
-    status = serializers.IntegerField()
-    details = serializers.CharField()
+class ApiErrorSerializer(serializers.Serializer):
+    code = serializers.CharField(allow_null=True, required=False)
+    message = serializers.CharField()
+    field = serializers.CharField(allow_null=True, required=False)
 
 
 class AdditionalInformationSerializer(serializers.ModelSerializer):
@@ -90,7 +91,10 @@ class AddressSerializerRaw(serializers.ModelSerializer):
     phonenumber = FormNumberField(error_messages={
         'not allowed': "Invalid or not allowed region",
         'not number': "Not valid phone number",
-    }, label=_("Телефонный номер"))
+    },
+        label=_("Телефонный номер"),
+        help_text="In format: 'country_code(2) | phonenumber'. (RU | +74959374400), (BY | +375291180202)"
+    )
 
 
 class BrandSerializer(serializers.ModelSerializer):
