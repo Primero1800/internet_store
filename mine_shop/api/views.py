@@ -79,7 +79,7 @@ class ReadDestroyModelViewSet(
     retrieve=extend_schema(
         summary=_("Получить экземпляр связанного адреса по ID (доступно только для администрации сайта)"),
         responses={
-            status.HTTP_200_OK: AddressSerializer,
+            status.HTTP_200_OK: AddressSerializerRaw,
             status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
             status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
         }
@@ -87,7 +87,7 @@ class ReadDestroyModelViewSet(
     update=extend_schema(
         summary=_("Изменение существующего связанного адреса (доступно только для администрации сайта"),
         responses={
-            status.HTTP_200_OK: AddressSerializer,
+            status.HTTP_200_OK: AddressSerializerRaw,
             status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
             status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
             status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
@@ -96,7 +96,7 @@ class ReadDestroyModelViewSet(
     partial_update=extend_schema(
         summary=_("Изменение существующего связанного адреса (доступно только для администрации сайта"),
         responses={
-            status.HTTP_200_OK: AddressSerializer,
+            status.HTTP_200_OK: AddressSerializerRaw,
             status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
             status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
             status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
@@ -128,23 +128,58 @@ class APIAddressViewSet(ReadUpdateDestroyModelViewSet):
 @permission_classes((IsAdminAndOwnerOrReadOnly,))
 @extend_schema_view(
     list=extend_schema(
-            summary=_("Получить список производителей"),
-        ),
+        summary=_("Получить список производителей"),
+        parameters=[
+            OpenApiParameter(name='id', description='Filter id =',),
+            OpenApiParameter(name='items', description='Filter items in',),
+            OpenApiParameter(name='title', description='Filter title =',),
+            OpenApiParameter(name='title__contains', description='Filter title__contains',),
+        ],
+        responses={
+            status.HTTP_200_OK: BrandSerializer,
+        }
+    ),
     retrieve=extend_schema(
-            summary=_("Получить экземпляр производителя по ID"),
-        ),
+        summary=_("Получить экземпляр производителя по ID"),
+        responses={
+            status.HTTP_200_OK: BrandSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        }
+    ),
     create=extend_schema(
-        summary=_("Создать нового производителя (доступно только для администрации сайта)")
+        summary=_("Создать нового производителя (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_201_CREATED: BrandSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+        }
     ),
     update=extend_schema(
         summary=_("Изменение существующего производителя (доступно только для администрации сайта"),
+        responses={
+            status.HTTP_200_OK: BrandSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        }
     ),
     partial_update=extend_schema(
         summary=_("Изменение существующего производителя (доступно только для администрации сайта"),
+        responses={
+            status.HTTP_200_OK: BrandSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        }
     ),
     destroy=extend_schema(
-            summary=_("Удаление существующего производителя (доступно только для администрации сайта"),
-        ),
+        summary=_("Удаление существующего производителя (доступно только для администрации сайта"),
+        responses={
+            status.HTTP_204_NO_CONTENT: None,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        }
+    ),
 )
 class APIBrandViewSet(ModelViewSet):
     queryset = Brand.objects.all()
@@ -163,8 +198,13 @@ class APIBrandViewSet(ModelViewSet):
             summary=_("Получить выбранную корзину по ID (доступно только для администрации сайта)"),
         ),
     destroy=extend_schema(
-            summary=_("Удалить выбранную корзину (доступно только для администрации сайта)")
-        ),
+        summary=_("Удалить выбранную корзину (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_204_NO_CONTENT: None,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        }
+    ),
 )
 class APICartViewSet(ReadDestroyModelViewSet):
     queryset = Cart.objects.all()
@@ -190,8 +230,13 @@ class APICartViewSet(ReadDestroyModelViewSet):
         summary=_("Обновить текущею позицию в корзине (доступно только для администрации сайта)")
     ),
     destroy=extend_schema(
-            summary=_("Удалить текущую позицию в корзине (доступно только для администрации сайта)")
-        ),
+        summary=_("Удалить текущую позицию в корзине (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_204_NO_CONTENT: None,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        }
+    ),
 )
 class APICartItemViewSet(ModelViewSet):
     queryset = CartItem.objects.all()
@@ -232,8 +277,13 @@ class APIOrderViewSet(ReadOnlyModelViewSet):
         summary=_("Обновить текущие персональные данные (доступно только для администрации сайта)")
     ),
     destroy=extend_schema(
-            summary=_("Удалить текущие персональные данные (доступно только для администрации сайта)")
-        ),
+        summary=_("Удалить текущие персональные данные (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_204_NO_CONTENT: None,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        }
+    ),
 )
 class APIPersonViewSet(ReadUpdateDestroyModelViewSet):
     queryset = Person.objects.all()
@@ -267,8 +317,13 @@ class APIPersonViewSet(ReadUpdateDestroyModelViewSet):
         summary=_("Обновить текущий пост на форуме (доступно для администрации сайта и автора публикации)")
     ),
     destroy=extend_schema(
-            summary=_("Удалить текущий пост на форуме (доступно для администрации сайта и автора публикации)")
-        ),
+        summary=_("Удалить текущий пост на форуме (доступно для администрации сайта и автора публикации)"),
+        responses={
+            status.HTTP_204_NO_CONTENT: None,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
+    ),
 )
 class APIPostViewSet(ModelViewSet):
     queryset = Post.objects.all()
@@ -318,8 +373,13 @@ class APIProductViewSet(ReadUpdateModelViewSet):
                 "Получить детализацию выбранного продукта с зависимостями (доступно только для администрации сайта)"),
         ),
     delete=extend_schema(
-            summary=_("Удалить выбранный продукт (доступно только для администрации сайта)"),
-        ),
+        summary=_("Удалить выбранный продукт (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_204_NO_CONTENT: None,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
+    ),
 )
 class APIProductView(RetrieveDestroyAPIView):
     queryset = Product.objects.all()
@@ -344,8 +404,13 @@ class APIProductView(RetrieveDestroyAPIView):
         summary=_("Обновить выбранную категорию (доступно только для администрации сайта)")
     ),
     destroy=extend_schema(
-            summary=_("Удалить выбранную категорию (доступно только для администрации сайта)")
-        ),
+        summary=_("Удалить выбранную категорию (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_204_NO_CONTENT: None,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
+    ),
 )
 class APIRubricViewSet(ModelViewSet):
     queryset = Rubric.objects.all()
@@ -397,8 +462,13 @@ class APISaleInformationViewSet(ReadOnlyModelViewSet):
         summary=_("Обновить выбранного пользователя (доступно только для администрации сайта)")
     ),
     destroy=extend_schema(
-            summary=_("Удалить выбранного пользователя (доступно только для администрации сайта)")
-        ),
+        summary=_("Удалить выбранного пользователя (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_204_NO_CONTENT: None,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
+    ),
 )
 class APIUserViewSet(ModelViewSet):
     queryset = User.objects.all()
@@ -415,8 +485,13 @@ class APIUserViewSet(ModelViewSet):
                 "Детализация пользователя по ID с имеющимися зависимостями (доступно только для администрации сайта)"),
         ),
     delete=extend_schema(
-            summary=_("Удалить выбранного пользователя (доступно только для администрации сайта)")
-        ),
+        summary=_("Удалить выбранного пользователя (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_204_NO_CONTENT: None,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
+    ),
 )
 class APIUserView(RetrieveDestroyAPIView):
     queryset = User.objects.all()
