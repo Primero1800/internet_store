@@ -137,7 +137,7 @@ class APIAddressViewSet(ReadUpdateDestroyModelViewSet):
         ],
         responses={
             status.HTTP_200_OK: BrandSerializer,
-        }
+        },
     ),
     retrieve=extend_schema(
         summary=_("Получить экземпляр производителя по ID"),
@@ -192,11 +192,20 @@ class APIBrandViewSet(ModelViewSet):
 @permission_classes((IsAdminUser,))
 @extend_schema_view(
     list=extend_schema(
-            summary=_("Получить существующие корзины (доступно только для администрации сайта)"),
-        ),
+        summary=_("Получить существующие корзины (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: CartSerializerRaw,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+        },
+    ),
     retrieve=extend_schema(
-            summary=_("Получить выбранную корзину по ID (доступно только для администрации сайта)"),
-        ),
+        summary=_("Получить выбранную корзину по ID (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: CartSerializerRaw,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        }
+    ),
     destroy=extend_schema(
         summary=_("Удалить выбранную корзину (доступно только для администрации сайта)"),
         responses={
