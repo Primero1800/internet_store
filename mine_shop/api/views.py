@@ -1,6 +1,3 @@
-import array
-from typing import List, Type
-
 from django_filters.rest_framework import DjangoFilterBackend
 from django.utils.translation import gettext as _
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter
@@ -14,8 +11,10 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
 from cart.models import Cart, CartItem
-from .filters import AddressFilter, BrandFilter, OrderFilter, PersonFilter, PostFilter, \
-    ProductFilter, RubricFilter, SaleInformationFilter, UserFilter, VoteFilter
+from .filters import (
+    AddressFilter, BrandFilter, OrderFilter, PersonFilter, PostFilter, ProductFilter,
+    RubricFilter, SaleInformationFilter, UserFilter, VoteFilter
+)
 from orders.models import Person, Address, Order
 from posts.models import Post
 from store.info_classes import Vote, Sale_information
@@ -76,6 +75,7 @@ class ReadDestroyModelViewSet(
         ],
         responses={
             status.HTTP_200_OK: AddressSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
             status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
         }
     ),
@@ -140,6 +140,7 @@ class APIAddressViewSet(ReadUpdateDestroyModelViewSet):
         ],
         responses={
             status.HTTP_200_OK: BrandSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
         },
     ),
     retrieve=extend_schema(
@@ -289,13 +290,16 @@ class APICartItemViewSet(ModelViewSet):
         parameters=[
             OpenApiParameter(name='phonenumber__contains', description='Filter phonenumber__contains',),
             OpenApiParameter(name='search', description="Search term. Searching in 'order_content'",),
-            OpenApiParameter(name='time_delivered__range_after', description='Filter time_delivered in range. yyyy-mm-dd',),
+            OpenApiParameter(
+                name='time_delivered__range_after', description='Filter time_delivered in range. yyyy-mm-dd',
+            ),
             OpenApiParameter(name='time_placed__range_after', description='Filter time_placed in range. yyyy-mm-dd',),
             OpenApiParameter(name='total_price__gte', description='Filter total_price >=',),
             OpenApiParameter(name='total_price__lte', description='Filter total_price <=',),
         ],
         responses={
             status.HTTP_200_OK: OrderSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
             status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
         },
     ),
@@ -326,6 +330,7 @@ class APIOrderViewSet(ReadOnlyModelViewSet):
         ],
         responses={
             status.HTTP_200_OK: PersonSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
             status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
         },
     ),
@@ -389,6 +394,7 @@ class APIPersonViewSet(ReadUpdateDestroyModelViewSet):
         ],
         responses={
             status.HTTP_200_OK: PostSerializerRaw,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
         },
     ),
     retrieve=extend_schema(
@@ -463,6 +469,7 @@ class APIPostViewSet(ModelViewSet):
         ],
         responses={
             status.HTTP_200_OK: ProductSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
         },
     ),
     retrieve=extend_schema(
@@ -545,6 +552,7 @@ class APIProductView(RetrieveDestroyAPIView):
         ],
         responses={
             status.HTTP_200_OK: RubricSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
         },
     ),
     retrieve=extend_schema(
@@ -606,8 +614,8 @@ class APIRubricViewSet(ModelViewSet):
     list=extend_schema(
         summary=_("Получить список таблиц движения товаров (доступно только для администрации сайта)"),
         parameters=[
-            OpenApiParameter(name='calculated_rating__gte', description='Filter rating >=', type=int),
-            OpenApiParameter(name='calculated_rating__lte', description="Filter rating <=", type=int),
+            OpenApiParameter(name='calculated_rating__gte', description='Filter rating >=', type=float),
+            OpenApiParameter(name='calculated_rating__lte', description="Filter rating <=", type=float),
             OpenApiParameter(name='search', description='Search term. Searching in title of product', ),
             OpenApiParameter(name='sold_count__gte', description='Filter sold_count >=', type=int),
             OpenApiParameter(name='sold_count__lte', description="Filter sold_count <=", type=int),
@@ -726,11 +734,29 @@ class APIUserView(RetrieveDestroyAPIView):
 @permission_classes((IsAdminOrReadOnly,))
 @extend_schema_view(
     list=extend_schema(
-            summary=_("Получить список отзывов и оценок товаров"),
-        ),
+        summary=_("Получить список отзывов и оценок товаров"),
+        parameters=[
+            OpenApiParameter(name='product', description='Filter product =', type=int),
+            OpenApiParameter(name='search', description='Search term. Searching in review and name'),
+            OpenApiParameter(name='stars__gte', description="Filter stars >=", type=float),
+            OpenApiParameter(name='stars__lte', description="Filter stars <= =", type=float),
+            OpenApiParameter(name='user', description="Filter user =", type=int),
+            OpenApiParameter(
+                name='time_published__range_after', description='Filter time_published in range. yyyy-mm-dd',
+            ),
+        ],
+        responses={
+            status.HTTP_200_OK: VoteSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+        },
+    ),
     retrieve=extend_schema(
-            summary=_("выбрать отзыв о товаре по ID"),
-        ),
+        summary=_("выбрать отзыв о товаре по ID"),
+        responses={
+            status.HTTP_200_OK: VoteSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
+    ),
 )
 class APIVoteViewSet(ReadOnlyModelViewSet):
     queryset = Vote.objects.all()

@@ -24,4 +24,3 @@ def swagger_initial_multifield(initial_data: MultiValueDict, field: str):
             return initial_data
         initial_data.setlist(field, _parse_list(items_list))
     return initial_data
-

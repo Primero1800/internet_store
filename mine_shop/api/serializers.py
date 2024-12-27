@@ -6,8 +6,8 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 from rest_framework.utils.serializer_helpers import ReturnDict
 
-from api.inner_functions import cyr_to_lat, data_slugification
-from api.swagger_initial import swagger_initial_rubrics, swagger_initial_multifield
+from api.inner_functions import data_slugification
+from api.swagger_initial import swagger_initial_multifield
 from cart.models import Cart, CartItem
 from orders.inner_functions import get_complex_phonenumber, _separator_normalize
 from orders.models import Order, Person, Address
@@ -382,7 +382,9 @@ class ProductSerializerRaw(serializers.ModelSerializer):
     start_price = serializers.DecimalField(
         max_digits=10, decimal_places=2, coerce_to_string=False, label=_("Начальная цена")
     )
-    price = serializers.DecimalField(max_digits=10, decimal_places=2, coerce_to_string=False, label=_("Цена"), read_only=True)
+    price = serializers.DecimalField(
+        max_digits=10, decimal_places=2, coerce_to_string=False, label=_("Цена"), read_only=True
+    )
     calculated_rating = serializers.SerializerMethodField('get_calculated_rating', label=_("Рейтинг"))
     slug = serializers.CharField(
         allow_blank=True, default='', required=False,
@@ -562,10 +564,12 @@ class RubricSerializerRaw(serializers.ModelSerializer):
         self.initial_data = swagger_initial_multifield(initial_data, 'products')
         return super().is_valid(raise_exception=raise_exception)
 
-    slug = serializers.CharField(allow_blank=True, default='', required=False, help_text="Auto-generated slug, no need to fill")
+    slug = serializers.CharField(
+        allow_blank=True, default='', required=False, help_text="Auto-generated slug, no need to fill"
+    )
     products = ClearingSlugRelatedField(
-        slug_field='id', queryset=Product.objects.all(), many=True, required=False, allow_empty=True, allow_null=True, default=None,
-        help_text='Adding existing product by id', label=_("Продукты"),
+        slug_field='id', queryset=Product.objects.all(), many=True, required=False, allow_empty=True,
+        allow_null=True, default=None, help_text='Adding existing product by id', label=_("Продукты"),
     )
 
 
