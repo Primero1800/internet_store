@@ -27,6 +27,13 @@ class ApiErrorSerializer(serializers.Serializer):
     field = serializers.CharField(allow_null=True, required=False)
 
 
+class ClearingSlugRelatedField(serializers.SlugRelatedField):
+    def to_internal_value(self, data):
+        if data == '':
+            return None
+        return super().to_internal_value(data)
+
+
 class AdditionalInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Additional_information
@@ -531,13 +538,17 @@ class RubricSerializerRaw(serializers.ModelSerializer):
 
     def is_valid(self, raise_exception=False):
         initial_data = MultiValueDict(self.initial_data)
-        initial_data['slug'] = cyr_to_lat(slugify(self.context['request'].POST['title'], allow_unicode=True))
+        if 'title' in self.context['request'].POST:
+            initial_data['slug'] = cyr_to_lat(slugify(self.context['request'].POST['title'], allow_unicode=True))
+        else:
+            if 'slug' in initial_data:
+                del initial_data['slug']
         self.initial_data = swagger_initial_rubrics(initial_data)
         return super().is_valid(raise_exception=raise_exception)
 
     slug = serializers.CharField(allow_blank=True, default='', required=False, help_text="Auto-generated slug, no need to fill")
-    products = serializers.SlugRelatedField(
-        slug_field='id', queryset=Product.objects.all(), many=True, required=False, allow_empty=True, allow_null=True, default=[],
+    products = ClearingSlugRelatedField(
+        slug_field='id', queryset=Product.objects.all(), many=True, required=False, allow_empty=True, allow_null=True, default=None,
         help_text='Adding existing product by id', label=_("Продукты"),
     )
 

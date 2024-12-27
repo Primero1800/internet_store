@@ -10,8 +10,6 @@ def _parse_list(data):
 
 
 def swagger_initial_rubrics(initial_data: MultiValueDict):
-    if 'products' in initial_data and initial_data['products'] in SWAGGER_EMPTIES:
-        del initial_data['products']
     if 'products' in initial_data:
         products_list = initial_data.getlist('products')
         if len(products_list) > 1:
