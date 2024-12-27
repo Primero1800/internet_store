@@ -5,9 +5,11 @@ ALPHABET = {
     'я': 'ya', '-': '-',
 }
 
+ENGLISH = 'abcdefghijklmnopqrstuvwxyz'
+
 
 def sym_cyr2lat(sym):
-    if sym.isdigit():
+    if sym.isdigit() or sym in ENGLISH:
         return sym
     if sym not in ALPHABET:
         return '_'
@@ -15,7 +17,7 @@ def sym_cyr2lat(sym):
 
 
 def cyr_to_lat(text):
-    return ''.join(sym_cyr2lat(sym) for sym in text)
+    return ''.join(sym_cyr2lat(sym) for sym in text.lower())
 
 
 def filters(queryset, count, sort_by, x_filters_mapping, other, dict_mapping=None):

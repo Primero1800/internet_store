@@ -9,6 +9,7 @@ from rest_framework import serializers
 from rest_framework.utils.serializer_helpers import ReturnDict
 
 from api.inner_functions import cyr_to_lat
+from api.swagger_initial import swagger_initial_rubrics
 from cart.models import Cart, CartItem
 from orders.inner_functions import get_complex_phonenumber, _separator_normalize
 from orders.models import Order, Person, Address
@@ -531,8 +532,14 @@ class RubricSerializerRaw(serializers.ModelSerializer):
     def is_valid(self, raise_exception=False):
         initial_data = MultiValueDict(self.initial_data)
         initial_data['slug'] = cyr_to_lat(slugify(self.context['request'].POST['title'], allow_unicode=True))
-        self.initial_data = initial_data
+        self.initial_data = swagger_initial_rubrics(initial_data)
         return super().is_valid(raise_exception=raise_exception)
+
+    slug = serializers.CharField(allow_blank=True, default='', required=False, help_text="Auto-generated slug, no need to fill")
+    products = serializers.SlugRelatedField(
+        slug_field='id', queryset=Product.objects.all(), many=True, required=False, allow_empty=True, allow_null=True, default=[],
+        help_text='Adding existing product by id', label=_("Продукты"),
+    )
 
 
 class RubricSerializer(RubricSerializerRaw):

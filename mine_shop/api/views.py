@@ -1,3 +1,6 @@
+import array
+from typing import List, Type
+
 from django_filters.rest_framework import DjangoFilterBackend
 from django.utils.translation import gettext as _
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter
@@ -451,6 +454,12 @@ class APIPostViewSet(ModelViewSet):
             OpenApiParameter(name='quantity__lte', description="Filter quantity <=", type=int),
             OpenApiParameter(name='search', description='Search term. Searching in title and description', ),
             OpenApiParameter(name='title__contains', description='Filter title__contains',),
+            OpenApiParameter(
+                name='rubrics', description='Filter by rubrics',
+                type={'type': 'array', 'items': {'type': 'integer'}},
+                location=OpenApiParameter.QUERY,
+                style='form',
+            ),
         ],
         responses={
             status.HTTP_200_OK: ProductSerializer,
@@ -522,22 +531,52 @@ class APIProductView(RetrieveDestroyAPIView):
     serializer_class = ProductDetailSerializer
 
 
-@permission_classes((IsAdminUser,))
+@permission_classes((IsAdminOrReadOnly,))
 @extend_schema_view(
     list=extend_schema(
-            summary=_("Получить список существующих категорий (доступно только для администрации сайта)"),
-        ),
+        summary=_("Получить список существующих категорий (доступно только для администрации сайта)"),
+        parameters=[
+            OpenApiParameter(
+                name='products', description='Filter by products',
+                type={'type': 'array', 'items': {'type': 'integer'}},
+                location=OpenApiParameter.QUERY,
+                style='form',
+            ),
+        ],
+        responses={
+            status.HTTP_200_OK: RubricSerializer,
+        },
+    ),
     retrieve=extend_schema(
-            summary=_("Получить категорию по ID (доступно только для администрации сайта)"),
-        ),
+        summary=_("Получить категорию по ID (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: ProductSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
+    ),
     create=extend_schema(
         summary=_("Создание новой категории (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_201_CREATED: RubricSerializerRaw,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+        }
     ),
     update=extend_schema(
-        summary=_("Обновить выбранную категорию (доступно только для администрации сайта)")
+        summary=_("Обновить выбранную категорию (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: RubricSerializerRaw,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+        },
     ),
     partial_update=extend_schema(
-        summary=_("Обновить выбранную категорию (доступно только для администрации сайта)")
+        summary=_("Обновить выбранную категорию (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: RubricSerializerRaw,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+        },
     ),
     destroy=extend_schema(
         summary=_("Удалить выбранную категорию (доступно только для администрации сайта)"),
