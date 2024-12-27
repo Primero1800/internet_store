@@ -173,9 +173,18 @@ class CartItemSerializer(serializers.ModelSerializer):
         def to_internal_value(self, data):
             if data:
                 data = str(data)
+
             if 'product' in self.context['request'].POST:
                 self.parent._get_product()
-                data = str(self.parent.product.price)
+                return str(self.parent.product.price)
+
+            existing_price = None
+            try:
+                existing_price = self.parent.instance.price
+            except:
+                pass
+            if existing_price:
+                return existing_price
             return data
 
     class QuantityField(serializers.IntegerField):
