@@ -640,19 +640,51 @@ class APISaleInformationViewSet(ReadOnlyModelViewSet):
 @permission_classes((IsAdminUser, ))
 @extend_schema_view(
     list=extend_schema(
-            summary=_("Получить список существующих пользователей (доступно только для администрации сайта)"),
-        ),
+        summary=_("Получить список существующих пользователей (доступно только для администрации сайта)"),
+        parameters=[
+            OpenApiParameter(name='email__contains', description='Filter email__contains',),
+            OpenApiParameter(name='is_active', description="Filter is_active =", type=bool),
+            OpenApiParameter(name='is_staff', description="Filter is_staff =", type=bool),
+            OpenApiParameter(name='is_superuser', description="Filter is_superuser =", type=bool),
+        ],
+        responses={
+            status.HTTP_200_OK: UserSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+        },
+    ),
     retrieve=extend_schema(
-            summary=_("Получить пользователя по ID (доступно только для администрации сайта)"),
-        ),
+        summary=_("Получить пользователя по ID (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: UserSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
+    ),
     create=extend_schema(
         summary=_("Создание нового пользователя (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_201_CREATED: UserSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+        }
     ),
     update=extend_schema(
-        summary=_("Обновить выбранного пользователя (доступно только для администрации сайта)")
+        summary=_("Обновить выбранного пользователя (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: UserSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
     ),
     partial_update=extend_schema(
-        summary=_("Обновить выбранного пользователя (доступно только для администрации сайта)")
+        summary=_("Обновить выбранного пользователя (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: UserSerializer,
+            status.HTTP_400_BAD_REQUEST: ApiErrorSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
     ),
     destroy=extend_schema(
         summary=_("Удалить выбранного пользователя (доступно только для администрации сайта)"),
