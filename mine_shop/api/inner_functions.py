@@ -1,3 +1,6 @@
+from django.utils.datastructures import MultiValueDict
+from django.utils.text import slugify
+
 ALPHABET = {
     'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
     'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't',
@@ -18,6 +21,16 @@ def sym_cyr2lat(sym):
 
 def cyr_to_lat(text):
     return ''.join(sym_cyr2lat(sym) for sym in text.lower())
+
+
+def data_slugification(serializer):
+    initial_data = MultiValueDict(serializer.initial_data)
+    if 'title' in serializer.context['request'].POST:
+        initial_data['slug'] = cyr_to_lat(slugify(serializer.context['request'].POST['title'], allow_unicode=True))
+    else:
+        if 'slug' in initial_data:
+            del initial_data['slug']
+    return initial_data
 
 
 def filters(queryset, count, sort_by, x_filters_mapping, other, dict_mapping=None):

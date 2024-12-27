@@ -1,15 +1,13 @@
 from decimal import Decimal
 
 from django.conf import settings
-from django.utils.datastructures import MultiValueDict
-from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
 from rest_framework import serializers
 from rest_framework.utils.serializer_helpers import ReturnDict
 
-from api.inner_functions import cyr_to_lat
-from api.swagger_initial import swagger_initial_rubrics
+from api.inner_functions import cyr_to_lat, data_slugification
+from api.swagger_initial import swagger_initial_rubrics, swagger_initial_multifield
 from cart.models import Cart, CartItem
 from orders.inner_functions import get_complex_phonenumber, _separator_normalize
 from orders.models import Order, Person, Address
@@ -384,8 +382,17 @@ class ProductSerializerRaw(serializers.ModelSerializer):
     start_price = serializers.DecimalField(
         max_digits=10, decimal_places=2, coerce_to_string=False, label=_("Начальная цена")
     )
-    price = serializers.DecimalField(max_digits=10, decimal_places=2, coerce_to_string=False, label=_("Цена"))
+    price = serializers.DecimalField(max_digits=10, decimal_places=2, coerce_to_string=False, label=_("Цена"), read_only=True)
     calculated_rating = serializers.SerializerMethodField('get_calculated_rating', label=_("Рейтинг"))
+    slug = serializers.CharField(
+        allow_blank=True, default='', required=False,
+        help_text="Auto-generated slug, no need to fill"
+    )
+    rubrics = ClearingSlugRelatedField(
+        slug_field='id', queryset=Rubric.objects.all(), many=True, required=False,
+        allow_empty=True, allow_null=True, default=None,
+        help_text='Adding existing rubric by id',
+    )
 
     def get_calculated_rating(self, instance) -> Decimal | None:
         try:
@@ -394,6 +401,11 @@ class ProductSerializerRaw(serializers.ModelSerializer):
             return Decimal(result)
         except:
             return None
+
+    def is_valid(self, raise_exception=False):
+        initial_data = data_slugification(self)
+        self.initial_data = swagger_initial_multifield(initial_data, 'rubrics')
+        return super().is_valid(raise_exception=raise_exception)
 
 
 class ProductSerializer(ProductSerializerRaw):
@@ -546,13 +558,8 @@ class RubricSerializerRaw(serializers.ModelSerializer):
         fields = ('id', 'title', 'slug', 'description', 'image', 'products')
 
     def is_valid(self, raise_exception=False):
-        initial_data = MultiValueDict(self.initial_data)
-        if 'title' in self.context['request'].POST:
-            initial_data['slug'] = cyr_to_lat(slugify(self.context['request'].POST['title'], allow_unicode=True))
-        else:
-            if 'slug' in initial_data:
-                del initial_data['slug']
-        self.initial_data = swagger_initial_rubrics(initial_data)
+        initial_data = data_slugification(self)
+        self.initial_data = swagger_initial_multifield(initial_data, 'products')
         return super().is_valid(raise_exception=raise_exception)
 
     slug = serializers.CharField(allow_blank=True, default='', required=False, help_text="Auto-generated slug, no need to fill")
