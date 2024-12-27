@@ -22,11 +22,13 @@ router.register('sale_information', APISaleInformationViewSet)
 router.register('users', APIUserViewSet)
 router.register('votes', APIVoteViewSet)
 
+
 urlpatterns = [
 
     path(f'products/<int:pk>/detail/', APIProductView.as_view(), name='product_detail'),
     path(f'users/<int:pk>/detail/', APIUserView.as_view(), name='user_detail'),
     path(f'', include(router.urls)),
+    path('', router.APIRootView.as_view(), name='root')
 
 ]
 
