@@ -604,11 +604,29 @@ class APIRubricViewSet(ModelViewSet):
 @permission_classes((IsAdminUser,))
 @extend_schema_view(
     list=extend_schema(
-            summary=_("Получить список таблиц движения товаров (доступно только для администрации сайта)"),
-        ),
+        summary=_("Получить список таблиц движения товаров (доступно только для администрации сайта)"),
+        parameters=[
+            OpenApiParameter(name='calculated_rating__gte', description='Filter rating >=', type=int),
+            OpenApiParameter(name='calculated_rating__lte', description="Filter rating <=", type=int),
+            OpenApiParameter(name='search', description='Search term. Searching in title of product', ),
+            OpenApiParameter(name='sold_count__gte', description='Filter sold_count >=', type=int),
+            OpenApiParameter(name='sold_count__lte', description="Filter sold_count <=", type=int),
+            OpenApiParameter(name='viewed_count__gte', description='Filter viewed_count >=', type=int),
+            OpenApiParameter(name='viewed_count__lte', description="Filter viewed_count <=", type=int),
+        ],
+        responses={
+            status.HTTP_200_OK: SaleInformationSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+        },
+    ),
     retrieve=extend_schema(
-            summary=_("Получить выбранную таблицу движения товаров по ID (доступно только для администрации сайта)"),
-        ),
+        summary=_("Получить выбранную таблицу движения товаров по ID (доступно только для администрации сайта)"),
+        responses={
+            status.HTTP_200_OK: SaleInformationSerializer,
+            status.HTTP_403_FORBIDDEN: ApiErrorSerializer,
+            status.HTTP_404_NOT_FOUND: ApiErrorSerializer,
+        },
+    ),
 )
 class APISaleInformationViewSet(ReadOnlyModelViewSet):
     queryset = Sale_information.objects.all()
