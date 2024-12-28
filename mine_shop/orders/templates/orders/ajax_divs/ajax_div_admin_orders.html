@@ -10,7 +10,7 @@
 
                                             <div class="row">
 
-                                            <a class="accordion-toggle collapsed" data-toggle="collapse"  href="#collapse_products_{{ forloop.counter }}">
+                                            <a class="accordion-toggle collapsed" data-toggle="collapse"  href="#collapse_products_{{ order.id }}">
                                                 <div class="col-xs-12 col-sm-1" align="left">
                                                     <small>
                                                         {{ order.time_placed|date:'d.m.Y H:i:s' }}
@@ -70,7 +70,7 @@
                                                </div>
                                             </a>
 
-                                                <a class="accordion-toggle collapsed" data-toggle="collapse"  href="#collapse_person_{{ forloop.counter }}">
+                                                <a class="accordion-toggle collapsed" data-toggle="collapse"  href="#collapse_person_{{ order.id }}">
                                                     <div class="col-xs-12 col-sm-2" align="left" title="{{ order.address }}">
                                                         <small>
                                                             {{ order.address.city }} <br>{{ order.address.address }}
@@ -112,7 +112,7 @@
 
                                     </div>
 
-                                    <div id="collapse_products_{{ forloop.counter }}" class="accordion-body collapse">
+                                    <div id="collapse_products_{{ order.id }}" class="accordion-body collapse">
 
                                         <div class="accordion-inner">
                                             <ul>
@@ -148,7 +148,7 @@
 
                                     </div>
 
-                                    <div id="collapse_person_{{ forloop.counter }}" class="accordion-body collapse">
+                                    <div id="collapse_person_{{ order.id }}" class="accordion-body collapse">
 
                                         <div class="accordion-inner">
                                             <ul>
