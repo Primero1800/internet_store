@@ -187,7 +187,7 @@ def restore_password(request):
     return render(request, "users/restore_password.html", context)
 
 
-@login_required(login_url=reverse_lazy("users:los.environ.get('EMAIL_HOST_USER')ogin"), redirect_field_name='next')
+@login_required(login_url=reverse_lazy("users:login"), redirect_field_name='next')
 @ajax_dispatch(ajax_show_basket_header_map | ajax_show_wishcompare_header_map)
 def wishlist(request):
     context = {}
