@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from siteajax.utils import AjaxResponse
 
 from cart.inner_functions import get_current_cart, ajax_cart_remove, ajax_cart_add
@@ -21,6 +21,7 @@ def ajax_show_basket_in_header(request, *args, **kwargs):
 
     response = AjaxResponse(render(request, 'cart/ajax_divs/ajax_div_basket.html', {}))
     return response
+
 
 def ajax_show_basket_content(request):
     cart = get_current_cart(request)

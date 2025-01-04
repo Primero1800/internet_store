@@ -1,5 +1,5 @@
 from cart.ajax_views import ajax_show_basket_in_header, ajax_show_basket_content
-from orders.ajax_view import ajax_orders_view_total, ajax_view_orders
+from orders.ajax_views import ajax_orders_view_total, ajax_view_orders
 from posts.ajax_views import ajax_show_posts, ajax_show_chosen_product, ajax_show_posts_next
 from store.ajax_views import ajax_view_filtered_from_selection, ajax_show_comments, ajax_show_stars_rating
 from users.ajax_views import ajax_show_wishcompare_header, ajax_show_wishlist_content, ajax_show_comparison_content
@@ -69,4 +69,3 @@ ajax_show_posts_map = {
     'choose_product': ajax_show_chosen_product,
 
 }
-
