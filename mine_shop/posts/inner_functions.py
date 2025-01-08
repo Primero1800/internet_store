@@ -1,11 +1,8 @@
 import asyncio
 import json
-
 import telegram
-from telegram.ext import Updater
 
 from django.conf import settings
-
 from store.models import Product
 
 
@@ -21,8 +18,10 @@ def correct_by_word_length(text, l):
         result.append(word)
     return ' '.join(result)
 
+
 def truncate_word(word, l):
-    return word  if len(word) <= l-3 else word[:l-3] + '...'
+    return word if len(word) <= l-3 else word[:l-3] + '...'
+
 
 def get_product_by_link(link):
     slugs = link.split('/')[-2:]
@@ -31,6 +30,7 @@ def get_product_by_link(link):
         if product:
             return product
     return None
+
 
 def get_product_by_title(title):
     product = Product.objects.filter(title=title).first()

@@ -1,13 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from siteajax.utils import AjaxResponse
 
-import asyncio
-import telegram
-
 from orders.inner_functions import get_current_person, get_current_address
 from posts.forms import PostForm
-from posts.inner_functions import correct_by_word_length, get_product_by_link, get_product_by_title, \
-    send_telegram_message
+from posts.inner_functions import correct_by_word_length, get_product_by_link, get_product_by_title
 from posts.models import Post
 from store.models import Product
 
@@ -98,6 +94,7 @@ def ajax_show_posts_next(request, *args, **kwargs):
 
     response = AjaxResponse(render(request, 'posts/ajax_divs/ajax_div_posts_page.html', context=context))
     return response
+
 
 def ajax_show_chosen_product(request, *args, **kwargs):
     context = {}
