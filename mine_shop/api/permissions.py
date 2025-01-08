@@ -9,7 +9,7 @@ class IsAdminAndOwnerOrReadOnly(BasePermission):
         owner = None
         try:
             owner = obj.user
-        except:
+        except Exception:
             return False
         return request.user == owner
 

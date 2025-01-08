@@ -20,13 +20,14 @@ class AddressOrderingFilter(OrderingFilter):
 
 class AddressFilter(FilterSet):
     o = AddressOrderingFilter()
+
     class Meta:
         model = Address
         fields = {
             'city': ['exact', ],
             'id': ['exact', 'gte', 'lte'],
             'user': ['exact',],
-            'phonenumber': ['exact' , 'contains']
+            'phonenumber': ['exact', 'contains']
         }
 
 
@@ -76,6 +77,7 @@ class OrderOrderingFilter(OrderingFilter):
 
 class OrderFilter(FilterSet):
     o = OrderOrderingFilter()
+
     class Meta:
         model = Order
         fields = {
@@ -105,6 +107,7 @@ class PersonOrderingFilter(OrderingFilter):
 
 class PersonFilter(FilterSet):
     o = PersonOrderingFilter()
+
     class Meta:
         model = Person
         fields = ('user', )
@@ -122,6 +125,7 @@ class PostOrderingFilter(OrderingFilter):
 
 class PostFilter(FilterSet):
     o = PostOrderingFilter()
+
     class Meta:
         model = Post
         fields = {

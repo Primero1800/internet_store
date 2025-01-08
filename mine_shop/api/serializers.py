@@ -162,7 +162,7 @@ class CartItemSerializer(serializers.ModelSerializer):
     def _get_product(self):
         try:
             self.product
-        except:
+        except Exception:
             self.product = None
         if not self.product:
             self.product = Product.objects.get(id=int(self.context['request'].POST['product']))
@@ -179,7 +179,7 @@ class CartItemSerializer(serializers.ModelSerializer):
             existing_price = None
             try:
                 existing_price = self.parent.instance.price
-            except:
+            except Exception:
                 pass
             if existing_price:
                 return existing_price
@@ -191,7 +191,7 @@ class CartItemSerializer(serializers.ModelSerializer):
                 self.fail('invalid')
             try:
                 data = int(data.strip())
-            except:
+            except Exception:
                 self.fail('invalid')
             if data < 1:
                 self.fail('negative')
@@ -401,7 +401,7 @@ class ProductSerializerRaw(serializers.ModelSerializer):
             result = instance.sale_information.rating / instance.sale_information.voted_count \
                 if instance.sale_information.voted_count else instance.sale_information.rating
             return Decimal(result)
-        except:
+        except Exception:
             return None
 
     def is_valid(self, raise_exception=False):
@@ -632,7 +632,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     def get_usertools(self, instance) -> ReturnDict | None:
         try:
             queryset = instance.usertools
-        except:
+        except Exception:
             return None
         serializer = UserToolsSerializer(queryset)
         return serializer.data
@@ -642,7 +642,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     def get_person(self, instance) -> ReturnDict | None:
         try:
             queryset = instance.person
-        except:
+        except Exception:
             return None
         serializer = PersonInSerializer(queryset)
         return serializer.data
@@ -652,7 +652,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     def get_address(self, instance) -> ReturnDict | None:
         try:
             queryset = instance.address
-        except:
+        except Exception:
             return None
         serializer = AddressInSerializer(queryset)
         return serializer.data
@@ -703,7 +703,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     def get_cart(self, instance) -> ReturnDict | None:
         try:
             queryset = instance.cart
-        except:
+        except Exception:
             return None
         serializer = CartSerializerInUser(queryset)
         return serializer.data
@@ -713,7 +713,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     def get_wishlist(self, instance) -> ReturnDict | None:
         try:
             queryset = instance.usertools.w_items.all()
-        except:
+        except Exception:
             return None
         serializer = WishlistItemInUserSerializer(queryset, many=True)
         return serializer.data
@@ -723,7 +723,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     def get_comparison(self, instance) -> ReturnDict | None:
         try:
             queryset = instance.usertools.c_items.all()
-        except:
+        except Exception:
             return None
         serializer = ComparisonItemInUserSerializer(queryset, many=True)
         return serializer.data
@@ -733,7 +733,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     def get_recently_viewed(self, instance) -> ReturnDict | None:
         try:
             queryset = instance.usertools.rv_items.all()
-        except:
+        except Exception:
             return None
         serializer = RecentlyViewedItemInUserSerializer(queryset, many=True)
         return serializer.data

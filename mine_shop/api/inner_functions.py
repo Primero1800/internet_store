@@ -55,14 +55,14 @@ def filters(queryset, count, sort_by, x_filters_mapping, other, dict_mapping=Non
             count = int(count)
             if count != 0:
                 data = data[:count] if count > 0 else reversed(data[count:])
-        except:
+        except Exception:
             pass
     elif sort_by:
         try:
             sort_by = int(sort_by)
             if sort_by != 0:
                 data = data[:sort_by] if sort_by > 0 else reversed(data[sort_by:])
-        except:
+        except Exception:
             pass
 
     return data

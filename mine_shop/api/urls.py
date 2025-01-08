@@ -31,5 +31,3 @@ urlpatterns = [
     path('', router.APIRootView.as_view(), name='root')
 
 ]
-
-
