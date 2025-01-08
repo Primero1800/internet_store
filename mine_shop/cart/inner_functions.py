@@ -14,6 +14,7 @@ def get_current_cart(request):
         cart = SessionCart(request)
     return cart
 
+
 def ajax_cart_remove(cart, kwargs):
     product_id = int(kwargs['product_id'][0]) if 'product_id' in kwargs else None
     product = get_object_or_404(Product, id=product_id)
@@ -27,13 +28,14 @@ def ajax_cart_add(cart, quantity, kwargs):
 
 
 def is_product_in_cart(product=None, product_id=None, cart=None):
-    if not cart or (not product and not product_id): return False
+    if not cart or (not product and not product_id):
+        return False
 
     if isinstance(cart, dict):
         product_id = str(product.id) if product else str(product_id)
         return product_id in cart
 
-    else: # cart is Cart
+    else:  # cart is Cart
         product_id = int(product_id) if not product else product.id
         return len(cart.cart_items.filter(product__id=product_id)) > 0
 

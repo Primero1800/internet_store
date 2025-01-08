@@ -34,11 +34,10 @@ class Cart(models.Model):
     def clear(self):
         self.cart_items.all().delete()
 
-
     def add(self, product, quantity=1, update_quantity=False):
         try:
             item = self.cart_items.get(product=product)
-        except:
+        except Exception:
             item = CartItem(cart=self, product=product, price=product.price, quantity=0)
         if update_quantity:
             item.quantity = min(quantity, product.quantity)
@@ -48,7 +47,6 @@ class Cart(models.Model):
         if item.quantity == 0:
             self.cart_items.filter(id=item.id).delete()
         self.save()
-
 
     def remove(self, product):
         self.cart_items.filter(product=product).delete()
@@ -69,15 +67,12 @@ class Cart(models.Model):
         other.clear()
         return self
 
-
     def __iadd__(self, other):
         return self + other
-
 
     def actualize(self):
         for item in self:
             item.actualize_item()
-
 
     def serialize(self):
         to_serialize = []
