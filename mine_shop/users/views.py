@@ -96,7 +96,6 @@ class RegisterView(FormView):
         return reverse_lazy("users:login", kwargs={"message": self.message_for_member, "email": self.placeholder_email})
 
 
-
 def registration_confirm(request, token):
     redis_key = settings.MINE_SHOP_USER_CONFIRMATION_KEY.format(token=token)
     user_info = cache.get(redis_key) or {}
@@ -138,6 +137,7 @@ def login(request, message=None, email=None, next=None):
     context['form'] = form
     return render(request, 'users/login.html', context)
 
+
 @login_required(login_url=reverse_lazy("users:login"), redirect_field_name='next')
 def logout(request):
     auth.logout(request)
@@ -153,7 +153,7 @@ def restore_password(request):
             email = request.POST['email']
             try:
                 user = User.objects.get(email=email)
-            except:
+            except Exception:
                 context['member_message'] = '6'
 
             if user:

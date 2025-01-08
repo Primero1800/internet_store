@@ -9,7 +9,7 @@ from users.models import UserTools
 def ajax_show_wishcompare_header(request, *args, **kwargs):
     context = {}
     user = request.user
-    params = dict(request.POST) if request.method=='POST' else dict(request.GET)
+    params = dict(request.POST) if request.method == 'POST' else dict(request.GET)
 
     if user.is_authenticated:
         usertools, _ = UserTools.objects.get_or_create(user=user)
@@ -58,6 +58,3 @@ def ajax_show_comparison_content(request, *args, **kwargs):
     context['products'] = get_products_by_tool_items(usertools.c_items.all())
 
     return AjaxResponse(render(request, 'users/ajax_divs/ajax_div_comparison_content.html', context))
-
-
-

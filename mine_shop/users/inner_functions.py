@@ -5,7 +5,6 @@ PASSWORD_SET = string.ascii_letters + string.digits
 PASSWORD_LENGTH = 8
 
 
-
 def generate_password():
     return ''.join(random.choice(PASSWORD_SET) for i in range(PASSWORD_LENGTH))
 

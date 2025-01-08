@@ -42,16 +42,21 @@ class User(AbstractUser):
 class UserTools(models.Model):
     user = models.OneToOneField(to=User, primary_key=True, on_delete=models.CASCADE, verbose_name=_("Покупатель"))
 
-    max_length_rv = models.SmallIntegerField(default=settings.USER_TOOLS_MAX_LENGTH_RECENTLY_VIEWED, editable=False,
-                                                                                    auto_created=True, verbose_name=_("Максимальное число записей в категории 'Недавно просмотренное'"))
-    max_length_w = models.SmallIntegerField(default=settings.USER_TOOLS_MAX_LENGTH_WISHLIST, editable=False,
-                                                                                    auto_created=True, verbose_name=_("Максимальное число записей в категории 'Избранное'"))
-    max_length_c = models.SmallIntegerField(default=settings.USER_TOOLS_MAX_LENGTH_COMPARISON, editable=False,
-                                                                                    auto_created=True, verbose_name=_("Максимальное число записей в категории 'Сравнение'"))
-
+    max_length_rv = models.SmallIntegerField(
+        default=settings.USER_TOOLS_MAX_LENGTH_RECENTLY_VIEWED, editable=False,
+        auto_created=True, verbose_name=_("Максимальное число записей в категории 'Недавно просмотренное'")
+    )
+    max_length_w = models.SmallIntegerField(
+        default=settings.USER_TOOLS_MAX_LENGTH_WISHLIST, editable=False,
+        auto_created=True, verbose_name=_("Максимальное число записей в категории 'Избранное'")
+    )
+    max_length_c = models.SmallIntegerField(
+        default=settings.USER_TOOLS_MAX_LENGTH_COMPARISON, editable=False,
+        auto_created=True, verbose_name=_("Максимальное число записей в категории 'Сравнение'")
+    )
 
     class Meta:
-        verbose_name=_("Инструменты авторизованного пользователя")
+        verbose_name = _("Инструменты авторизованного пользователя")
 
     @property
     def total_count_rv(self):
@@ -99,7 +104,7 @@ class RecentlyViewedItem(models.Model):
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name=_("Идентификатор продукта"))
 
     class Meta:
-        verbose_name =  _("Недавно просмотренный товар")
+        verbose_name = _("Недавно просмотренный товар")
         ordering = ('-added',)
 
 
@@ -109,7 +114,7 @@ class WishlistItem(models.Model):
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name=_("Идентификатор продукта"))
 
     class Meta:
-        verbose_name =  _("Избранный товар")
+        verbose_name = _("Избранный товар")
         ordering = ('-added',)
 
 
@@ -119,8 +124,9 @@ class ComparisonItem(models.Model):
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name=_("Идентификатор продукта"))
 
     class Meta:
-        verbose_name =  _("Товар к сравнению")
+        verbose_name = _("Товар к сравнению")
         ordering = ('-added',)
+
 
 def superuser():
     print()

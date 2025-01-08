@@ -9,4 +9,5 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('email', 'username',)
     list_per_page = 30
 
+
 admin.site.register(User, UserAdmin)
