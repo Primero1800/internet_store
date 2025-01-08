@@ -3,7 +3,6 @@ from orders.session_classes import SessionPerson, SessionAddress
 import django.conf
 
 
-
 def get_current_person(request):
     user = request.user
     if user.is_authenticated:
@@ -33,11 +32,12 @@ def get_complex_phonenumber(country_code='RU', phone_number=''):
             if len(phone_number) - i == 3:
                 d = 1
             parts.append(''.join(phone_number[i: i+2+d]))
-            if d: break
+            if d:
+                break
         phone_number = '-'.join(parts)
 
     phone_numbers_regions = django.conf.settings.PHONE_NUMBER_ALOWED_REGIONS
-    phone_number_prefix = [value for key, value in phone_numbers_regions.items() if key==country_code][0]
+    phone_number_prefix = [value for key, value in phone_numbers_regions.items() if key == country_code][0]
     separator = django.conf.settings.PHONE_NUMBER_DATABASE_SEPARATOR
     return separator.join((country_code, phone_number_prefix, phone_number))
 

@@ -36,15 +36,13 @@ class SessionPerson(object):
         }
         return json.dumps(to_serialize)
 
-
     def save(self):
         self.session[settings.PERSON_SESSION_ID] = self.person
         # Отметить сеанс как "измененный", чтобы убедиться, что он сохранен
         self.session.modified = True
 
-
     def clear(self):
-        "Удаление данных персоны из сессии"
+        """Удаление данных персоны из сессии"""
         del self.session[settings.PERSON_SESSION_ID]
         self.session.modified = True
 
@@ -59,7 +57,6 @@ class SessionAddress(object):
         if not address:
             address = self.session[settings.ADDRESS_SESSION_ID] = {}
         self.address = address
-
 
     def set_attributes(self, address=None, city=None, postcode=None, email=None, phonenumber=None):
         self.address['address'] = address
@@ -84,8 +81,10 @@ class SessionAddress(object):
             phonenumber_0 = phonenumber[0]
             phonenumber_1 = phonenumber[-1]
 
-        return {'address': address, 'city': city, 'postcode': postcode, 'email': email, 'phonenumber_0': phonenumber_0, 'phonenumber_1': phonenumber_1}
-
+        return {
+            'address': address, 'city': city, 'postcode': postcode, 'email': email,
+            'phonenumber_0': phonenumber_0, 'phonenumber_1': phonenumber_1
+        }
 
     def serialize(self):
         to_serialize = {
@@ -97,16 +96,12 @@ class SessionAddress(object):
         }
         return json.dumps(to_serialize)
 
-
     def save(self):
         self.session[settings.ADDRESS_SESSION_ID] = self.address
         # Отметить сеанс как "измененный", чтобы убедиться, что он сохранен
         self.session.modified = True
 
-
     def clear(self):
-        "Удаление данных персоны из сессии"
+        """Удаление данных персоны из сессии"""
         del self.session[settings.ADDRESS_SESSION_ID]
         self.session.modified = True
-
-

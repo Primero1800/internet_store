@@ -19,7 +19,7 @@ from posts.inner_functions import get_verbose_name
 from store.models import Product
 
 
-@ajax_dispatch(ajax_show_basket_header_map | ajax_show_wishcompare_header_map | ajax_orders_view_total_map )
+@ajax_dispatch(ajax_show_basket_header_map | ajax_show_wishcompare_header_map | ajax_orders_view_total_map)
 def orders(request):
     context, cart = {}, None
     if request.method == 'POST':
@@ -30,7 +30,10 @@ def orders(request):
             address = get_current_address(request)
             complex_phonenumber = get_complex_phonenumber(request.POST['phonenumber_0'], request.POST['phonenumber_1'])
             person.set_attributes(request.POST['name'], request.POST['surname'], request.POST['company_name'])
-            address.set_attributes(request.POST['address'], request.POST['city'], request.POST['postcode'], request.POST['email'], complex_phonenumber)
+            address.set_attributes(
+                request.POST['address'], request.POST['city'], request.POST['postcode'],
+                request.POST['email'], complex_phonenumber
+            )
 
             total_price = Decimal(_separator_normalize(request.POST['total_price']))
             cart = get_current_cart(request)
@@ -70,17 +73,17 @@ def orders(request):
     else:
         person = get_current_person(request)
         address = get_current_address(request)
-        data= person.to_form() | address.to_form()
+        data = person.to_form() | address.to_form()
         form = OrderInformationForm(data=data)
 
-    if not cart: cart = get_current_cart(request)
+    if not cart:
+        cart = get_current_cart(request)
     cart.actualize()
 
     context['form'] = form
     context['cart'] = cart
     context['total_price'] = cart.total_price
     return render(request, 'orders/orders.html', context)
-
 
 
 @ajax_dispatch(ajax_show_basket_header_map | ajax_show_wishcompare_header_map)
@@ -138,7 +141,6 @@ def orders_history(request, success=None):
                 products.append(product)
             item['products'] = products
 
-
             if order_id != item['id']:
                 orders_info.append(item)
 
@@ -147,7 +149,6 @@ def orders_history(request, success=None):
     response = render(request, 'orders/orders_history.html', context)
     response.delete_cookie('last_order_id')
     return response
-
 
 
 @login_required(login_url=reverse_lazy("users:login"), redirect_field_name='next')
@@ -217,4 +218,3 @@ def proceed_order(request):
 
 def orders_message(request):
     return render(request, 'orders/orders_message.html', {})
-

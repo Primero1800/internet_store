@@ -17,25 +17,30 @@ from users.models import User
 
 class Person(models.Model):
     name = models.CharField(max_length=50, error_messages={"required": _("Обязательное условие"), }, verbose_name=_("Имя"))
-    surname = models.CharField(blank=True, default='', max_length=50, error_messages={'max_length': _("Атрибут не может состоять более чем из 50 символов")}, verbose_name=_("Фамилия"))
-    company_name = models.CharField(blank=True, default='', max_length=100, error_messages={
-                                                                'max_length': _("Атрибут не может состоять более чем из 50 символов"),
-                                                                'min_length': _("Атрибут не может состоять менее чем из 3 символов")
-                                                                                                                                                                                 },
-                           verbose_name=_("Компания"))
+    surname = models.CharField(
+        blank=True, default='', max_length=50,
+        error_messages={'max_length': _("Атрибут не может состоять более чем из 50 символов")},
+        verbose_name=_("Фамилия")
+    )
+    company_name = models.CharField(
+        blank=True, default='', max_length=100,
+        error_messages={
+            'max_length': _("Атрибут не может состоять более чем из 50 символов"),
+            'min_length': _("Атрибут не может состоять менее чем из 3 символов")
+        },
+        verbose_name=_("Компания")
+    )
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name=_("Пользователь"))
 
     class Meta:
         verbose_name = _("Персона")
         ordering = ('id', )
 
-
     def set_attributes(self, name=None, surname=None, company_name=None):
         self.name = name
         self.surname = surname
         self.company_name = company_name
         self.save()
-
 
     def get_fullname(self):
         return (self.name + ' ' + self.surname).strip()
@@ -71,7 +76,6 @@ class Address(models.Model):
 
     def get_phonenumber(self):
         return self.phonenumber
-
 
     def set_attributes(self, address=None, city=None, postcode=0, email=None, phonenumber=None):
         self.address = address
@@ -120,7 +124,9 @@ class Order(models.Model):
         place_0 = 0, _("Пункт выдачи")
         place_1 = 1, _("Адрес заказчика")
 
-    move_to = models.PositiveIntegerField(choices=MovingChoices.choices, default=MovingChoices.place_0, verbose_name=_("Доставить на"))
+    move_to = models.PositiveIntegerField(
+        choices=MovingChoices.choices, default=MovingChoices.place_0, verbose_name=_("Доставить на")
+    )
 
     class PaymentChoices(models.IntegerChoices):
         payment_0 = 0, _("Ожидает оплаты")
@@ -128,14 +134,18 @@ class Order(models.Model):
         payment_2 = 2, _("При вручении, б/н"),
         payment_3 = 3, _("При вручении, нал.д/с")
 
-    payment_conditions = models.PositiveIntegerField(choices=PaymentChoices.choices, default=PaymentChoices.payment_0, verbose_name=_("Статус оплаты"))
+    payment_conditions = models.PositiveIntegerField(
+        choices=PaymentChoices.choices, default=PaymentChoices.payment_0, verbose_name=_("Статус оплаты")
+    )
 
     class StatusChoices(models.IntegerChoices):
         status_0 = 0, _("Заказан")
         status_1 = 1, _("Доставлен"),
         status_2 = 2, _("Отменен")
 
-    status = models.PositiveIntegerField(choices=StatusChoices.choices, default=StatusChoices.status_0, verbose_name=_("Статус заказа"))
+    status = models.PositiveIntegerField(
+        choices=StatusChoices.choices, default=StatusChoices.status_0, verbose_name=_("Статус заказа")
+    )
 
     time_placed = models.DateTimeField(auto_now_add=True, verbose_name=_("Время заказа"))
     time_delivered = models.DateTimeField(blank=True, null=True, verbose_name=_("Время доставки"))
@@ -155,13 +165,13 @@ class Order(models.Model):
         return self.status == 1
 
     def reserve(self):
-        """Зарезервировать (убрать со склада) выбранное число заказанных позиций, не помещая в число продаж (до момента доставки)"""
+        """Зарезервировать (убрать со склада) выбранное число заказанных позиций,
+        не помещая в число продаж (до момента доставки)"""
         products_values = json.loads(self.order_content)
         for product_dict in products_values:
             product = get_object_or_404(Product, id=product_dict['id'])
             quantity = product_dict['quantity']
             product.reserve(quantity)
-
 
     def deliver(self):
         """Окончательное списание заказанных позиций с помещением в число продаж (доставка)"""
