@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from siteajax.toolbox import AjaxResponse
 
 from orders.inner_functions import get_current_person, get_current_address
-from posts.inner_functions import correct_by_word_length, send_telegram_message
+from posts.inner_functions import correct_by_word_length
 from store.forms import VoteForm
 from store.info_classes import Vote
 from store.models import Product
@@ -20,7 +20,7 @@ def ajax_view_filtered_from_selection(request, *args, **kwargs):
         product_ids = params['product_ids']
         rubric_products = [Product.objects.get(id=int(id)) for id in product_ids]
         rubric_brands = sorted(set(prod.brand.title for prod in rubric_products))
-    except:
+    except Exception:
         product_ids, rubric_products, rubric_brands = [], [], []
     per_page = 6
 
@@ -35,7 +35,7 @@ def ajax_view_filtered_from_selection(request, *args, **kwargs):
 
         for filter, brand_title in zip(checkbox_statuses, rubric_brands):
             if filter == 'false':
-                rubric_products = [prod for prod in rubric_products if prod.brand.title!=brand_title]
+                rubric_products = [prod for prod in rubric_products if prod.brand.title != brand_title]
 
         if ordering_status == '3':
             rubric_products.sort(key=lambda x: x.rating, reverse=True)
@@ -51,11 +51,10 @@ def ajax_view_filtered_from_selection(request, *args, **kwargs):
 
         grid_active = True if 'active' in str(current_tab_pane) else False
 
-
     context['div_filtered_products'] = [rubric_product.id for rubric_product in rubric_products]
     context['div_current_page'] = 1
     context['div_per_page'] = per_page
-    context['pages_count'] = len(context['div_filtered_products'])//per_page if len(context['div_filtered_products'])%per_page==0 else len(context['div_filtered_products'])//per_page+1
+    context['pages_count'] = len(context['div_filtered_products'])//per_page if len(context['div_filtered_products']) % per_page == 0 else len(context['div_filtered_products'])//per_page+1
 
     context['grid_active'] = grid_active
 
@@ -85,7 +84,6 @@ def ajax_show_comments(request, *args, **kwargs):
             vote.del_vote()
             vote.delete()
 
-
     context['stars'] = 5
     if 'stars' in request.POST:
         context['stars'] = int(request.POST['stars'])
@@ -95,7 +93,7 @@ def ajax_show_comments(request, *args, **kwargs):
             votes = product.votes.get(user=user)
             if votes:
                 context['voted'] = True
-        except:
+        except Exception:
             pass
 
     if 'voted' not in context and user.is_authenticated:
@@ -123,7 +121,7 @@ def ajax_show_comments(request, *args, **kwargs):
                 'stars': 5,
                 'review': None,
             }
-            form=VoteForm(data=data)
+            form = VoteForm(data=data)
         context['form'] = form
 
     response = AjaxResponse(render(request, 'store/ajax_divs/ajax_div_comments.html', context=context))

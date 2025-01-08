@@ -97,7 +97,7 @@ class Product(models.Model):
         self.available = Product.AVAILABLE_CHOICES[0][0]
         self.save()
 
-    def  sale(self, quantity=1):
+    def sale(self, quantity=1):
         """Процедура регистрации товара в продажах """
         sale_information, created = store.info_classes.Sale_information.objects.get_or_create(product=self)
         sale_information.sold_count += quantity

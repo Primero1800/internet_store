@@ -14,21 +14,24 @@ class BrandAdmin(admin.ModelAdmin):
 admin.site.register(Brand, BrandAdmin)
 
 
-
 class ImageInline(admin.TabularInline):
     model = Image
-    #prepopulated_fields = ('product',)
+
 
 class AIInline(admin.TabularInline):
     model = Additional_information
+
     class Meta:
         verbose_name = _("Дополнительная информация")
+
 
 class ProductInline(admin.StackedInline):
     model = Rubric.products.through
 
+
 class RubricInline(admin.StackedInline):
     model = Product.rubrics.through
+
 
 class ProductAdmin(admin.ModelAdmin):
     model = Product
@@ -39,7 +42,9 @@ class ProductAdmin(admin.ModelAdmin):
     list_per_page = 30
     inlines = [ImageInline, AIInline,]
 
+
 admin.site.register(Product, ProductAdmin)
+
 
 class RubricAdmin(admin.ModelAdmin):
     model = Rubric
@@ -47,5 +52,6 @@ class RubricAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'title', )
     prepopulated_fields = {'slug': ('title',)}
     inlines = [ProductInline]
+
 
 admin.site.register(Rubric, RubricAdmin)

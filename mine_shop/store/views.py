@@ -50,7 +50,7 @@ def view_category_grid(request, slug=None, to_filter=None):
         context['rubric'] = rubric
         page_title = rubric.title
         products = rubric.products.all()
-    except:
+    except Exception:
         products = Product.objects.all()
         page_title = _("Все товары")
 
@@ -87,7 +87,7 @@ def view_special_grid(request, discont=5, pop=None):
         elif pop == 'r':
             products = list(Product.objects.order_by('rating')[:settings.PRODUCT_TOP_RATED_COUNT])
             title = _("Лидеры рейтинга")
-        else: ## pop == 'v'
+        else:  # pop == 'v'
             products = [top.product for top in Sale_information.objects.all().order_by('-viewed_count')[:settings.PRODUCT_TOP_VIEWED_COUNT]]
             title = _("Лидеры просмотров")
 
@@ -105,7 +105,7 @@ def search(request):
     try:
         keyword = ' '.join(params['search-field'][0].split())[:30]
         keyrubric = params['category-field'][0].lower()
-    except:
+    except Exception:
         if 'HTTP_REFERER' in request.META:
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
         else:
@@ -120,7 +120,7 @@ def search(request):
         if keyrubric == rubric.title.lower():
             queryset = rubric.products.all().values('title', 'description', 'id')
             break
-    if not queryset: ##         'все категории':
+    if not queryset:  # 'все категории':
         queryset = Product.objects.all().values('title', 'description', 'id')
 
     products, links = find_products_and_links_by_words(queryset, keywords)
@@ -143,7 +143,7 @@ def index(request):
 
 
 def show_paginator(request):
-    if request.method=="GET":
+    if request.method == "GET":
         params = dict(request.GET)
     else:
         params = dict(request.POST)
@@ -153,15 +153,15 @@ def show_paginator(request):
     if tab == '0':
         try:
             current_page += int(params['next_page'][0])
-        except:
+        except Exception:
             pass
 
     pages_count = int(params['pages_count'][0])
     try:
         filtered_products_ids = params['filtered_products']
-    except:
+    except Exception:
         filtered_products_ids = []
-    page_ids = filtered_products_ids[(current_page-1)*per_page : current_page*per_page]
+    page_ids = filtered_products_ids[(current_page-1)*per_page: current_page*per_page]
     first_index = (current_page-1)*per_page+1
     last_index = min(current_page*per_page, len(filtered_products_ids))
 
@@ -172,7 +172,7 @@ def show_paginator(request):
 
     template = 'grid' if tab == '0' else 'list'
 
-    response = render(request, f'store/ajax_divs/ajax_div_{ template }_tab.html', context)
+    response = render(request, f'store/ajax_divs/ajax_div_{template}_tab.html', context)
     return response
 
 
@@ -180,4 +180,3 @@ def show_paginator(request):
 def error(request, message_id=None):
     context = {'message': message_id, 'title': _("Ошибка")}
     return render(request, 'store/404.html', context)
-
