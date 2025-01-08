@@ -1,7 +1,9 @@
 from dotenv import load_dotenv
-load_dotenv()
 import os
 from django.conf import settings
+
+
+load_dotenv()
 
 
 def add_author_to_context(request):
@@ -14,6 +16,7 @@ def add_author_to_context(request):
         },
         'tech': settings.LIBRARIES
     }
+
 
 def add_store_to_context(request):
     return {
