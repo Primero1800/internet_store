@@ -13,7 +13,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-v7xyal4p$tnf+__tltv(p@_9t(a7@ph$(ny49)=_qu62kwgz-1'
+#SECRET_KEY = 'django-insecure-v7xyal4p$tnf+__tltv(p@_9t(a7@ph$(ny49)=_qu62kwgz-1'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -159,12 +160,12 @@ DATABASES = {
 # MAIL SETTINGS
 VIA_MAIL = True
 
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-EMAIL_PORT = os.environ.get('EMAIL_PORT')
-EMAIL_USE_TLS = True if os.environ.get('EMAIL_USE_TLS')=='True' else False
-EMAIL_USE_SSL = True if os.environ.get('EMAIL_USE_SSL')=='True' else False
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = True if os.getenv('EMAIL_USE_TLS')=='True' else False
+EMAIL_USE_SSL = True if os.getenv('EMAIL_USE_SSL')=='True' else False
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 
 # CACHE
@@ -173,7 +174,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': os.environ.get('REDIS_ADDRESS'),  # Use the appropriate Redis server URL
+        'LOCATION': os.getenv('REDIS_ADDRESS'),  # Use the appropriate Redis server URL
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
@@ -225,6 +226,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 #LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'ru-ru'
+
 
 TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
@@ -373,8 +375,8 @@ TELEGRAM_SEND_ORDER_NOTIFICTATION = True
 TELEGRAM_SEND_POST_NOTIFICATION = True
 TELEGRAM_SEND_VOTE_NOTIFICATION = True
 
-TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN')
-TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID')
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
+TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
 # Used libraries and frameworks
 
