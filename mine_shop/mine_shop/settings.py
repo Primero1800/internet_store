@@ -8,7 +8,6 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -22,8 +21,8 @@ DEBUG = True
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
 
-ALLOWED_HOSTS = ['*']
 
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -52,6 +51,7 @@ INSTALLED_APPS = [
 
     'api.apps.ApiConfig',
     'drf_spectacular',
+    'debug_toolbar',
 
 ]
 
@@ -69,7 +69,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+# if not DEBUG:
+#     del MIDDLEWARE[-1]
+
 
 ROOT_URLCONF = 'mine_shop.urls'
 
@@ -88,9 +94,11 @@ TEMPLATES = [
                 'mine_shop.context_processors.add_author_to_context',
                 'mine_shop.context_processors.add_store_to_context',
 
-                'store.context_processors.add_currency_to_context',                            # 'currency' - Добавляет дескриптор валюты в контекст
-                'store.context_processors.add_store_title_to_context',                          # 'store_title' - Добавляет дескриптор главного мени ресурса в контекст
-                'cart.context_processors.add_cart_to_context',                                        # 'cart' - Добавляет дескриптор корзины в контекст
+                'store.context_processors.add_currency_to_context',
+                # 'currency' - Добавляет дескриптор валюты в контекст
+                'store.context_processors.add_store_title_to_context',
+                # 'store_title' - Добавляет дескриптор главного мени ресурса в контекст
+                'cart.context_processors.add_cart_to_context',  # 'cart' - Добавляет дескриптор корзины в контекст
 
             ],
             'libraries': {
@@ -119,7 +127,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mine_shop.wsgi.application'
 
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -128,21 +135,20 @@ REST_FRAMEWORK = {
 
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
     "DEFAULT_VERSION": 'v1',
-    'ALLOWED_VERSIONS': ('v1', ),
+    'ALLOWED_VERSIONS': ('v1',),
 
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
-
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # DB.SQLITE3
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.sqlite3',
-       'NAME': BASE_DIR / 'db.sqlite3',
-   }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 # POSTGRESQL
@@ -162,11 +168,10 @@ VIA_MAIL = True
 
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_USE_TLS = True if os.getenv('EMAIL_USE_TLS')=='True' else False
-EMAIL_USE_SSL = True if os.getenv('EMAIL_USE_SSL')=='True' else False
+EMAIL_USE_TLS = True if os.getenv('EMAIL_USE_TLS') == 'True' else False
+EMAIL_USE_SSL = True if os.getenv('EMAIL_USE_SSL') == 'True' else False
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-
 
 # CACHE
 
@@ -196,7 +201,6 @@ CACHES = {
 MINE_SHOP_USER_CONFIRMATION_KEY = "user_confirmation_{token}"
 MINE_SHOP_USER_CONFIRMATION_TIMEOUT = 300
 
-
 # Cors API
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -220,13 +224,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 #LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'ru-ru'
-
 
 TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
@@ -242,9 +244,7 @@ LANGUAGES = [
     ("en", "English"),
 ]
 
-
 SHORT_DATETIME_FORMAT = 'd.m.Y H:i:s'
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -254,7 +254,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 STATICFILES_DIRS = [
-     #BASE_DIR / "static",
+    #BASE_DIR / "static",
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
@@ -266,44 +266,45 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 # USER_DEFAULTS
 
-STORE_TITLE = 'Элементарно!'                                    #      """ Используемое внутреннее главное название проекта"""
-CURRENCY = 'BYN'                                                           #       """Используемый дескриптор валюты"""
-PRODUCT_NEW_ARRIVALS_COUNT = 25                   #        """Максимальное число продуктов, попадающих в категорию 'Новинки' """
-PRODUCT_BESTSELLERS_COUNT = 12                       #       """Максимальное число продуктов, попадающих в категорию "Бестселлеры", должно быть не меньше числа лидеров продаж"""
-PRODUCT_TOP_SALES_COUNT = 25                           #       """Максимально число продуктов, попадающих в категорию "Лидеры продаж", должно быть не меньше числа Бестселлеров"""
-PRODUCT_TOP_VIEWED_COUNT = 25                       #       """Максимальное число продуктов, попадающих в категорию "Лидеры просмотров" """"
-PRODUCT_TOP_RATED_COUNT = 25                          #       """Максимальное число продуктов, попадающих в категорию "Лидеры по рейтингу" """"
-PRODUCT_HEROES_COUNT = 5                                   #        """Количество товаров на скидке, попадающих в секцию ГЕРОИ"""
+STORE_TITLE = 'Элементарно!'  #      """ Используемое внутреннее главное название проекта"""
+CURRENCY = 'BYN'  #       """Используемый дескриптор валюты"""
+PRODUCT_NEW_ARRIVALS_COUNT = 25  #        """Максимальное число продуктов, попадающих в категорию 'Новинки' """
+PRODUCT_BESTSELLERS_COUNT = 12  #       """Максимальное число продуктов, попадающих в категорию "Бестселлеры", должно быть не меньше числа лидеров продаж"""
+PRODUCT_TOP_SALES_COUNT = 25  #       """Максимально число продуктов, попадающих в категорию "Лидеры продаж", должно быть не меньше числа Бестселлеров"""
+PRODUCT_TOP_VIEWED_COUNT = 25  #       """Максимальное число продуктов, попадающих в категорию "Лидеры просмотров" """"
+PRODUCT_TOP_RATED_COUNT = 25  #       """Максимальное число продуктов, попадающих в категорию "Лидеры по рейтингу" """"
+PRODUCT_HEROES_COUNT = 5  #        """Количество товаров на скидке, попадающих в секцию ГЕРОИ"""
 
-USER_TOOLS_MAX_LENGTH_RECENTLY_VIEWED = 8       #       """Количество товаров, попадающее в категорию пользователя "Недавно просмотренное". Работает по принципу очереди"""
-USER_TOOLS_MAX_LENGTH_WISHLIST = 20                       #      """Количество товаров, попадающее в категорию "Избранное". Работает по принципу очереди"""
-USER_TOOLS_MAX_LENGTH_COMPARISON = 4                #       """Количество товаров, попадающее в категорию "Сравнение". Работает по принципу очереди"""
-
+USER_TOOLS_MAX_LENGTH_RECENTLY_VIEWED = 8  #       """Количество товаров, попадающее в категорию пользователя "Недавно просмотренное". Работает по принципу очереди"""
+USER_TOOLS_MAX_LENGTH_WISHLIST = 20  #      """Количество товаров, попадающее в категорию "Избранное". Работает по принципу очереди"""
+USER_TOOLS_MAX_LENGTH_COMPARISON = 4  #       """Количество товаров, попадающее в категорию "Сравнение". Работает по принципу очереди"""
 
 SEARCHING_KEYS_FOR_LINKS = [
-    {                #   """Ключи поиска для включения ссылки на страницу Доставки"""
+    {  #   """Ключи поиска для включения ссылки на страницу Доставки"""
         'SEARCHING_KEYS': ('доставка', 'delivery',), 'LINK': {'name': 'доставка', 'url': 'orders:index'}
     },
-    {               #   """Ключи поиска для включения ссылки на страницу Оплаты"""
+    {  #   """Ключи поиска для включения ссылки на страницу Оплаты"""
         'SEARCHING_KEYS': ('оплата', 'payment',), 'LINK': {'name': 'оплата', 'url': 'orders:index'}
     },
-    {               #   """Ключи поиска для включения ссылки на страницу Аккаунта"""
-        'SEARCHING_KEYS': ('аккаунт', 'кабинет', 'личная страница', 'личный кабинет', 'account',), 'LINK': {'name': 'аккаунт', 'url': 'cart:cart'}
+    {  #   """Ключи поиска для включения ссылки на страницу Аккаунта"""
+        'SEARCHING_KEYS': ('аккаунт', 'кабинет', 'личная страница', 'личный кабинет', 'account',),
+        'LINK': {'name': 'аккаунт', 'url': 'cart:cart'}
     },
-    {               #   """Ключи поиска для включения ссылки на страницу Входа/Регистрации"""
-        'SEARCHING_KEYS': ('вход', 'регистрация', 'логин', 'лог ин', 'login', 'log in', 'registration',), 'LINK': {'name': 'вход/регистрация', 'url': 'users:login'}
+    {  #   """Ключи поиска для включения ссылки на страницу Входа/Регистрации"""
+        'SEARCHING_KEYS': ('вход', 'регистрация', 'логин', 'лог ин', 'login', 'log in', 'registration',),
+        'LINK': {'name': 'вход/регистрация', 'url': 'users:login'}
     },
-    {               #   """Ключи поиска для включения ссылки на страницу Корзины"""
-        'SEARCHING_KEYS': ('корзина', 'заказ', 'заказы',  'cart', 'order',), 'LINK': {'name': 'корзина', 'url': 'cart:cart'}
+    {  #   """Ключи поиска для включения ссылки на страницу Корзины"""
+        'SEARCHING_KEYS': ('корзина', 'заказ', 'заказы', 'cart', 'order',),
+        'LINK': {'name': 'корзина', 'url': 'cart:cart'}
     },
-    {               #   """Ключи поиска для включения ссылки на страницу Заказа"""
-        'SEARCHING_KEYS': ('корзина', 'заказ', 'заказы', 'cart', 'order',), 'LINK': {'name': 'заказы', 'url': 'orders:index'}
+    {  #   """Ключи поиска для включения ссылки на страницу Заказа"""
+        'SEARCHING_KEYS': ('корзина', 'заказ', 'заказы', 'cart', 'order',),
+        'LINK': {'name': 'заказы', 'url': 'orders:index'}
     },
 ]
-
 
 # SPECTACULAR
 
@@ -314,7 +315,7 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'SERVE_AUTHENTICATION': None,
-    'AUTHENTICATION_WHITELIST': ['rest_framework.authentication.BasicAuthentication',],
+    'AUTHENTICATION_WHITELIST': ['rest_framework.authentication.BasicAuthentication', ],
 
     "SWAGGER_UI_SETTINGS": {
         "deepLinking": True,
@@ -324,11 +325,9 @@ SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
 }
 
-
 # USERS
 
 AUTH_USER_MODEL = 'users.User'
-
 
 # CART, PERSON AND ADDRESS
 
@@ -336,25 +335,23 @@ CART_SESSION_ID = 'cart'
 PERSON_SESSION_ID = 'person'
 ADDRESS_SESSION_ID = 'address'
 
-
 # GLOBAL_PROJECT_SETTINGS
 
-        # ANONIMOUS -> AUTHENTICATED USER
+# ANONIMOUS -> AUTHENTICATED USER
 
 AFTER_LOGIN_CART_PREFERENCES = [
-                    # После авторизации пользователя его корзина из базы данных объединяется с корзиной анонима.
-                    # При этом корзина анонима уничтожается. После выхода пользователя аноним получает новую пустую корзину
-    '0',            # user.cart = user.cart + anonimous.cart, del anonimous.cart
+    # После авторизации пользователя его корзина из базы данных объединяется с корзиной анонима.
+    # При этом корзина анонима уничтожается. После выхода пользователя аноним получает новую пустую корзину
+    '0',  # user.cart = user.cart + anonimous.cart, del anonimous.cart
 
-                     #  После авторизации пользователя его анонимная корзина уничтожается, а работа продолжается с корзиной пользователя
-                     # из базы данных. После выхода пользователя аноним получает новую пустую корзину
-    '1'             # user.cart = user.cart, del anonimous.cart
+    #  После авторизации пользователя его анонимная корзина уничтожается, а работа продолжается с корзиной пользователя
+    # из базы данных. После выхода пользователя аноним получает новую пустую корзину
+    '1'  # user.cart = user.cart, del anonimous.cart
 ]
 GLOBAL_CART_PREFERENCES = AFTER_LOGIN_CART_PREFERENCES[0]
 
-
-ORDERS_FREE_DELIVERY_FLOOR = 300                # Минимальная сумма заказа для бесплатной доставки
-ORDERS_DELIVERY_COST = 30                               # Стоимость платной доставки
+ORDERS_FREE_DELIVERY_FLOOR = 300  # Минимальная сумма заказа для бесплатной доставки
+ORDERS_DELIVERY_COST = 30  # Стоимость платной доставки
 
 # Phone number regions allowed
 
@@ -364,7 +361,7 @@ PHONE_NUMBER_DEFAULT_REGION = 'RU'
 PHONE_NUMBER_ALOWED_REGIONS = {
     'RU': 'Russia, +7',
     'BY': 'Belarus, +375',
-    'KZ':  'Kazakhstan, +7',
+    'KZ': 'Kazakhstan, +7',
     'UZ': 'Uzbekistan, +998',
 }
 
@@ -381,9 +378,9 @@ TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 # Used libraries and frameworks
 
 LIBRARIES = [
-    'Django', 'Django REST', 'Redis', 'Postgres', 'Siteajax', 'Gettext', 'Babel', 'Phonenumber', 'Whitenoise', 'Pillow', 'Spectacular',
+    'Django', 'Django REST', 'Redis', 'Postgres', 'Siteajax', 'Gettext', 'Babel', 'Phonenumber', 'Whitenoise', 'Pillow',
+    'Spectacular',
 ]
-
 
 # LOGGING
 
@@ -412,7 +409,7 @@ LOGGING = {
             "style": "{",
         }
     },
-    'handlers' : {
+    'handlers': {
         'file': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
@@ -448,3 +445,11 @@ LOGGING = {
         },
     }
 }
+
+# DJANGO DEBUG TOOLBAR
+
+INTERNAL_IPS = [
+    '127.0.0.1:8000*',
+    '127.0.0.1',
+    'localhost',
+]
