@@ -66,7 +66,8 @@ class SessionCart(object):
 
     def clear(self):
         """Удаление всей корзины из сессии"""
-        del self.session[settings.CART_SESSION_ID]
+        if settings.CART_SESSION_ID in self.session:
+            del self.session[settings.CART_SESSION_ID]
         self.session.modified = True
 
     def actualize(self):
