@@ -206,7 +206,7 @@ def create_message(instance, prefix='', create=True):
 
 
 @receiver(post_save, sender=Order)
-def send_message_to_bot(sender, instance, **kwargs):
+def send_message_to_bot_post_save_order(sender, instance, **kwargs):
     if settings.TELEGRAM_SEND_NOTIFICATIONS and settings.TELEGRAM_SEND_ORDER_NOTIFICTATION:
         asyncio.run(send_telegram_message(message=create_message(instance, _("Заказ").upper(), create=True)))
 

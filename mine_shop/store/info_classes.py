@@ -87,7 +87,7 @@ def create_message(instance, prefix=''):
 
 
 @receiver(pre_save, sender=Vote)
-def send_message_to_bot(sender, instance, **kwargs):
+def send_message_to_bot_pre_save_vote(sender, instance, **kwargs):
     asyncio.run(send_telegram_message(message=create_message(instance, _("Отзыв").upper())))
 
 
