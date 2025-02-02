@@ -81,7 +81,7 @@ def ajax_show_comments(request, *args, **kwargs):
         vote_id = int(request.POST['vote_id'])
         vote = get_object_or_404(Vote, id=vote_id)
         if user == vote.user or user.is_staff or user.is_superuser:
-            vote.del_vote()
+            # vote.del_vote()
             vote.delete()
 
     context['stars'] = 5

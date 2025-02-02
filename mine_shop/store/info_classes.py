@@ -94,3 +94,8 @@ def send_message_to_bot_pre_save_vote(sender, instance, **kwargs):
 @receiver(pre_delete, sender=Vote)
 def send_message_to_bot(sender, instance, **kwargs):
     asyncio.run(send_telegram_message(message=create_message(instance, _("Отзыв удален").upper())))
+
+
+@receiver(pre_delete, sender=Vote)
+def update_rating(sender, instance, **kwargs):
+    instance.del_vote()
