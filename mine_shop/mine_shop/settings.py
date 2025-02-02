@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
@@ -378,7 +378,7 @@ TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 # Used libraries and frameworks
 
 LIBRARIES = [
-    'Django', 'Django REST', 'Redis', 'Postgres', 'Siteajax', 'Gettext', 'Babel', 'Phonenumber', 'Whitenoise', 'Pillow',
+    'Django', 'Django REST', 'Redis', 'Postgres', 'Siteajax', 'Telegram-bot', 'Gettext', 'Babel', 'Phonenumber', 'Whitenoise', 'Pillow',
     'Spectacular',
 ]
 
