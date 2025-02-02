@@ -68,7 +68,7 @@
 В подготовленном файле data.json уже имеются заранее созданные superuser. По умолчанию - (email: admin@admin.com, password: 12345678).
 Для просмотра информации и создания собственных superuser необходимо запустить сеанс оболочки <b>python manage.py shell</b>.
    
-    <b>superuse</b>r - функция, выводит список уже зарегистрированных superuser
+    <b>superuser</b>r - функция, выводит список уже зарегистрированных superuser
    
     <b>defaultsuperuser</b> - функция, восстанавливает первоначального superuser
 
