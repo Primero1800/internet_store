@@ -21,7 +21,6 @@ DEBUG = True
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
 
-
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -76,7 +75,6 @@ MIDDLEWARE = [
 
 if not DEBUG:
     del MIDDLEWARE[-1]
-
 
 ROOT_URLCONF = 'mine_shop.urls'
 
@@ -174,7 +172,9 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 SESSION_ENGINE = 'redis_sessions.session'
 SESSION_REDIS = {
-    'address': os.getenv('REDIS_SESSIONS_ADDRESS'),
+    'host': os.getenv('REDIS_HOST'),
+    'port': os.getenv('REDIS_PORT'),
+    'db': os.getenv('REDIS_SESSION_DB'),
     'prefix': 'session',
     'socket_timeout': 1,
     'retry_on_timeout': False
@@ -186,24 +186,17 @@ SESSION_REDIS = {
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': os.getenv('REDIS_ADDRESS'),  # Use the appropriate Redis server URL
+        'LOCATION': 'redis://{}:{}/{}'.format(
+            os.getenv('REDIS_HOST'),
+            os.getenv('REDIS_PORT'),
+            os.getenv('REDIS_CACHE_DB')),
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     }
 }
+SESSION_CACHE_ALIAS = 'default'
 
-# DC
-# CACHES = {
-#   'default': {
-#       'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-#        'LOCATION': 'cache_table',
-#        'TIMEOUT': 300,
-#        'OPTIONS':{
-#            'MAX_ENTRIES': 300,
-#        }
-#    }
-#}
 
 MINE_SHOP_USER_CONFIRMATION_KEY = "user_confirmation_{token}"
 MINE_SHOP_USER_CONFIRMATION_TIMEOUT = 300
@@ -385,7 +378,8 @@ TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 # Used libraries and frameworks
 
 LIBRARIES = [
-    'Django', 'Django REST', 'Redis', 'Postgres', 'Siteajax', 'Telegram-bot', 'Gettext', 'Babel', 'Phonenumber', 'Whitenoise', 'Pillow',
+    'Django', 'Django REST', 'Redis', 'Postgres', 'Siteajax', 'Telegram-bot', 'Gettext', 'Babel', 'Phonenumber',
+    'Whitenoise', 'Pillow',
     'Spectacular', 'Debug-toolbar',
 ]
 
@@ -458,4 +452,5 @@ LOGGING = {
 INTERNAL_IPS = [
     '127.0.0.1',
     'localhost',
+    'host.docker.internal',
 ]
