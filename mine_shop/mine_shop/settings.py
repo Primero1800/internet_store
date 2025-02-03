@@ -74,8 +74,8 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
-# if not DEBUG:
-#     del MIDDLEWARE[-1]
+if not DEBUG:
+    del MIDDLEWARE[-1]
 
 
 ROOT_URLCONF = 'mine_shop.urls'
@@ -95,11 +95,12 @@ TEMPLATES = [
                 'mine_shop.context_processors.add_author_to_context',
                 'mine_shop.context_processors.add_store_to_context',
 
-                'store.context_processors.add_currency_to_context',
                 # 'currency' - Добавляет дескриптор валюты в контекст
-                'store.context_processors.add_store_title_to_context',
+                'store.context_processors.add_currency_to_context',
                 # 'store_title' - Добавляет дескриптор главного мени ресурса в контекст
-                'cart.context_processors.add_cart_to_context',  # 'cart' - Добавляет дескриптор корзины в контекст
+                'store.context_processors.add_store_title_to_context',
+                # 'cart' - Добавляет дескриптор корзины в контекст
+                'cart.context_processors.add_cart_to_context',
 
             ],
             'libraries': {
@@ -112,13 +113,9 @@ TEMPLATES = [
                 'store_tags_rating': 'store.templatetags.templatetags_rating',
 
                 'users_tags_members': 'users.templatetags.templatetags_members',
-
                 'cart_tags_cart': 'cart.templatetags.templatetags_cart',
-
                 'orders_tags_phone_numbers': 'orders.templatetags.templatetags_phone_numbers',
-
                 'posts_tags_posts': 'posts.templatetags.templatetags_posts',
-
                 'mine_shop_tags_constants': 'mine_shop.templatetags.templatetags_mine_shop_constants',
 
             }
@@ -142,7 +139,6 @@ REST_FRAMEWORK = {
 }
 
 # Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # DB.SQLITE3
 DATABASES = {
@@ -178,10 +174,7 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 SESSION_ENGINE = 'redis_sessions.session'
 SESSION_REDIS = {
-    'host': 'localhost',
-    'port': 6379,
-    'db': 0,
-    # 'password': '',
+    'address': os.getenv('REDIS_SESSIONS_ADDRESS'),
     'prefix': 'session',
     'socket_timeout': 1,
     'retry_on_timeout': False
@@ -268,8 +261,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 STATICFILES_DIRS = [
-    #BASE_DIR / "static",
 ]
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 MEDIA_URL = '/media/'
@@ -393,7 +386,7 @@ TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
 LIBRARIES = [
     'Django', 'Django REST', 'Redis', 'Postgres', 'Siteajax', 'Telegram-bot', 'Gettext', 'Babel', 'Phonenumber', 'Whitenoise', 'Pillow',
-    'Spectacular',
+    'Spectacular', 'Debug-toolbar',
 ]
 
 # LOGGING
@@ -463,7 +456,6 @@ LOGGING = {
 # DJANGO DEBUG TOOLBAR
 
 INTERNAL_IPS = [
-    '127.0.0.1:8000*',
     '127.0.0.1',
     'localhost',
 ]
