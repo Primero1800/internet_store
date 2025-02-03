@@ -49,6 +49,7 @@
 Или скачайте исходный код репозитория в zip-архиве и распакуйте.
 
 
+
 2. Создайте и активируйте виртуальное окружение:
 
 	    python3 -m venv venv
@@ -61,6 +62,7 @@
 4. Войдите во внутреннюю папку проекта, сделайте миграции и загрузите подготовленные данные в бд:
 
 	    cd mine_shop
+	    python manage.py makemigrations
 	    python manage.py migrate
 	    python manage.py loaddata fixtures/data.json
 
@@ -83,7 +85,15 @@
 			defaultsuperuser()
    			createsuperuser ()
 
-7. Запускаем сервер.
+7. Запускаем сервер. (ВАЖНО!) В стандартных настройках приложения используется redis для кеширования.
+    Если у Вас redis-server не установлен, по каким-либо причинам не желаете устанавливать или использовать установленный,
+    воспользуйтесь docker.
+    Файл docker-compose.yaml лежит в корневой директории проекта.
+        
+        cd ..
+        docker-compose up --build   
+        
+        или
 
     	python manage.py runserver
     
