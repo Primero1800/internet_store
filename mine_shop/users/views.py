@@ -7,7 +7,6 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
 from django.core.mail import send_mail
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
@@ -75,10 +74,10 @@ class RegisterView(FormView):
 
             if settings.VIA_MAIL:
                 send_mail(
-                        subject=_(f"{settings.STORE_TITLE} Пожалуйста, подтвердите регистрацию"),
-                        message=message,
-                        from_email=os.environ.get('EMAIL_HOST_USER'),
-                        recipient_list=[user.email, ]
+                    subject=_(f"{settings.STORE_TITLE} Пожалуйста, подтвердите регистрацию"),
+                    message=message,
+                    from_email=os.environ.get('EMAIL_HOST_USER'),
+                    recipient_list=[user.email, ]
                 )
             else:
                 if settings.TELEGRAM_SEND_NOTIFICATIONS:
@@ -126,8 +125,8 @@ def login(request, message=None, email=None, next=None):
                 cart += anonimous_cart
                 next = request.POST['next'] if 'next' in request.POST else None
                 if next:
-                    return HttpResponseRedirect(next)
-                return HttpResponseRedirect(reverse('store:index'))
+                    return redirect(next)
+                return redirect(reverse('store:index'))
             context = {'auth_error': _("Проверьте имя и пароль")}
     else:
         context['next'] = request.GET['next'] if 'next' in request.GET else None
