@@ -324,6 +324,13 @@ SPECTACULAR_SETTINGS = {
         "persistAuthorization": False,
     },
 
+    "REDOC_SETTINGS": {
+        "lazyRendering": True,
+    },
+    'REDOC_DIST': STATIC_URL + 'redoc_custom',
+    "REDOC_FAVICON_HREF": STATIC_URL + "assets/images/favicon.ico",
+
+
     'COMPONENT_SPLIT_REQUEST': True,
     'SWAGGER_UI_DIST': STATIC_URL + 'swagger_custom',
     "SWAGGER_UI_FAVICON_HREF": STATIC_URL + "assets/images/favicon.ico",
