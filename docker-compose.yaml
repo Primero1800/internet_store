@@ -4,12 +4,12 @@ services:
 
   redis:
     image: redis
-    restart: always
+    restart: unless-stopped
     ports:
       - "6379:6379"
 
   webapp:
-    restart: always
+    restart: unless-stopped
     build:
       context: ./
     ports:

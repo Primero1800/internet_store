@@ -323,8 +323,10 @@ SPECTACULAR_SETTINGS = {
         "deepLinking": True,
         "persistAuthorization": False,
     },
-    "SWAGGER_UI_FAVICON_HREF": STATIC_URL + "assets/images/favicon.ico",
+
     'COMPONENT_SPLIT_REQUEST': True,
+    'SWAGGER_UI_DIST': STATIC_URL + 'swagger_custom',
+    "SWAGGER_UI_FAVICON_HREF": STATIC_URL + "assets/images/favicon.ico",
 }
 
 # USERS
